@@ -28,8 +28,8 @@ public class PiecesManager : MonoBehaviour
     public GameObject piecePrefab;
 
     //public Sprite[] sprites;
-    private List<Sprite> allSprites;
-    private List<GameObject> allPieces;
+    private List<Sprite> allSprites = new List<Sprite>();
+    private List<GameObject> allPieces = new List<GameObject>();
 
     /// <summary>
     /// Zone to pop at start

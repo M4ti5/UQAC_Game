@@ -451,21 +451,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 570117284}
     m_Modifications:
-    - target: {fileID: 2063097683473156681, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
-      propertyPath: m_ScreenMatchMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2063097683473156682, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 7607203406225501449}
     - target: {fileID: 2063097684089252908, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2063097684089252908, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2063097684089252908, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_SizeDelta.x
@@ -473,7 +469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2063097684089252908, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -372.6327
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2063097684349828001, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_SizeDelta.y
@@ -499,10 +495,6 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 7607203406225501449}
-    - target: {fileID: 2063097684349828004, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
-      propertyPath: img
-      value: 
-      objectReference: {fileID: 2800000, guid: 3ee89b76de53e644596ea2f49f488317, type: 3}
     - target: {fileID: 2100611898934701790, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0.00012207031
@@ -557,7 +549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4908679925020252098, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5573707125744866634, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
       propertyPath: m_IsActive
