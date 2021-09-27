@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float turnSpeed = 30;
     private float horizontalInput;
     private float forwardInput;
+    public bool hasObject = false;
 
     // Start is called before the first frame update
     void Start()
