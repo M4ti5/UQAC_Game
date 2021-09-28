@@ -72,3 +72,6 @@ crashlytics-build.properties
 
 # JetBrains
 .idea
+
+# Unnecessary folders
+/[Aa]ssets/TextMesh*
