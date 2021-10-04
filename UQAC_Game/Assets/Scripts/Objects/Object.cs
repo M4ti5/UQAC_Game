@@ -6,7 +6,7 @@ public class Object : MonoBehaviour
 {
     public bool isHeld = false;
     public float distanceToHeld;
-    public GameObject EquipmentDest;
+    private Transform EquipmentDest;
     public GameObject player;
     public GameObject allObjects;
 
@@ -24,6 +24,8 @@ public class Object : MonoBehaviour
         float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
         bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
+
+        EquipmentDest = player.transform.Find("Equipements");
 
         if (Input.GetKeyUp(KeyCode.A) && isHeld == false && reachable)
         {
@@ -43,8 +45,8 @@ public class Object : MonoBehaviour
     //Equipe the object to the Equipment destination
     void OnEquipmentTriggered()
     {
-        this.transform.parent = EquipmentDest.transform;
-        this.transform.position = EquipmentDest.transform.position;
+        this.transform.parent = EquipmentDest;
+        this.transform.position = EquipmentDest.position;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
