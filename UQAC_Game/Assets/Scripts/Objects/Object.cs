@@ -65,9 +65,9 @@ public class Object : MonoBehaviour
     bool isReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
-        float angle = Vector3.Angle(playerA.position, objectA.position);
+        float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
 
-        if (dist < range && angle < Mathf.Abs(45))
+        if (dist < range && angle <= Mathf.Abs(30))
         {
             return true;
         }
