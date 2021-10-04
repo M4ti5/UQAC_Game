@@ -74,4 +74,4 @@ crashlytics-build.properties
 .idea
 
 # Unnecessary folders
-/[Aa]ssets/TextMesh*
+#/[Aa]ssets/TextMesh*
