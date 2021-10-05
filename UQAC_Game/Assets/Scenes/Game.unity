@@ -687,6 +687,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Equipment
       objectReference: {fileID: 0}
+    - target: {fileID: 7607203404300624043, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: rotationSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607203404300624043, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: defaultMoveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675771813204701560, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: m_Radius
+      value: 1.0655661
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675771813204701560, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675771813204701560, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: m_Center.y
+      value: 1.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675771813204701560, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
+      propertyPath: m_Center.z
+      value: -0.13
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5176847747283500264, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
