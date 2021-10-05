@@ -8,13 +8,22 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour {
-    private float defaultMoveSpeed = 5.0f;
-    public float moveSpeed = 5.0f;
+    public static float defaultMoveSpeed = 5.0f;
+    private float moveSpeed = defaultMoveSpeed;
     public float sprintSpeed = 9.0f;
     public float rotationSpeed = 45.0f; 
 
     public float jumpForce = 180.0f;
-    public bool isGrounded;
+    public bool isGrounded = false;
+
+    public float dashSpeed = 15f;
+    public static float defaultDashTime = 0.5f;
+    private float dashTime = defaultDashTime;
+    private bool inDash = false;
+    public static float defaultDashCoolDown = 1.5f;
+    private float dashCoolDown = defaultDashCoolDown;
+    //You can totally disable the boost dash to initalise canDash to false
+    public bool canDash = true;
 
     private Rigidbody rb;
 
@@ -59,7 +68,7 @@ public class Movement : MonoBehaviour {
             transform.Rotate(Vector3.up, rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
         }
 
-        //Jump
+        //// Jump
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
             if (rb != null) {
                 rb.AddForce(Vector3.up * 2.0f * jumpForce, ForceMode.Impulse);
@@ -67,13 +76,36 @@ public class Movement : MonoBehaviour {
             }
         }
 
-        //Sprint start
+        //// Sprint 
+        //start
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
             moveSpeed = sprintSpeed;
         }
-        //Sprint stop
+        //stop
         if (Input.GetKeyUp(KeyCode.LeftShift)) {
             moveSpeed = defaultMoveSpeed;
+        }
+
+
+        //// Dash
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash) {
+            inDash = true;
+            canDash = false;
+        }
+        if (inDash) {
+            transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
+            dashTime -= Time.deltaTime;
+            if(dashTime < 0) {
+                inDash = false;
+                dashTime = defaultDashTime;
+            }
+        } else {
+            if(dashCoolDown > 0) {
+                dashCoolDown -= Time.deltaTime;
+            } else if (!canDash) {
+                dashCoolDown = defaultDashCoolDown;
+                canDash = true;
+            }
         }
 
         // TODO:  ctrl ou c pour s'accoupir
