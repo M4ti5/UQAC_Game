@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 	{
 		Instance = this;
 
-		// in case we started this demo with the wrong scene being active, simply load the menu scene
+		// in case we started with the wrong scene being active, simply load the menu scene
 		if (!PhotonNetwork.IsConnected)
 		{
 			SceneManager.LoadScene("Launcher");
@@ -56,19 +56,24 @@ public class GameManager : MonoBehaviourPunCallbacks
 			return;
 		}
 
-		if (playerPrefab == null) { // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+		if (playerPrefab == null) // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
+		{
 
 			Debug.LogError("<Color=Red><b>Missing</b></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-		} else {
+		}
+		else
+		{
 
 
-			if (PlayerManager.LocalPlayerInstance==null)
+			if (PlayerManager.LocalPlayerInstance == null)
 			{
 				Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
 				// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-				PhotonNetwork.Instantiate("Prefabs/Player/"+this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
-			}else{
+				PhotonNetwork.Instantiate("Prefabs/Player/" + this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+			}
+			else
+			{
 
 				Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
 			}
@@ -106,7 +111,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 		{
 			Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
 
-			LoadArena();
+			//LoadArena();
 		}
 	}
 
@@ -122,7 +127,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 		{
 			Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
 
-			LoadArena(); 
+			//LoadArena(); 
 		}
 	}
 
@@ -140,9 +145,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	public void LeaveRoom()
 	{
+		if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
+		{
+			PhotonNetwork.CurrentRoom.IsOpen = false;
+		}
 		PhotonNetwork.LeaveRoom();
 	}
 
+	/// <summary>
+	/// Close programme or stop playing mode if we use unity
+	/// </summary>
 	public void QuitApplication()
 	{
 #if UNITY_EDITOR
@@ -153,8 +165,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	#endregion
 
+	/*
 	#region Private Methods
 
+	// reload game (never used because we have 1 level)
 	void LoadArena()
 	{
 		if ( ! PhotonNetwork.IsMasterClient )
@@ -170,5 +184,5 @@ public class GameManager : MonoBehaviourPunCallbacks
 	}
 
 	#endregion
-
+	*/
 }
