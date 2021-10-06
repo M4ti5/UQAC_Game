@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 /// <summary>
@@ -7,7 +8,7 @@ using UnityEngine;
 /// Rigidbody necessary
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviourPun
 {
 
     public float rotationSpeed = 1.0f;
@@ -39,6 +40,11 @@ public class Movement : MonoBehaviour
     // Update is called once per frame  
     void Update()
     {
+        // Prevent control is connected to Photon and represent the localPlayer
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
         MoveRotate();
         Jump();
         CheckDeathLimitY();
