@@ -113,7 +113,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         // we only process Inputs and check health if we are the local player
         if (photonView.IsMine)
         {
-            // do some thing
+            // TODO: do some thing
 
             /*if (this.Health <= 0f)
             {

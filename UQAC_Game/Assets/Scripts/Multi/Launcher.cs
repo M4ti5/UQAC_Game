@@ -92,11 +92,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 		base.OnRoomListUpdate(roomList);
 
 		//LogFeedback("OnRoomListUpdate...");
-
 		foreach (RoomInfo roomInfo in roomList)
 		{
 			// Remove room from cached room list if it got closed, became invisible or was marked as removed
-			if (!roomInfo.IsOpen || !roomInfo.IsVisible || roomInfo.RemovedFromList)
+			if (!roomInfo.IsOpen /*|| !roomInfo.IsVisible*/ || roomInfo.RemovedFromList)
 			{
 				if (this.roomNameList.Contains(roomInfo))
 				{
@@ -110,6 +109,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 				if (!this.roomNameList.Contains(roomInfo))
 				{
 					this.roomNameList.Add(roomInfo);
+                }
+                else
+                {
+					// replace values
+					var index = this.roomNameList.FindIndex(r => r.Name == roomInfo.Name);
+					this.roomNameList[index] = roomInfo;
 				}
 			}
 		}
@@ -241,10 +246,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.feedbackText.text += System.Environment.NewLine + message;
 	}
 
-	#region MonoBehaviourPunCallbacks CallBacks
-	// below, we implement some callbacks of PUN
-	// you can find PUN's callbacks in the class MonoBehaviourPunCallbacks
-
 	/// <summary>
 	/// Create room with a name, a max numerOfPlayers, visible and open
 	/// </summary>
@@ -256,6 +257,31 @@ public class Launcher : MonoBehaviourPunCallbacks
 		roomOptions.IsOpen = true;
 		PhotonNetwork.CreateRoom(this.roomName, roomOptions);
 	}
+
+	public bool IsRoomExist(string name)
+	{
+		foreach (RoomInfo roomInfo in roomNameList)
+		{
+			if (roomInfo.Name == name)
+				return true;
+		}
+		return false;
+	}
+	public bool IsRoomFull(string name)
+	{
+		foreach (RoomInfo roomInfo in roomNameList)
+		{
+			if (roomInfo.Name == name && roomInfo.PlayerCount >= roomInfo.MaxPlayers)
+				return true;
+		}
+		return false;
+	}
+
+
+	#region MonoBehaviourPunCallbacks CallBacks
+	// below, we implement some callbacks of PUN
+	// you can find PUN's callbacks in the class MonoBehaviourPunCallbacks
+
 
 	/// <summary>
 	/// Called after the connection to the master is established and authenticated
@@ -308,6 +334,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
+		if (IsRoomFull(this.roomName))
+		{
+			LogFeedback("<color=orange>OnJoinRoomFailed</color>: Room Full -> Create New One");
+			Debug.LogWarning("PUN/Launcher: OnJoinRoomFailed() was called by PUN. Room Full -> Create New One with different name");
+			// show the Play button for visual consistency
+			this.roomJoinUI.SetActive(true);
+
+			this.connectionStatus.text = "<color=orange>Fully Room !</color>";
+			return;
+		}
 		// we don't want to do anything if we are not attempting to join a room. 
 		// this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
 		// we don't want to do anything.
