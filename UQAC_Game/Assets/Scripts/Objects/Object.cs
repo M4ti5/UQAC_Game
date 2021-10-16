@@ -43,8 +43,9 @@ public class Object : MonoBehaviour
             if(grabberPlayerId >= 0){
                 player = allPlayers.transform.GetChild(grabberPlayerId);
                 EquipmentDest = player.transform.Find("Equipements");
-                OnEquipmentTriggered();
-                isHeld = true;
+                if(EquipmentDest.GetComponent<UseObject>().hasObject == false){
+                    OnEquipmentTriggered();
+                }
             }
 
         }
@@ -52,8 +53,6 @@ public class Object : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
         {
             OnDesequipmentTriggered();
-            isHeld = false;
-
         }
 
     }
@@ -66,7 +65,8 @@ public class Object : MonoBehaviour
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        EquipmentDest.GetComponent<HasObject>().hasObject = true;
+        EquipmentDest.GetComponent<UseObject>().hasObject = true;
+        isHeld = true;
     }
 
     //Desequipe the object to the Equipment destination
@@ -76,7 +76,8 @@ public class Object : MonoBehaviour
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
-        EquipmentDest.GetComponent<HasObject>().hasObject = false;
+        EquipmentDest.GetComponent<UseObject>().hasObject = false;
+        isHeld = false;
     }
 
     //Check if object is not too far from player and if it's in front of the player
