@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Object : MonoBehaviour
 {
-    public bool isHeld = false;
     public float distanceToHeld;
-    private Transform EquipmentDest;
-    public GameObject player;
+    public GameObject allPlayers;
     public GameObject allObjects;
+
+    private bool isHeld = false;
+    private Transform EquipmentDest;
+    private Transform player;
 
     // Start is called before the first frame update
     void Start()
@@ -21,18 +23,32 @@ public class Object : MonoBehaviour
     void Update()
     {
         //Get distance between player and object (works for only one player)
-        float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+        //float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+        
 
-        bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
+        //bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
 
-        EquipmentDest = player.transform.Find("Equipements");
+        //EquipmentDest = player.transform.Find("Equipements");
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == false && reachable)
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == false)
         {
-            OnEquipmentTriggered();
-            isHeld = true;
+            int allPlayersCount = allPlayers.transform.childCount;
+            int grabberPlayerId = -1;
+        
+            for(int i=0; i<allPlayersCount; i++){
+                if(isReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld)){
+                    grabberPlayerId = i;
+                }
+            }
+            if(grabberPlayerId >= 0){
+                player = allPlayers.transform.GetChild(grabberPlayerId);
+                EquipmentDest = player.transform.Find("Equipements");
+                OnEquipmentTriggered();
+                isHeld = true;
+            }
 
         }
+
         else if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
         {
             OnDesequipmentTriggered();
