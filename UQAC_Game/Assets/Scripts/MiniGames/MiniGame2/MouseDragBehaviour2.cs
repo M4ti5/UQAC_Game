@@ -7,6 +7,9 @@ public class MouseDragBehaviour2 : MonoBehaviour, IDragHandler, IBeginDragHandle
 {
     private Vector2 lastMousePosition;
     private bool collision = false;
+    Vector3 oldPos = new Vector3(0, 0, 0);
+    float timer;
+
 
     /// <summary>
     /// This method will be called on the start of the mouse drag
@@ -24,22 +27,36 @@ public class MouseDragBehaviour2 : MonoBehaviour, IDragHandler, IBeginDragHandle
     /// <param name="eventData">mouse pointer event data</param>
     public void OnDrag(PointerEventData eventData)
     {
+        timer = 0;
+
         Vector2 currentMousePosition = eventData.position;
         Vector2 diff = currentMousePosition - lastMousePosition;
         RectTransform rect = GetComponent<RectTransform>();
 
         Vector3 newPosition = rect.position + new Vector3(diff.x, diff.y, transform.position.z);
-        Vector3 oldPos = rect.position;
+        oldPos = rect.position;
         rect.position = newPosition;
-        if (!IsRectTransformInsideSreen(rect))
+        Debug.Log("test1" + collision);
+        while(timer < 20000)
         {
+            timer += Time.deltaTime;
+            //Debug.Log(timer);
+        }
+        Debug.Log("test2   " + Mathf.Sqrt(diff.x*diff.x + diff.y*diff.y));
+
+        if (collision || Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y)>10)
+        {
+            Debug.Log("déplacement" + oldPos);
             rect.position = oldPos;
+            collision = false;
         }
 
 
 
         lastMousePosition = currentMousePosition;
     }
+
+    
 
 
 
@@ -78,4 +95,23 @@ public class MouseDragBehaviour2 : MonoBehaviour, IDragHandler, IBeginDragHandle
         }
         return isInside;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("enter" + oldPos);
+        collision = true;
+        RectTransform rect = GetComponent<RectTransform>();
+        rect.position = oldPos;
+    }
+
+   
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("exit" + oldPos);
+        collision = false;
+        RectTransform rect = GetComponent<RectTransform>();
+        rect.position = oldPos;
+    }
+
 }

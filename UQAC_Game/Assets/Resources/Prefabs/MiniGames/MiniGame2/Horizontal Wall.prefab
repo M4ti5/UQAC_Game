@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 144950535298467347}
   - component: {fileID: 144950535298467349}
   - component: {fileID: 144950535298467346}
+  - component: {fileID: -3365236141693401079}
   m_Layer: 5
   m_Name: Horizontal Wall
   m_TagString: labyrintheWall
@@ -35,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -314, y: 49}
-  m_SizeDelta: {x: 3.6005187, y: 55.38444}
+  m_SizeDelta: {x: 6.70631, y: 89.79727}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &144950535298467349
 CanvasRenderer:
@@ -75,3 +76,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!65 &-3365236141693401079
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144950535298467344}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.70631, y: 89.79727, z: 0}
+  m_Center: {x: -0.0009534359, y: 0.0063171387, z: 0}
