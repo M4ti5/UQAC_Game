@@ -26,8 +26,6 @@ public class Map : MonoBehaviour
     private float heightWall;
     private float marginWidthMap;
     private float marginHeightMap;
-    private float startX;
-    private float startY;
 
     private float hW;
 
@@ -37,33 +35,42 @@ public class Map : MonoBehaviour
         row = 10;
         column = 15;
         RectTransform rt = GetComponent<RectTransform>();
-        widthMap = rt.rect.width;
-        heightMap = rt.rect.height;
+        //taille de la marge
         marginWidthMap = widthMap * 10 / 100;
         marginHeightMap = heightMap * 10 / 100;
+
+        heightMap = rt.rect.height;
+        widthMap = rt.rect.width;
+
+        //longueur d'un mur horizontal
+        widthWall = (widthMap - 2 * marginWidthMap) / column;
+        //longueur d'un mur vertical
+        heightWall = (heightMap - 2 * marginHeightMap) / row;
+        //épaisseur d'un mur
         hW = heightMap / 100;
-        widthWall = (widthMap - 2*marginWidthMap) / column;
-        heightWall = (heightMap - 2*marginHeightMap) / row;
 
         
-
-        startX = rt.rect.xMin + marginWidthMap;
-        startY = rt.rect.yMin;
-
-        Debug.Log(widthMap + "    " + marginWidthMap + "     " + widthWall);
+        player.gameObject.SetActive(true);
+        entrance.gameObject.SetActive(true);
+        arrive.gameObject.SetActive(true);
         
-        
+        //Dimensionnement de la taille des murs, du joueur et de l'arrivée en fonction de la taille de l'écran de jeu
         horizontalWall.rectTransform.sizeDelta = new Vector2(hW, widthWall+hW);
         verticalWall.rectTransform.sizeDelta = new Vector2(heightWall+hW, hW);
 
         horizontalExternalWall.rectTransform.sizeDelta = new Vector2(hW, widthWall * column + hW);
         verticalExternalWall.rectTransform.sizeDelta = new Vector2(heightWall * (row - 1) + hW, hW);
 
+        //Le joueur représenté par un cube vert
         player.rectTransform.sizeDelta = new Vector2(Mathf.Min(widthWall, heightWall) * 0.4f, Mathf.Min(widthWall, heightWall) * 0.4f);
+
+        //Une fois que le joueur atteint ce collider, il a fini le mini-jeu
         arrive.rectTransform.sizeDelta = new Vector2(widthWall*0.5f, heightWall*0.5f);
 
+        //Empêche le joueur de sortir par l'entrée
         entrance.rectTransform.sizeDelta = new Vector2(hW, widthWall + hW);
 
+        //Redimensionnement des colliders en fonction de la taille des objets
         BoxCollider[] collider = horizontalWall.gameObject.GetComponents<BoxCollider>();
         collider[0].size = new Vector2(hW, widthWall + hW);
         collider = verticalWall.gameObject.GetComponents<BoxCollider>();
@@ -80,11 +87,13 @@ public class Map : MonoBehaviour
         
     }
 
+    //Création de la map du labyrinthe
     void CreateMapGrid()
     {
         Debug.Log("createMapGrid");
         grid = new Box[column, row];
         int n = 1;
+        //création de la grille de cases du labyrinthe (tous les murs sont actifs)
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -100,7 +109,7 @@ public class Map : MonoBehaviour
             }
         }
 
-
+        //On enlève les murs un par un jusqu'à ce qu'il y ait un chemin possible entre la case de départ et celle d'arrivée
         int numberMin = 0;
         int numberMax = 0;
         var actions = new List<string>() { "left", "right", "up", "down" };
@@ -153,6 +162,9 @@ public class Map : MonoBehaviour
                 }
             }
         }
+
+        //On parcours toutes les cases de la grille et on fait en sorte qu'il n'y en ait aucune d'isolée
+        //Toutes les cases sont ainsi atteignables par le joueur
         numberMax = grid[column - 1, row - 1].number;
         for (int x = 0; x < column; x++)
         {
@@ -200,6 +212,7 @@ public class Map : MonoBehaviour
         }
     }
 
+    //On vérifie le nombre de murs actifs de la case
     private int TestNumberOfWalls(Box box)
     {
         Debug.Log("TestNumberOfWalls");
@@ -212,10 +225,10 @@ public class Map : MonoBehaviour
     }
 
 
-
+    //Affichage de la carte
     void DisplayMap()
     {
-        Debug.Log("DisplayMap");
+        //On commence par affiché les murs extérieurs, l'arrivée, l'entrée (invisible) et le joueur
         var createdExternalWall = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap, 0), horizontalExternalWall.transform.rotation);
         createdExternalWall.transform.SetParent(panel.transform, false);
         createdExternalWall = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap - row * heightWall, 0), horizontalExternalWall.transform.rotation);
@@ -226,16 +239,12 @@ public class Map : MonoBehaviour
         createdExternalWall = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), verticalExternalWall.transform.rotation);
         createdExternalWall.transform.SetParent(panel.transform, false);
 
-        //var arriveBox = Instantiate(arrive, new Vector3(widthWall * (column - 0.4f) + marginWidthMap, -heightWall * (row - 0.6f) - marginHeightMap, 0), arrive.transform.rotation);
-        //arriveBox.transform.SetParent(panel.transform, false);
-
         arrive.transform.Translate(new Vector3(widthWall * (column - 0.4f) + marginWidthMap, -heightWall * (row - 0.6f) - marginHeightMap, 0));
         entrance.transform.Translate(new Vector3(marginWidthMap, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
-        
         player.transform.Translate(new Vector3(marginWidthMap + widthWall * 0.5f, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
 
 
-
+        //Affichage des murs intérieurs
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -252,13 +261,5 @@ public class Map : MonoBehaviour
                 }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    
+    }    
 }
