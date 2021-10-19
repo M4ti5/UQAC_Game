@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Object : MonoBehaviour
 {
-    public bool isHeld = false;
     public float distanceToHeld;
-    public GameObject EquipmentDest;
-    public GameObject player;
+    public GameObject allPlayers;
     public GameObject allObjects;
+
+    private bool isHeld = false;
+    private Transform EquipmentDest;
+    private Transform player;
 
     // Start is called before the first frame update
     void Start()
@@ -21,21 +23,36 @@ public class Object : MonoBehaviour
     void Update()
     {
         //Get distance between player and object (works for only one player)
-        float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+        //float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
+        
 
-        bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
+        //bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == false && reachable)
+        //EquipmentDest = player.transform.Find("Equipements");
+
+        if (Input.GetKeyUp(KeyCode.E) && isHeld == false)
         {
-            OnEquipmentTriggered();
-            isHeld = true;
+            int allPlayersCount = allPlayers.transform.childCount;
+            int grabberPlayerId = -1;
+        
+            for(int i=0; i<allPlayersCount; i++){
+                if(isReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld)){
+                    grabberPlayerId = i;
+                }
+            }
+            if(grabberPlayerId >= 0){
+                player = allPlayers.transform.GetChild(grabberPlayerId);
+                EquipmentDest = player.transform.Find("Equipements");
+                if(EquipmentDest.GetComponent<UseObject>().hasObject == false){
+                    OnEquipmentTriggered();
+                }
+            }
 
         }
-        else if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
+
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
         {
             OnDesequipmentTriggered();
-            isHeld = false;
-
         }
 
     }
@@ -43,12 +60,13 @@ public class Object : MonoBehaviour
     //Equipe the object to the Equipment destination
     void OnEquipmentTriggered()
     {
-        this.transform.parent = EquipmentDest.transform;
-        this.transform.position = EquipmentDest.transform.position;
+        this.transform.parent = EquipmentDest;
+        this.transform.position = EquipmentDest.position;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        EquipmentDest.GetComponent<HasObject>().hasObject = true;
+        EquipmentDest.GetComponent<UseObject>().hasObject = true;
+        isHeld = true;
     }
 
     //Desequipe the object to the Equipment destination
@@ -58,16 +76,17 @@ public class Object : MonoBehaviour
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
-        EquipmentDest.GetComponent<HasObject>().hasObject = false;
+        EquipmentDest.GetComponent<UseObject>().hasObject = false;
+        isHeld = false;
     }
 
     //Check if object is not too far from player and if it's in front of the player
     bool isReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
-        float angle = Vector3.Angle(playerA.position, objectA.position);
+        float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
 
-        if (dist < range && angle < Mathf.Abs(45))
+        if (dist < range && angle <= Mathf.Abs(30))
         {
             return true;
         }

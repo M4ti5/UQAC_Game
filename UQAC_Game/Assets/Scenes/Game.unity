@@ -1167,7 +1167,7 @@ PrefabInstance:
     - target: {fileID: 3208441695496774543, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: EquipmentDest
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5743231}
     - target: {fileID: 6503671064153239741, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: m_Name
       value: Object
