@@ -7,130 +7,130 @@ using UnityEngine;
 /// Rigidbody necessary
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : MonoBehaviour
-{
+public class Movement : MonoBehaviour {
+    public static float defaultMoveSpeed = 5.0f;
+    private float moveSpeed = defaultMoveSpeed;
+    public float sprintSpeed = 9.0f;
+    public float rotationSpeed = 45.0f; 
 
-    public float rotationSpeed = 1.0f;
-    public float defaultMoveSpeed = 1.0f;
-    public float sprintSpeed = 3.0f;
-    private float moveSpeed;
+    public float jumpForce = 180.0f;
+    public bool isGrounded = false;
 
-    public Vector3 jump = new Vector3(0.0f, 2.0f, 0.0f);
-    public float jumpForce = 2.0f;
+    public float dashSpeed = 15f;
+    public static float defaultDashTime = 0.5f;
+    private float dashTime = defaultDashTime;
+    private bool inDash = false;
+    public static float defaultDashCoolDown = 1.5f;
+    private float dashCoolDown = defaultDashCoolDown;
+    //You can totally disable the boost dash to initalise canDash to false
+    public bool canDash = true;
 
-    public bool isGrounded;
     private Rigidbody rb;
 
     /// <summary>
-    /// y limit to not fall under
+    /// Y limit to not fall under
     /// </summary>
     public float deathLimitY = -100.0f;
 
-    // Start is called before the first frame update  
-    void Start()
-    {
-        Debug.Log("Start Movement script");
-        // Set self rigidbody
+    void Start() {
         rb = GetComponent<Rigidbody>();
-        // Set move speed
-        moveSpeed = defaultMoveSpeed;
     }
 
-    // Update is called once per frame  
-    void Update()
-    {
-        MoveRotate();
-        Jump();
+    void Update() {
+        Move();
         CheckDeathLimitY();
-        Sprint();
     }
 
-    /// <summary>
-    /// Check keys pressed and translate position of self object
-    /// </summary>
-    void MoveRotate()
-    {
-        // Move forward
-        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow))
-        {
+
+    void Move() {
+
+        //// Moves Key
+        // forward
+        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow)) {
             transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
         }
-
-        // Move backwards
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
+        // backwards
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
             transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
         }
-
-        // Rotate left
-        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.Rotate(Vector3.up, -rotationSpeed * moveSpeed);
+        // left
+        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow)) {
+            transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
         }
 
-        // Rotate right
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Rotate(Vector3.up, rotationSpeed * moveSpeed);
+        // right
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
         }
-    }
 
+        //// Rotate Mouse
+        if (Input.GetAxis("Mouse X") != 0 && Input.GetMouseButton(1)) { // mouse's left click
+            transform.Rotate(Vector3.up, rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
+        }
 
-    void OnCollisionStay()
-    {
-        isGrounded = true;
-    }
-    void OnCollisionExit()
-    {
-        isGrounded = false;
-    }
-
-    /// <summary>
-    /// Jump when space key is pressed and when is not in the air
-    /// </summary>
-    void Jump()
-    {
-        // source : https://answers.unity.com/questions/1020197/can-someone-help-me-make-a-simple-jump-script.html
-
-        // Jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            // check if we have a rigidbody
-            if (rb != null)
-            {
-                rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+        //// Jump
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            if (rb != null) {
+                rb.AddForce(Vector3.up * 2.0f * jumpForce, ForceMode.Impulse);
                 isGrounded = false;
             }
         }
+
+        //// Sprint 
+        //start
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            moveSpeed = sprintSpeed;
+        }
+        //stop
+        if (Input.GetKeyUp(KeyCode.LeftShift)) {
+            moveSpeed = defaultMoveSpeed;
+        }
+
+
+        //// Dash
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash) {
+            inDash = true;
+            canDash = false;
+        }
+        if (inDash) {
+            transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
+            dashTime -= Time.deltaTime;
+            if(dashTime < 0) {
+                inDash = false;
+                dashTime = defaultDashTime;
+            }
+        } else {
+            if(dashCoolDown > 0) {
+                dashCoolDown -= Time.deltaTime;
+            } else if (!canDash) {
+                dashCoolDown = defaultDashCoolDown;
+                canDash = true;
+            }
+        }
+
+        // TODO:  ctrl ou c pour s'accoupir
+
+    }
+
+    void OnCollisionStay(Collision collision) {
+        if (collision.gameObject.tag == "Wall") {
+            //Stop l'annimation
+        }
+        isGrounded = true;
+    }
+    void OnCollisionExit() {
+        isGrounded = false;
     }
 
     /// <summary>
     /// Check altitude to stop an infinite fall
     /// </summary>
-    void CheckDeathLimitY()
-    {
-        if (transform.localPosition.y < deathLimitY)
-        {
+    void CheckDeathLimitY() {
+        if (transform.localPosition.y < deathLimitY) {
             rb.isKinematic = true;// all force at 0
         }
     }
 
-    /// <summary>
-    /// Sprint when Left Shift key is pressing
-    /// </summary>
-    void Sprint()
-    {
-        // Sprint start
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            moveSpeed = sprintSpeed;
-        }
-        // Sprint stop
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            moveSpeed = defaultMoveSpeed;
-        }
-    }
 
-    // TODO:  ctrl ou c pour s'accoupir
+
 }

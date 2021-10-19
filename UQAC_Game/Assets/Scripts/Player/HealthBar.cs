@@ -41,7 +41,7 @@ public class HealthBar : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            Debug.Log("Game Over");
+            //Debug.Log("Game Over");
         }
     }
 
