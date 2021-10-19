@@ -16,7 +16,7 @@ public class UseObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if(Input.GetKeyUp(KeyCode.E) && hasObject){
+        if(Input.GetMouseButton(0) && hasObject){
             //add equipement behavior script
             Destroy(this.transform.GetChild(0).gameObject);
             hasObject = false;

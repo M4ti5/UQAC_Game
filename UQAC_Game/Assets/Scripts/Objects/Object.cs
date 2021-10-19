@@ -30,7 +30,7 @@ public class Object : MonoBehaviour
 
         //EquipmentDest = player.transform.Find("Equipements");
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == false)
+        if (Input.GetKeyUp(KeyCode.E) && isHeld == false)
         {
             int allPlayersCount = allPlayers.transform.childCount;
             int grabberPlayerId = -1;
@@ -50,7 +50,7 @@ public class Object : MonoBehaviour
 
         }
 
-        else if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
         {
             OnDesequipmentTriggered();
         }
