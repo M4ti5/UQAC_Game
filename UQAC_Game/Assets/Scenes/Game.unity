@@ -671,18 +671,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5176847747283500267, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
-      propertyPath: m_ShowToolkit
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5176847747283500267, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
-      propertyPath: m_ShowCustomSorter
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5176847747283500267, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
-      propertyPath: finalBlitToCameraTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5543776653925695795, guid: dce1d99035b82814d8c4f4f8a424ef5e, type: 3}
       propertyPath: m_Name
       value: Equipment
