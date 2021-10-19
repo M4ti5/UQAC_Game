@@ -2,7 +2,25 @@ fileFormatVersion: 2
 guid: d649fec3caed94e44b1a03f0798dc443
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: -4238369547827079392
+    second: Right_Hand_Rig|PoseLib
+  - first:
+      74: -7667693313333088082
+    second: Right_Hand_Rig|IDLE
+  - first:
+      74: -6041587656194368220
+    second: Right_Hand_Rig|IDLE.001
+  - first:
+      74: -5650207364973980815
+    second: Left_Hand_Rig|PoseLib
+  - first:
+      74: 6475320756375524005
+    second: Left_Hand_Rig|IDLE
+  - first:
+      74: -1092665887066562362
+    second: Left_Hand_Rig|IDLE.001
   externalObjects: {}
   materials:
     materialImportMode: 2
