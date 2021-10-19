@@ -20,10 +20,4 @@ public class Box : MonoBehaviour
         right = false;
         left = false;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
