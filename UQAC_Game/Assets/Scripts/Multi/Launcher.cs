@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -12,24 +14,26 @@ using UnityEngine;
 /// </summary>
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public GameObject roomJoinUI;
+	public GameObject roomJoinUI;
 	public TMP_InputField inputFieldPlayerName, inputFieldRoomName;
-    public GameObject buttonStart;
+	public TMP_Dropdown dropDownListOfRooms;
+	public GameObject buttonStart;
 	public TextMeshProUGUI connectionStatus, feedbackText;
 	public TextMeshProUGUI listRoom;
 
 	private string gameVersion;
-    private bool isConnecting;
+	private bool isConnecting;
 	private bool isLobbyReady;
 
 	[Tooltip("The maximum number of players per room")]
-    [SerializeField]
-    private byte maxPlayersPerRoom = 4;
+	[SerializeField]
+	private byte maxPlayersPerRoom = 4;
 
-    private string roomName;
-	
+	private string roomName;
+
 	const string playerNamePrefKey = "PlayerName"; // Store the PlayerPref Key to avoid typos
-	const string roomNamePrefKey = "RoomName";// Store the PlayerPref Key to avoid typos
+	//const string roomNamePrefKey = "RoomName";// Store the PlayerPref Key to avoid typos
+	const string defaultName = "";
 
 
 	public List<RoomInfo> roomNameList = new List<RoomInfo>();
@@ -42,10 +46,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	}*/
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("Start launcher script");
+	// Start is called before the first frame update
+	void Start()
+	{
+		Debug.Log("Start launcher script");
 
 		// get Application version
 		this.gameVersion = Application.version;
@@ -65,7 +69,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 	// Helper Methods
 	public void GetAllRooms()
-    {
+	{
 		// we check if we are connected or not, we join if we are , else we initiate the connection to the server.
 		if (!PhotonNetwork.IsConnected)
 		{
@@ -109,9 +113,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 				if (!this.roomNameList.Contains(roomInfo))
 				{
 					this.roomNameList.Add(roomInfo);
-                }
-                else
-                {
+				}
+				else
+				{
 					// replace values
 					var index = this.roomNameList.FindIndex(r => r.Name == roomInfo.Name);
 					this.roomNameList[index] = roomInfo;
@@ -124,19 +128,37 @@ public class Launcher : MonoBehaviourPunCallbacks
 	// Fonction qui met à jour la liste des listes existantes
 	private void RefreshRoomListUI()
 	{
+		List<TMP_Dropdown.OptionData> optionList = new List<TMP_Dropdown.OptionData>();
+		optionList.Add(new TMP_Dropdown.OptionData("-- Choose an existing room --"));
 		// reset list of all rooms
 		listRoom.text = "List:";
 		foreach (RoomInfo roomInfo in roomNameList)
 		{
 			listRoom.text += "\n" + roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close");
 			Debug.Log(roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close"));
-			
+
+			optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
 		}
+
+		if (dropDownListOfRooms != null)
+		{
+			dropDownListOfRooms.options = optionList;
+			dropDownListOfRooms.value = 0;
+		}
+	}
+
+	private string CreateRandomString(int stringLength = 5)
+	{
+		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		string randomString = new string(Enumerable.Repeat(chars, stringLength)
+			.Select(s => s[UnityEngine.Random.Range(0, s.Length - 1)]).ToArray());
+
+		return randomString;
 	}
 
 
 	public void LoadDefaultPlayerName()
-    {
+	{
 		if (inputFieldPlayerName != null)
 		{
 			if (PlayerPrefs.HasKey(playerNamePrefKey))
@@ -144,9 +166,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 				string defaultName = PlayerPrefs.GetString(playerNamePrefKey);
 				inputFieldPlayerName.text = defaultName;
 			}
-        }
-        else
-        {
+		}
+		else
+		{
 			Debug.LogError("<Color=Red><b>Missing</b></Color> inputField PlayerName Reference.", this);
 		}
 	}
@@ -176,11 +198,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		if (inputFieldRoomName != null)
 		{
-			if (PlayerPrefs.HasKey(roomNamePrefKey))
-			{
-				string defaultName = PlayerPrefs.GetString(roomNamePrefKey);
+			//if (PlayerPrefs.HasKey(roomNamePrefKey))
+			//{
+			//	string defaultName = PlayerPrefs.GetString(roomNamePrefKey);
 				inputFieldRoomName.text = defaultName;
-			}
+			//}
 		}
 		else
 		{
@@ -188,7 +210,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 	}
 	public void SetRoomName(string value)
-    {
+	{
 		if (string.IsNullOrEmpty(value))
 		{
 			Debug.LogError("Room Name is null or empty");
@@ -196,9 +218,31 @@ public class Launcher : MonoBehaviourPunCallbacks
 			return;
 		}
 		this.roomName = value;
-		PlayerPrefs.SetString(roomNamePrefKey, value);
+		//PlayerPrefs.SetString(roomNamePrefKey, value);
 	}
-	
+
+	/// <summary>
+	/// Select room from dropDown list
+	/// </summary>
+	/// <param name="value"></param>
+	public void SelectRoom(Int32 value)
+	{
+		if (value != 0)
+		{
+			SetRoomName(dropDownListOfRooms.options[value].text);
+
+			inputFieldRoomName.text = this.roomName;
+		}
+	}
+
+	/// <summary>
+	/// Create random room name
+	/// </summary>
+	public void CreateRandomRoomName()
+    {
+		SetRoomName(this.CreateRandomString());
+		inputFieldRoomName.text = this.roomName;
+	}
 
 	/// <summary>
 	/// Start the connection process. 
@@ -223,7 +267,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 			LogFeedback("Joining Room...");
 			// #Critical we need at this point to attempt joining a Room. If it fails, we'll get notified in OnJoinFailed() and we'll create one.
-			if(string.IsNullOrEmpty( this.roomName) == false)
+			if (string.IsNullOrEmpty(this.roomName) == false)
 				PhotonNetwork.JoinRoom(this.roomName);
 			else
 				PhotonNetwork.JoinRandomRoom(); // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
@@ -249,13 +293,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 	/// <summary>
 	/// Create room with a name, a max numerOfPlayers, visible and open
 	/// </summary>
-	private void CreateRoom()
+	public void CreateRoom(string name)
 	{
 		RoomOptions roomOptions = new RoomOptions();
 		roomOptions.MaxPlayers = this.maxPlayersPerRoom;
 		roomOptions.IsVisible = true;
 		roomOptions.IsOpen = true;
-		PhotonNetwork.CreateRoom(this.roomName, roomOptions);
+		PhotonNetwork.CreateRoom(name, roomOptions);
 	}
 
 	public bool IsRoomExist(string name)
@@ -353,7 +397,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			Debug.Log("PUN/Launcher: OnJoinRoomFailed() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRoom(); Operation will fail if no room found");
 
 			// #Critical: we failed to join a room, maybe none exists or they are all full. No worries, we create a new room.
-			this.CreateRoom();
+			this.CreateRoom(this.roomName);
 			PhotonNetwork.JoinRoom(this.roomName);
 		}
 	}
