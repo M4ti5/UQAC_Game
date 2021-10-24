@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 /// <summary>
@@ -7,7 +8,8 @@ using UnityEngine;
 /// Rigidbody necessary
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviourPun
+{
     public static float defaultMoveSpeed = 5.0f;
     private float moveSpeed = defaultMoveSpeed;
     public float sprintSpeed = 9.0f;
@@ -36,7 +38,14 @@ public class Movement : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update() {
+    // Update is called once per frame  
+    void Update()
+    {
+        // Prevent control is connected to Photon and represent the localPlayer
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
         Move();
         CheckDeathLimitY();
     }

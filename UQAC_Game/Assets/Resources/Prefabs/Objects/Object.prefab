@@ -9,11 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2710394647924641043}
+  - component: {fileID: 1328729671888637787}
   - component: {fileID: 3208441695496774540}
   - component: {fileID: 3208441695496774541}
   - component: {fileID: 3208441695496774542}
   - component: {fileID: 3208441695496774539}
   - component: {fileID: 3208441695496774543}
+  - component: {fileID: 5163372266128367859}
   m_Layer: 0
   m_Name: Object
   m_TagString: Untagged
@@ -35,6 +37,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1328729671888637787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6503671064153239741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!33 &3208441695496774540
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -125,8 +143,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77628b2c4f9fe1408db83c30bbbba6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
   distanceToHeld: 2
-  EquipmentDest: {fileID: 0}
-  player: {fileID: 0}
+  allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
+--- !u!114 &5163372266128367859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6503671064153239741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68628d8d6ac13940821d68cfa1e3664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 0
+  useInstanciate: 0

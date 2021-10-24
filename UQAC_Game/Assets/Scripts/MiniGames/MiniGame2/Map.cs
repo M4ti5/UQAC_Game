@@ -229,15 +229,15 @@ public class Map : MonoBehaviour
     void DisplayMap()
     {
         //On commence par affiché les murs extérieurs, l'arrivée, l'entrée (invisible) et le joueur
-        var createdExternalWall = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap, 0), horizontalExternalWall.transform.rotation);
-        createdExternalWall.transform.SetParent(panel.transform, false);
-        createdExternalWall = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap - row * heightWall, 0), horizontalExternalWall.transform.rotation);
-        createdExternalWall.transform.SetParent(panel.transform, false);
+        var createdExternalWall1 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        createdExternalWall1.transform.SetParent(panel.transform, false);
+        var createdExternalWall2 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap - row * heightWall, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        createdExternalWall2.transform.SetParent(panel.transform, false);
 
-        createdExternalWall = Instantiate(verticalExternalWall, new Vector3(marginWidthMap, hW / 2 - row * 0.5f * heightWall - 0.5f * heightWall - marginHeightMap, 0), verticalExternalWall.transform.rotation);
-        createdExternalWall.transform.SetParent(panel.transform, false);
-        createdExternalWall = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), verticalExternalWall.transform.rotation);
-        createdExternalWall.transform.SetParent(panel.transform, false);
+        var createdExternalWall3 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap, hW / 2 - row * 0.5f * heightWall - 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        createdExternalWall3.transform.SetParent(panel.transform, false);
+        var createdExternalWall4 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        createdExternalWall4.transform.SetParent(panel.transform, false);
 
         arrive.transform.Translate(new Vector3(widthWall * (column - 0.4f) + marginWidthMap, -heightWall * (row - 0.6f) - marginHeightMap, 0));
         entrance.transform.Translate(new Vector3(marginWidthMap, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
