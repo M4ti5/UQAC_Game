@@ -11,6 +11,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private bool collision = false;
     Collider collide = new Collider();
     bool victory = false;
+    bool dragActive = false;
     float timer;
     public GameObject victoryText;
     Vector2 diff;
@@ -31,6 +32,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         Debug.Log("Begin Drag");
         lastMousePosition = eventData.position;
+        dragActive = true;
     }
 
     /// <summary>
@@ -61,33 +63,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
             if (collision)
             {
-                //Si une collision est détectée, on regarde le type d'objet rencontré ainsi que la position du joueur par rapport 
-                //à cet objet et on agit en conséquence
-                collision = false;
-                if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y < collide.transform.position.y)
-                {
-                    Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-                    rect.position = rect.position + new Vector3(0, -rect.sizeDelta.y / 2, 0);
-                }
-                else if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y > collide.transform.position.y)
-                {
-                    Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-                    rect.position = rect.position + new Vector3(0, rect.sizeDelta.y / 2, 0);
-                }
-                else if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x < collide.transform.position.x)
-                {
-                    Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-                    rect.position = rect.position + new Vector3(-rect.sizeDelta.x / 2, 0, 0);
-                }
-                else if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x > collide.transform.position.x)
-                {
-                    Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-                    rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
-                }
-                else if (collide.name == "Entrance")
-                {
-                    rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
-                }
+                ActionOnCollision();
             }
             lastMousePosition = currentMousePosition;
         }
@@ -105,12 +81,14 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public void OnEndDrag(PointerEventData eventData)
     {
         Debug.Log("End Drag");
+        dragActive = false;
     }
 
     //Appelé lorsque le joueur rentre en contact avec un autre collider
     private void OnTriggerStay(Collider other)
     {
         collision = true;
+        Debug.Log("on trigger stay: " + other.name);
         collide = other;
         if (other.name == "Arrive")
         {
@@ -118,4 +96,75 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         }
     }
 
+    private void Update()
+    {
+        if (dragActive == false && victory == false)
+        {
+            RectTransform rect = GetComponent<RectTransform>();
+            int moveSpeed = 3;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                rect.transform.Translate(new Vector3(0, moveSpeed, transform.position.z));
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                rect.transform.Translate(new Vector3(0, -moveSpeed, transform.position.z));
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                rect.transform.Translate(new Vector3(moveSpeed, 0, transform.position.z));
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                rect.transform.Translate(new Vector3(-moveSpeed, 0, transform.position.z));
+            }
+
+
+            if (collision)
+            {
+                Debug.Log("update: " + collide.name);
+                ActionOnCollision();
+            }
+        }
+        if (victory == true)
+        {
+            victoryText.SetActive(true);
+        }
+    }
+
+
+    private void ActionOnCollision()
+    {
+        RectTransform rect = GetComponent<RectTransform>();
+        //Si une collision est détectée, on regarde le type d'objet rencontré ainsi que la position du joueur par rapport 
+        //à cet objet et on agit en conséquence
+        collision = false;
+        if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y < collide.transform.position.y)
+        {
+            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
+            rect.position = rect.position + new Vector3(0, -rect.sizeDelta.y / 2, 0);
+        }
+        if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y > collide.transform.position.y)
+        {
+            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
+            rect.position = rect.position + new Vector3(0, rect.sizeDelta.y / 2, 0);
+        }
+        if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x < collide.transform.position.x)
+        {
+            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
+            rect.position = rect.position + new Vector3(-rect.sizeDelta.x / 2, 0, 0);
+        }
+        if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x > collide.transform.position.x)
+        {
+            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
+            rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
+        }
+        if (collide.name == "Entrance")
+        {
+            rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
+        }
+    }
+
+
+    
 }

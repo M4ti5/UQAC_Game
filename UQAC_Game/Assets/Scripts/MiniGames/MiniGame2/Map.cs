@@ -81,6 +81,9 @@ public class Map : MonoBehaviour
         collider[0].size = new Vector2(heightWall * (row - 1) + hW, hW);
         collider = player.gameObject.GetComponents<BoxCollider>();
         collider[0].size = new Vector2(Mathf.Min(widthWall, heightWall) * 0.4f, Mathf.Min(widthWall, heightWall) * 0.4f);
+        BoxCollider arriveCollider = arrive.gameObject.GetComponent<BoxCollider>();
+        arriveCollider.size = new Vector2(widthWall * 0.5f, heightWall * 0.5f);
+
 
         CreateMapGrid();
         DisplayMap();
