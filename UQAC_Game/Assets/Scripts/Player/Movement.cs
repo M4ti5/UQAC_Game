@@ -25,8 +25,13 @@ public class Movement : MonoBehaviourPun
     public static float defaultDashCoolDown = 1.5f;
     private float dashCoolDown = defaultDashCoolDown;
     //You can totally disable the boost dash to initalise canDash to false
+    
     public bool canDash = true;
-
+    public bool inMove = false;
+    public bool inJump = false;
+    public bool inRun = false;
+   
+    private Animator playerAnim;
     private Rigidbody rb;
 
     /// <summary>
@@ -36,6 +41,7 @@ public class Movement : MonoBehaviourPun
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame  
@@ -46,7 +52,9 @@ public class Movement : MonoBehaviourPun
         {
             return;
         }
+        
         Move();
+        Animations();
         CheckDeathLimitY();
     }
 
@@ -82,6 +90,7 @@ public class Movement : MonoBehaviourPun
             if (rb != null) {
                 rb.AddForce(Vector3.up * 2.0f * jumpForce, ForceMode.Impulse);
                 isGrounded = false;
+                inJump = true;
             }
         }
 
@@ -89,10 +98,12 @@ public class Movement : MonoBehaviourPun
         //start
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
             moveSpeed = sprintSpeed;
+            inRun = true;
         }
         //stop
         if (Input.GetKeyUp(KeyCode.LeftShift)) {
             moveSpeed = defaultMoveSpeed;
+            inRun = false;
         }
 
 
@@ -118,14 +129,51 @@ public class Movement : MonoBehaviourPun
         }
 
         // TODO:  ctrl ou c pour s'accoupir
+    }
 
+    void Animations () {
+        inMove = ( Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) );
+
+        if (inMove) {
+            playerAnim.SetBool("isWalking" , true);
+
+            if (inRun) { // Sprint
+                playerAnim.SetBool("isRunning" , true);
+            } else {
+                playerAnim.SetBool("isRunning" , false);
+            }
+
+            if (inDash) { // Dash
+                playerAnim.SetBool("inDash" , true);
+            } else {
+                playerAnim.SetBool("inDash" , false);
+            }
+
+        } else {
+            playerAnim.SetBool("isWalking" , false);
+            playerAnim.SetBool("isRunning" , false);
+        }
+
+        if(inJump) { // Jump
+            playerAnim.SetBool("inJump" , true);
+        }else{
+            playerAnim.SetBool("inJump" , false);
+        }
     }
 
     void OnCollisionStay(Collision collision) {
+        
         if (collision.gameObject.tag == "Wall") {
-            //Stop l'annimation
+            playerAnim.SetBool("inCollide" , true);
+            playerAnim.SetBool("isWalking" , false);
+        } else {
+            playerAnim.SetBool("inCollide" , false);
         }
-        isGrounded = true;
+
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = true;
+            inJump = false;
+        }
     }
     void OnCollisionExit() {
         isGrounded = false;

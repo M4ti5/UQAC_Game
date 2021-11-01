@@ -16,7 +16,6 @@ public class Object : MonoBehaviour
     void Start()
     {
         Debug.Log("Start Object script");
-
     }
 
     // Update is called once per frame
@@ -67,6 +66,7 @@ public class Object : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
         EquipmentDest.GetComponent<UseObject>().hasObject = true;
         isHeld = true;
+
     }
 
     //Desequipe the object to the Equipment destination

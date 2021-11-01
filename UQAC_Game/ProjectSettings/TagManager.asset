@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Puzzle
   - Wall
+  - labyrintheWall
+  - Bullet
+  - Ground
   layers:
   - Default
   - TransparentFX
