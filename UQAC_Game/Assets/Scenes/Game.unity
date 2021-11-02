@@ -579,6 +579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 827729344}
+  - component: {fileID: 827729345}
   m_Layer: 0
   m_Name: Objects
   m_TagString: Untagged
@@ -601,6 +602,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &827729345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827729343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1835976245}
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +911,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+--- !u!114 &1835976245 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1328729671888637787, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
+  m_PrefabInstance: {fileID: 3208441696597211535}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1860234163 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6685854046324533638, guid: 434eafdf3bae38c4ba563a44eb7d2b72, type: 3}
@@ -1036,10 +1071,6 @@ PrefabInstance:
     - target: {fileID: 6503671064153239741, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: m_Name
       value: Object
-      objectReference: {fileID: 0}
-    - target: {fileID: 8646584475661178197, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
-      propertyPath: sceneViewId
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
