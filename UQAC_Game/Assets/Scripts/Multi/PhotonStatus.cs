@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -13,15 +14,17 @@ public class PhotonStatus : MonoBehaviourPun
     public GameObject photonStatus;
     public TextMeshProUGUI playerName, roomName, nbrPlayers, ping;
 
+    private string NA = "N/A";
+
     // Start is called before the first frame update
     void Start()
     {
         if (activated)
         {
-            playerName.text = "N/A";
-            roomName.text = "N/A";
-            nbrPlayers.text = "N/A";
-            ping.text = "N/A ms";
+            playerName.text = NA;
+            roomName.text = NA;
+            nbrPlayers.text = NA;
+            ping.text = NA + " ms";
         }
         else
         {
@@ -37,15 +40,26 @@ public class PhotonStatus : MonoBehaviourPun
     {
         if (activated)
         {
-            if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
+            if (PhotonNetwork.IsConnected)
             {
                 playerName.text = PhotonNetwork.NickName.ToString();
-                roomName.text = PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsVisible ? "visible" : "hidden") + "]";
-                nbrPlayers.text = PhotonNetwork.CountOfPlayers + " players\n" +
-                    PhotonNetwork.CountOfPlayersInRooms + " players in rooms\n" +
-                    PhotonNetwork.CountOfPlayersOnMaster + " players on master\n" +
-                    PhotonNetwork.CurrentRoom.PlayerCount + " players in current room";
-                ping.text = PhotonNetwork.GetPing() + " ms";
+                roomName.text = (PhotonNetwork.InRoom ? 
+                    PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsVisible ? "visible" : "hidden") + "]" : 
+                    NA);
+                nbrPlayers.text =
+                    (PhotonNetwork.Server == ServerConnection.MasterServer ?
+                        PhotonNetwork.CountOfPlayers.ToString() + " using app\n" :
+                        "")  +
+                    (PhotonNetwork.Server == ServerConnection.MasterServer ?
+                        PhotonNetwork.CountOfPlayersInRooms.ToString() + " in all rooms\n" :
+                        "")  +
+                    (PhotonNetwork.Server == ServerConnection.MasterServer ? 
+                        PhotonNetwork.CountOfPlayersOnMaster.ToString() + " on master\n" :
+                        "")  +
+                    (PhotonNetwork.InRoom ? 
+                        PhotonNetwork.CurrentRoom.PlayerCount.ToString() + " in this room" :
+                        "");
+                ping.text = PhotonNetwork.GetPing().ToString() + " ms";
             }
         }
     }
