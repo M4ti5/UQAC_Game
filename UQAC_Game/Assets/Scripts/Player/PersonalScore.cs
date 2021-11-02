@@ -8,8 +8,10 @@ public class PersonalScore : MonoBehaviour
 {
     public Image personalScore;
     public GameObject mask;
+    public TextMeshProUGUI personalText;
     private int personalScoreMax;
     private int currentPersonalScore;
+    public bool criminel;
 
 
     // Start is called before the first frame update
@@ -17,19 +19,44 @@ public class PersonalScore : MonoBehaviour
     {
         personalScoreMax = 100;
         currentPersonalScore = 0;
-        ModifyDisplay();
+        if (criminel)
+        {
+            personalScore.gameObject.SetActive(false);
+            personalText.gameObject.SetActive(false);
+            mask.gameObject.SetActive(false);
+        }
+        else
+        {
+            personalScore.gameObject.SetActive(true);
+            personalText.gameObject.SetActive(true);
+            mask.gameObject.SetActive(true);
+            ModifyDisplay();
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        if (!criminel)
         {
-            IncreaseGlobalScore(20);
+            personalScore.gameObject.SetActive(true);
+            personalText.gameObject.SetActive(true);
+            mask.gameObject.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                IncreaseGlobalScore(20);
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                DecreaseGlobalScore(10);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.K))
+        else
         {
-            DecreaseGlobalScore(10);
+            personalScore.gameObject.SetActive(false);
+            personalText.gameObject.SetActive(false);
+            mask.gameObject.SetActive(false);
         }
     }
 

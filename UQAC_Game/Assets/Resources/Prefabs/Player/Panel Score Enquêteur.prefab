@@ -461,6 +461,8 @@ GameObject:
   - component: {fileID: 6473607467225633519}
   - component: {fileID: 6473607467225633517}
   - component: {fileID: 6473607467225633518}
+  - component: {fileID: 312870765}
+  - component: {fileID: 312870766}
   m_Layer: 0
   m_Name: "Panel Score Enqu\xEAteur"
   m_TagString: Untagged
@@ -475,7 +477,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6473607467225633512}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -530,6 +532,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &312870765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6473607467225633512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d8703029b672d24880ee91c06133d49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personalScore: {fileID: 6473607467418777492}
+  mask: {fileID: 6473607466104637826}
+  personalText: {fileID: 6473607466721040131}
+  criminel: 0
+--- !u!114 &312870766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6473607467225633512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff5c11fd011174bb21bb35865ada85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalScore: {fileID: 6473607467323705660}
+  mask: {fileID: 6473607466833098175}
 --- !u!1 &6473607467315529773
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,7 +707,6 @@ GameObject:
   - component: {fileID: 6473607467323705662}
   - component: {fileID: 6473607467323705603}
   - component: {fileID: 6473607467323705660}
-  - component: {fileID: 6473607467323705661}
   m_Layer: 0
   m_Name: Global Score
   m_TagString: Untagged
@@ -740,20 +771,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6473607467323705661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6473607467323705663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ff5c11fd011174bb21bb35865ada85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalScore: {fileID: 6473607467323705660}
-  mask: {fileID: 6473607466833098175}
 --- !u!1 &6473607467418777495
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +782,6 @@ GameObject:
   - component: {fileID: 6473607467418777494}
   - component: {fileID: 6473607467418777499}
   - component: {fileID: 6473607467418777492}
-  - component: {fileID: 6473607467418777493}
   m_Layer: 0
   m_Name: Personal Score
   m_TagString: Untagged
@@ -830,17 +846,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6473607467418777493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6473607467418777495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3ff5c11fd011174bb21bb35865ada85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalScore: {fileID: 6473607467418777492}
-  mask: {fileID: 6473607466104637826}
