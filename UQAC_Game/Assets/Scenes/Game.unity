@@ -355,10 +355,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Prefab (just for tests / disable)
       objectReference: {fileID: 0}
-    - target: {fileID: 5567021325426965779, guid: 520d69913ca4dc444b0f1c09b087ac27, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7021798747334871655, guid: 520d69913ca4dc444b0f1c09b087ac27, type: 3}
       propertyPath: sceneViewId
       value: 1
@@ -1151,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2710394647924641043, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4
+      value: 7.14
       objectReference: {fileID: 0}
     - target: {fileID: 2710394647924641043, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: m_LocalRotation.w

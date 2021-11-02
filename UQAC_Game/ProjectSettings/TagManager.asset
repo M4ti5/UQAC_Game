@@ -9,6 +9,8 @@ TagManager:
   - labyrintheWall
   - Knife
   - Gun
+  - Bullet
+  - Ground
   layers:
   - Default
   - TransparentFX

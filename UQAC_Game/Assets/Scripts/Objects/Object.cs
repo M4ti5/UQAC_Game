@@ -17,7 +17,6 @@ public class Object : MonoBehaviour
     void Start()
     {
         Debug.Log("Start Object script");
-
     }
 
     // Update is called once per frame
@@ -71,6 +70,7 @@ public class Object : MonoBehaviour
         HitObj = player.transform.Find("HitPos");
         Debug.Log(HitObj);
         isHeld = true;
+
     }
 
     //Desequipe the object to the Equipment destination
