@@ -18,6 +18,7 @@ public class UseObject : MonoBehaviour
     {   
         if(Input.GetMouseButton(0) && hasObject){
             //add equipement behavior script
+            this.transform.GetChild(0).GetComponent<Object>().behaviour();
             Destroy(this.transform.GetChild(0).gameObject);
             hasObject = false;
         }
