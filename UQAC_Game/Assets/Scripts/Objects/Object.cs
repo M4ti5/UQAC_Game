@@ -8,9 +8,10 @@ public class Object : MonoBehaviour
     public GameObject allPlayers;
     public GameObject allObjects;
 
-    private bool isHeld = false;
-    private Transform EquipmentDest;
-    private Transform player;
+    protected bool isHeld = false;
+    protected Transform HitObj;
+    protected Transform EquipmentDest;
+    protected Transform player;
 
     // Start is called before the first frame update
     void Start()
@@ -59,13 +60,16 @@ public class Object : MonoBehaviour
 
     //Equipe the object to the Equipment destination
     void OnEquipmentTriggered()
-    {
+    { 
         this.transform.parent = EquipmentDest;
         this.transform.position = EquipmentDest.position;
+        this.transform.rotation = EquipmentDest.rotation;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
         EquipmentDest.GetComponent<UseObject>().hasObject = true;
+        HitObj = player.transform.Find("HitPos");
+        Debug.Log(HitObj);
         isHeld = true;
     }
 
@@ -78,6 +82,7 @@ public class Object : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = false;
         EquipmentDest.GetComponent<UseObject>().hasObject = false;
         isHeld = false;
+        HitObj = allObjects.transform;
     }
 
     //Check if object is not too far from player and if it's in front of the player
@@ -96,4 +101,10 @@ public class Object : MonoBehaviour
         }
 
     }
+
+    public virtual void behaviour(){
+        Debug.Log("do something");
+    }
+
+    
 }
