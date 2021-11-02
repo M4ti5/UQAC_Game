@@ -59,4 +59,18 @@ public class GlobalScore : MonoBehaviour
         globalScore.transform.position = mask.transform.position + new Vector3(currentGlobalScore * 300 / globalScoreMax - 300, 0, 0);
 
     }
+    public void SetGlobalScore(int score)
+    {
+        currentGlobalScore = score;
+        if (currentGlobalScore >= globalScoreMax)
+        {
+            currentGlobalScore = globalScoreMax;
+        }
+        ModifyDisplay();
+    }
+
+    public int GetGlobalScore()
+    {
+        return currentGlobalScore;
+    }
 }
