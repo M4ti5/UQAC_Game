@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &7217476775369250850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853266541493032348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce24f41f0912367408c1f68d41dc6e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialIndice: 1
 --- !u!1 &3475119785488472618
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +80,7 @@ Transform:
   m_Children:
   - {fileID: 5730518939213130740}
   - {fileID: 3099866895254654841}
-  - {fileID: 9048445057860338427}
+  - {fileID: 853266541493127662}
   - {fileID: 2023484922891610672}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -315,12 +328,21 @@ PrefabInstance:
         'bone_LeftHandIndex1'\n\tTransform 'bone_Spine2'\n\tand more ...\n\tFrom
         animation clip 'Grab'"
       objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: f6b6bf34e5ee24429a84e5066e456623, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ea3885f83cfe237459f655f9a07eb4d2, type: 2}
     m_RemovedComponents:
     - {fileID: 9500000, guid: f6b6bf34e5ee24429a84e5066e456623, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f6b6bf34e5ee24429a84e5066e456623, type: 3}
 --- !u!4 &853266541493127662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400080, guid: f6b6bf34e5ee24429a84e5066e456623, type: 3}
+  m_PrefabInstance: {fileID: 853266541492998974}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &853266541493032348 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: f6b6bf34e5ee24429a84e5066e456623, type: 3}
   m_PrefabInstance: {fileID: 853266541492998974}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8453198275468451101

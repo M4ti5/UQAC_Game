@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RandPlayerColor : MonoBehaviour
 {
+    public int materialIndice;
     float r,g,b;
     void Start()
     {
@@ -13,6 +14,6 @@ public class RandPlayerColor : MonoBehaviour
         g = UnityEngine.Random.Range(0.000f, 1.000f);
         b = UnityEngine.Random.Range(0.000f, 1.000f);
 
-        skinMeshRenderer.material.color = new Color(r, g, b);
+        skinMeshRenderer.materials[materialIndice].color = new Color(r, g, b);
     }
 }
