@@ -4,17 +4,25 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
+// from http://gyanendushekhar.com/2019/11/11/move-canvas-ui-mouse-drag-unity-3d-drag-drop-ui/
+
 public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     //création des variables
     private Vector2 lastMousePosition;
-    private bool collision = false;
-    Collider collide = new Collider();
+
     bool victory = false;
     bool dragActive = false;
-    float timer;
-    public GameObject victoryText;
     Vector2 diff;
+    private float update;
+    private Vector3 previousPlayerPos;
+
+    public GameObject victoryText;
+    RectTransform rect;
+
+    GameObject translationFromPlayer;
+    RectTransform rectTranslationFromPlayer;
+    BoxCollider colliderTranslationFromPlayer;
 
 
     // Start is called before the first frame update
@@ -22,6 +30,9 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         //Etre sûr que l'affichage du text de victoire est bien désactivé
         victoryText.SetActive(false);
+
+        //Récupération du RectTransform du player
+        rect = GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -33,6 +44,19 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         Debug.Log("Begin Drag");
         lastMousePosition = eventData.position;
         dragActive = true;
+
+        //Création d'un objet permettant de récupérer le trajet effectué par le joueur
+        //Si cet objet est en collision avec un mur, le joueur ne se déplacera pas
+        translationFromPlayer = new GameObject("TranslationFromPlayer");
+        translationFromPlayer.transform.parent = this.gameObject.transform;
+        translationFromPlayer.transform.position = transform.position;
+        translationFromPlayer.AddComponent<BoxCollider>();
+        translationFromPlayer.AddComponent<RectTransform>();
+        
+        previousPlayerPos = rect.position;
+        rectTranslationFromPlayer  = translationFromPlayer.GetComponent<RectTransform>();
+        colliderTranslationFromPlayer = translationFromPlayer.GetComponent<BoxCollider>();
+
     }
 
     /// <summary>
@@ -41,36 +65,35 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     /// <param name="eventData">mouse pointer event data</param>
     public void OnDrag(PointerEventData eventData)
     {
-        //Le déplacement est possible jusqu'à ce que le joueur atteigne l'arrivée
-        if (!victory)
+        update += Time.deltaTime;
+        if (update > 1.0f / 40f)
         {
-            Vector2 currentMousePosition = eventData.position;
-            diff = currentMousePosition - lastMousePosition;
-            RectTransform rect = GetComponent<RectTransform>();
-
-            //Si la distance de déplacement est trop grande, le joueur ne se déplace pas
-            //Cela permet de limiter la possibilité du joueur de passer à travers un mur
-            if (Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y) < rect.sizeDelta.y / 3)
+            //Le déplacement est possible jusqu'à ce que le joueur atteigne l'arrivée
+            if (!victory)
             {
+                //Récupération des déplacements effectués par la souri
+                Vector2 currentMousePosition = eventData.position;
+                diff = currentMousePosition - lastMousePosition;
+
+                //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
+                translationFromPlayer.transform.position = transform.position + new Vector3(diff.x / 2, diff.y / 2);
+                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
+                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
+                colliderTranslationFromPlayer.transform.Translate(-diff);
+
+                //Récupère la position du joueur avant son déplacement
+                previousPlayerPos = rect.transform.position;
+                
+                //On déplace le joueur (reviendra en arrière si il rencontre un objet dans la méthode OnTriggerStay)
                 rect.transform.Translate(new Vector3(diff.x, diff.y, transform.position.z));
-            }
 
-            //Temporisation pour actualiser collision via OnTriggerStay() si besoin
-            while (timer < 10000)
-            {
-                timer += Time.deltaTime;
+                lastMousePosition = currentMousePosition;
             }
-
-            if (collision)
+            else if (victory)
             {
-                ActionOnCollision();
+                Debug.Log("victory");
+                victoryText.SetActive(true);
             }
-            lastMousePosition = currentMousePosition;
-        }
-        else
-        {
-            Debug.Log("victory");
-            victoryText.SetActive(true);
         }
     }
 
@@ -82,89 +105,60 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         Debug.Log("End Drag");
         dragActive = false;
+
+        //Détruit l'objet permettant de récupérer le trajet effectué par le joueur
+        Destroy(translationFromPlayer);
     }
 
     //Appelé lorsque le joueur rentre en contact avec un autre collider
     private void OnTriggerStay(Collider other)
     {
-        collision = true;
-        Debug.Log("on trigger stay: " + other.name);
-        collide = other;
-        if (other.name == "Arrive")
+        //Si le joueur rentre en contact avec l'arrivée, le mini-jeu est terminé
+        //Si le joueur retourne à la position qu'il avait avant sa dernière translation
+        if (other.name == "Arrive" && rect.name == "Player")
         {
             victory = true;
+        }
+        else
+        {
+            rect.transform.position = previousPlayerPos;
         }
     }
 
     private void Update()
     {
-        if (dragActive == false && victory == false)
+        update += Time.deltaTime;
+        if (update > 1.0f/40f)
         {
-            RectTransform rect = GetComponent<RectTransform>();
-            int moveSpeed = 3;
-            if (Input.GetKey(KeyCode.UpArrow))
+            update = 0.0f;
+            if (dragActive == false && victory == false)
             {
-                rect.transform.Translate(new Vector3(0, moveSpeed, transform.position.z));
+                //Récupère  la position du joueur avant son déplacement
+                previousPlayerPos = rect.position;
+                int moveSpeed = 4;
+
+                //On regarde les touches sélectionnées par le joueur et on déplace l'objet player en conséquence
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    rect.transform.Translate(new Vector3(0, moveSpeed, transform.position.z));
+                }
+                else if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    rect.transform.Translate(new Vector3(0, -moveSpeed, transform.position.z));
+                }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    rect.transform.Translate(new Vector3(moveSpeed, 0, transform.position.z));
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    rect.transform.Translate(new Vector3(-moveSpeed, 0, transform.position.z));
+                }
             }
-            else if (Input.GetKey(KeyCode.DownArrow))
+            if (victory == true)
             {
-                rect.transform.Translate(new Vector3(0, -moveSpeed, transform.position.z));
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                rect.transform.Translate(new Vector3(moveSpeed, 0, transform.position.z));
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                rect.transform.Translate(new Vector3(-moveSpeed, 0, transform.position.z));
-            }
-
-
-            if (collision)
-            {
-                Debug.Log("update: " + collide.name);
-                ActionOnCollision();
+                victoryText.SetActive(true);
             }
         }
-        if (victory == true)
-        {
-            victoryText.SetActive(true);
-        }
-    }
-
-
-    private void ActionOnCollision()
-    {
-        RectTransform rect = GetComponent<RectTransform>();
-        //Si une collision est détectée, on regarde le type d'objet rencontré ainsi que la position du joueur par rapport 
-        //à cet objet et on agit en conséquence
-        collision = false;
-        if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y < collide.transform.position.y)
-        {
-            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-            rect.position = rect.position + new Vector3(0, -rect.sizeDelta.y / 2, 0);
-        }
-        if ((collide.name == "Horizontal Wall(Clone)" || collide.name == "Horizontal External Wall(Clone)") && rect.position.y > collide.transform.position.y)
-        {
-            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-            rect.position = rect.position + new Vector3(0, rect.sizeDelta.y / 2, 0);
-        }
-        if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x < collide.transform.position.x)
-        {
-            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-            rect.position = rect.position + new Vector3(-rect.sizeDelta.x / 2, 0, 0);
-        }
-        if ((collide.name == "Vertical Wall(Clone)" || collide.name == "Vertical External Wall(Clone)") && rect.position.x > collide.transform.position.x)
-        {
-            Debug.Log(rect.position + "     " + collide.name + "     " + collide.transform.position);
-            rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
-        }
-        if (collide.name == "Entrance")
-        {
-            rect.position = rect.position + new Vector3(rect.sizeDelta.x / 2, 0, 0);
-        }
-    }
-
-
-    
+    } 
 }
