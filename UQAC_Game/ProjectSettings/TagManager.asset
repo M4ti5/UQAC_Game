@@ -7,6 +7,8 @@ TagManager:
   - Puzzle
   - Wall
   - labyrintheWall
+  - Knife
+  - Gun
   - Bullet
   - Ground
   layers:
