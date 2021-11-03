@@ -63,20 +63,20 @@ public class Movement : MonoBehaviourPun
 
         //// Moves Key
         // forward
-        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow)) {
+        if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/) {
             transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
         }
         // backwards
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+        if (Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/) {
             transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
         }
         // left
-        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow)) {
+        if (Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/) {
             transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
         }
 
         // right
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+        if (Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/) {
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
         }
 

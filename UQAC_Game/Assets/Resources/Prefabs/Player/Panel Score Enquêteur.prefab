@@ -54,12 +54,6 @@ MonoBehaviour:
   score: 0
   scoreMax: 100
   globalScore: {fileID: 6473607467418777494}
-  globalScore_rect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
 --- !u!1 &2121612789708978571
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,12 +108,6 @@ MonoBehaviour:
   score: 0
   scoreMax: 500
   globalScore: {fileID: 6473607467323705662}
-  globalScore_rect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
 --- !u!1 &6473607466104637826
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +573,7 @@ GameObject:
   - component: {fileID: 312870766}
   m_Layer: 0
   m_Name: "Panel Score Enqu\xEAteur"
-  m_TagString: Untagged
+  m_TagString: Score
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

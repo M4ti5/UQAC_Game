@@ -34,7 +34,7 @@ public class ScoreProgressBar : MonoBehaviour
         if (enable)
         {
             this.score += score;
-            if (this.score >= scoreMax)
+            if (this.score > scoreMax)
             {
                 this.score = scoreMax;
             }
@@ -80,5 +80,27 @@ public class ScoreProgressBar : MonoBehaviour
     public float GetScore()
     {
         return this.score;
+    }
+
+    public void SetScore(int score)
+    {
+        SetScore((float)score);
+    }
+
+    public void SetScore(float score)
+    {
+        if (enable)
+        {
+            this.score = score;
+            if (this.score < 0)
+            {
+                this.score = 0;
+            }
+            else if (this.score > scoreMax)
+            {
+                this.score = scoreMax;
+            }
+            ModifyDisplay();
+        }
     }
 }

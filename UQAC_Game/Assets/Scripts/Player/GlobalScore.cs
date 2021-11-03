@@ -38,4 +38,9 @@ public class GlobalScore : MonoBehaviour
     {
         return scoreProgressBar.GetScore();
     }
+    public void SetScore(int score)
+    {
+        scoreProgressBar.SetScore(score);
+        this.score = GetScore();
+    }
 }

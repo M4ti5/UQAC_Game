@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Object : MonoBehaviour
+public class Object : MonoBehaviourPun
 {
     public float distanceToHeld;
     public GameObject allPlayers;
@@ -24,7 +25,7 @@ public class Object : MonoBehaviour
     {
         //Get distance between player and object (works for only one player)
         //float dist = Vector3.Distance(gameObject.transform.position, player.transform.position);
-        
+
 
         //bool reachable = isReachable(gameObject.transform, player.transform, distanceToHeld);
 
@@ -34,49 +35,89 @@ public class Object : MonoBehaviour
         {
             int allPlayersCount = allPlayers.transform.childCount;
             int grabberPlayerId = -1;
-        
-            for(int i=0; i<allPlayersCount; i++){
-                if(isReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld)){
+            float minDistance = float.PositiveInfinity;
+
+            for (int i = 0; i < allPlayersCount; i++)
+            {
+                (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld);
+                if (_isReachable && _dist < minDistance)
+                {
+                    minDistance = _dist;
                     grabberPlayerId = i;
+                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                        break;
                 }
             }
-            if(grabberPlayerId >= 0){
+            if (grabberPlayerId >= 0)
+            {
                 player = allPlayers.transform.GetChild(grabberPlayerId);
                 EquipmentDest = player.transform.Find("Equipements");
-                if(EquipmentDest.GetComponent<UseObject>().hasObject == false){
-                    OnEquipmentTriggered();
+                if (EquipmentDest.GetComponent<UseObject>().hasObject == false && player.GetComponent<PhotonView>().IsMine)
+                {
+                    OnEquipmentTriggered(player);
                 }
             }
 
         }
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == true)
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == true && PhotonNetwork.LocalPlayer == player.GetComponent<PhotonView>().Owner)
         {
             OnDesequipmentTriggered();
         }
 
     }
 
-    //Equipe the object to the Equipment destination
-    void OnEquipmentTriggered()
-    { 
-        this.transform.parent = EquipmentDest;
-        this.transform.position = EquipmentDest.position;
-        this.transform.rotation = EquipmentDest.rotation;
-        GetComponent<BoxCollider>().enabled = false;
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        EquipmentDest.GetComponent<UseObject>().hasObject = true;
-        HitObj = player.transform.Find("HitPos");
-        Debug.Log(HitObj);
-        isHeld = true;
+    Transform FindEquipmentsPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers.transform)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                player = child;
+                return child.Find("Equipements");
+            }
+        }
+        return null;
+    }
+
+    // main function to synchronize EquipmentTriggered
+    public void OnEquipmentTriggered(Transform _player)
+    {
+        photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBuffered, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
 
     }
 
-    //Desequipe the object to the Equipment destination
-    void OnDesequipmentTriggered()
+    //Equipe the object to the Equipment destination
+    [PunRPC]
+    protected void EquipmentTriggered(int id, Photon.Realtime.Player _player)
     {
-        this.transform.parent = allObjects.transform;
+        EquipmentDest = FindEquipmentsPlayerByID(id);
+        if (EquipmentDest != null)
+        {
+            photonView.TransferOwnership(_player);
+            transform.parent = EquipmentDest;
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            GetComponent<BoxCollider>().enabled = false;
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            EquipmentDest.GetComponent<UseObject>().hasObject = true;
+            HitObj = player.transform.Find("HitPos");
+            Debug.Log(HitObj);
+            isHeld = true;
+        }
+    }
+
+    // main function to synchronize DesequipmentTriggered
+    public void OnDesequipmentTriggered()
+    {
+        photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBuffered);
+    }
+    //Desequipe the object to the Equipment destination
+    [PunRPC]
+    protected void DesequipmentTriggered()
+    {
+        transform.parent = allObjects.transform;
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
@@ -86,25 +127,47 @@ public class Object : MonoBehaviour
     }
 
     //Check if object is not too far from player and if it's in front of the player
-    bool isReachable(Transform objectA, Transform playerA, float range)
+    (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
         float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
 
         if (dist < range && angle <= Mathf.Abs(30))
         {
-            return true;
+            return (true, dist);
         }
         else
         {
-            return false;
+            return (false, dist);
         }
 
     }
 
-    public virtual void behaviour(){
+    public void Behaviour()
+    {
+        photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+    }
+
+    [PunRPC]
+    protected virtual void CustomBehaviour(){
         Debug.Log("do something");
     }
 
     
+
+    [PunRPC]
+    public void DestroyObject(Photon.Realtime.Player localPlayer)
+    {
+        if (localPlayer == photonView.Owner || localPlayer == null)
+        {
+            if (photonView.Owner == PhotonNetwork.LocalPlayer)
+            {
+                PhotonNetwork.Destroy(photonView);
+            }
+            else
+            {
+                photonView.RPC(nameof(DestroyObject), RpcTarget.MasterClient, null);
+            }
+        }
+    }
 }
