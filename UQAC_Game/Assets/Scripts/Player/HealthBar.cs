@@ -22,19 +22,19 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
         //test des fonctions
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             TakeDamage(10);
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             RecoverHP(10);
         }
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.O))
         {
             IncreaseHpMax(10);
         }
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             DecreaseHpMax(10);
         }

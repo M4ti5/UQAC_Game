@@ -1418,10 +1418,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 749609046}
     m_Modifications:
-    - target: {fileID: 312870765, guid: 29644e9af2499f4438919a6293c6309a, type: 3}
-      propertyPath: criminel
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6473607467225633512, guid: 29644e9af2499f4438919a6293c6309a, type: 3}
       propertyPath: m_Name
       value: Panel Score
