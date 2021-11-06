@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class UseObject : MonoBehaviour
@@ -15,12 +16,12 @@ public class UseObject : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
-        if(Input.GetMouseButton(0) && hasObject){
+    {
+        if (Input.GetMouseButton(0) && hasObject)
+        {
             //add equipement behavior script
-            this.transform.GetChild(0).GetComponent<Object>().behaviour();
-            Destroy(this.transform.GetChild(0).gameObject);
-            hasObject = false;
+            this.transform.GetChild(0).GetComponent<Object>().Behaviour();// utiliser l'objet
+            //this.transform.GetChild(0).GetComponent<Object>().DestroyObject(PhotonNetwork.LocalPlayer);// détruire l'objet
         }
 
     }
