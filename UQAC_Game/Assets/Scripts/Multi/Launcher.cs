@@ -51,6 +51,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		Debug.Log("Start launcher script");
 
+		// hide the button while not connected to photon servers
+		this.roomJoinUI.SetActive(false);
+		
 		// get Application version
 		this.gameVersion = Application.version;
 		this.isLobbyReady = false;
@@ -64,7 +67,20 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.feedbackText.text = "";
 
 		this.GetAllRooms();
+	}
 
+	private void Update()
+	{
+		if (PhotonNetwork.IsConnected && this.isLobbyReady)
+		{
+			// if connected to photon servers show interface
+			this.roomJoinUI.SetActive(true);
+		}
+		else
+		{
+			// hide interface
+			this.roomJoinUI.SetActive(false);
+		}
 	}
 
 	// Helper Methods

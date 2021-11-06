@@ -600,6 +600,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PhotonStatus
       objectReference: {fileID: 0}
+    - target: {fileID: 8822332307550658909, guid: 26ac25541c434e5418f85fa516a10c6f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8822332308022066474, guid: 26ac25541c434e5418f85fa516a10c6f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -796,6 +800,10 @@ PrefabInstance:
     - target: {fileID: 6188290534662658524, guid: 081c09d5c8ecde347bd6c88be8d5f5df, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188290535101022457, guid: 081c09d5c8ecde347bd6c88be8d5f5df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 081c09d5c8ecde347bd6c88be8d5f5df, type: 3}
