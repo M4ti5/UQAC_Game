@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GlobalScore : MonoBehaviour
+[RequireComponent(typeof(PhotonView))]
+public class GlobalScore : MonoBehaviourPun
 {
     public ScoreProgressBar scoreProgressBar;
     public float stepIncrease = 30;
@@ -16,7 +18,10 @@ public class GlobalScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        score = GetScore();
+        if (photonView.IsMine)
+        {
+            score = GetScore();
+        }
     }
 
     // Update is called once per frame
@@ -26,21 +31,42 @@ public class GlobalScore : MonoBehaviour
         {
             scoreProgressBar.IncreaseScore(stepIncrease);
             score = GetScore();
+            // synchronise
+            OnChangeScore(score);
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
             scoreProgressBar.DecreaseScore(stepDecrease);
             score = GetScore();
+            // synchronise
+            OnChangeScore(score);
         }
+    }
+
+    public void OnChangeScore(float score)
+    {
+        photonView.RPC(nameof(SetScore), RpcTarget.AllBufferedViaServer, score, PhotonNetwork.LocalPlayer);
     }
 
     public float GetScore()
     {
         return scoreProgressBar.GetScore();
     }
-    public void SetScore(int score)
+
+    [PunRPC]
+    public void SetScore(float score, Photon.Realtime.Player _player = null)
     {
-        scoreProgressBar.SetScore(score);
+        SetScore((int)score, _player);
+    }
+
+    [PunRPC]
+    public void SetScore(int score, Photon.Realtime.Player _player = null)
+    {
+        if (_player != null)
+        {
+            photonView.TransferOwnership(_player);
+        }
+        this.scoreProgressBar.SetScore(score);
         this.score = GetScore();
     }
 }

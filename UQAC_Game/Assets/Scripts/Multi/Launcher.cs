@@ -19,7 +19,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 	public TMP_Dropdown dropDownListOfRooms;
 	public GameObject buttonStart;
 	public TextMeshProUGUI connectionStatus, feedbackText;
-	public TextMeshProUGUI listRoom;
 
 	private string gameVersion;
 	private bool isConnecting;
@@ -51,6 +50,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		Debug.Log("Start launcher script");
 
+		// hide the button while not connected to photon servers
+		this.roomJoinUI.SetActive(false);
+		
 		// get Application version
 		this.gameVersion = Application.version;
 		this.isLobbyReady = false;
@@ -63,31 +65,47 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.connectionStatus.text = "<color=red>Not Ready !</color>";
 		this.feedbackText.text = "";
 
-		this.GetAllRooms();
+		this.ConnectingToDefaultPhotonServer();
+	}
 
+	private void Update()
+	{
+		if (PhotonNetwork.IsConnected && this.isLobbyReady)
+		{
+			// if connected to photon servers show interface
+			this.roomJoinUI.SetActive(true);
+		}
+		else
+		{
+			// hide interface
+			this.roomJoinUI.SetActive(false);
+		}
 	}
 
 	// Helper Methods
-	public void GetAllRooms()
+	public void ConnectingToDefaultPhotonServer()
 	{
+		this.feedbackText.text = ""; // delete previous feedbarcks
+		
 		// we check if we are connected or not, we join if we are , else we initiate the connection to the server.
 		if (!PhotonNetwork.IsConnected)
 		{
 			LogFeedback("Connecting to Photon...");
-
+			
 			// #Critical, we must first and foremost connect to Photon Online Server.
 			PhotonNetwork.ConnectUsingSettings();
 			PhotonNetwork.OfflineMode = false;
 			PhotonNetwork.GameVersion = this.gameVersion;
+
+			PhotonNetwork.JoinLobby(TypedLobby.Default);
 		}
 		else
 		{
 			LogFeedback("Already connected");
 			Debug.Log("We are already connected.");
+			
+			
 		}
-
-		PhotonNetwork.JoinLobby(TypedLobby.Default);
-
 	}
 
 	// Focntion qui met à jour la liste des salles lors d'un changement (création/destruction)
@@ -99,7 +117,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		foreach (RoomInfo roomInfo in roomList)
 		{
 			// Remove room from cached room list if it got closed, became invisible or was marked as removed
-			if (!roomInfo.IsOpen /*|| !roomInfo.IsVisible*/ || roomInfo.RemovedFromList)
+			if (/*!roomInfo.IsOpen || !roomInfo.IsVisible ||*/ roomInfo.RemovedFromList)
 			{
 				if (this.roomNameList.Contains(roomInfo))
 				{
@@ -125,19 +143,26 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.RefreshRoomListUI();
 	}
 
+	public List<RoomInfo> GetRoomList()
+	{
+		return roomNameList;
+	}
+
 	// Fonction qui met à jour la liste des listes existantes
 	private void RefreshRoomListUI()
 	{
 		List<TMP_Dropdown.OptionData> optionList = new List<TMP_Dropdown.OptionData>();
 		optionList.Add(new TMP_Dropdown.OptionData("-- Choose an existing room --"));
 		// reset list of all rooms
-		listRoom.text = "List:";
 		foreach (RoomInfo roomInfo in roomNameList)
 		{
-			listRoom.text += "\n" + roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close");
 			Debug.Log(roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close"));
-
-			optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
+			
+			if (roomInfo.IsOpen && roomInfo.IsVisible)// on autorise seulement les rooms visibles et ouvertes
+			{
+				// drop down
+				optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
+			}
 		}
 
 		if (dropDownListOfRooms != null)
@@ -270,7 +295,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 			if (string.IsNullOrEmpty(this.roomName) == false)
 				PhotonNetwork.JoinRoom(this.roomName);
 			else
-				PhotonNetwork.JoinRandomRoom(); // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
+			{
+				// choose random room
+				//PhotonNetwork.JoinRandomRoom(); // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
+				
+				
+				LogFeedback("<color=red>Please choose Room...</color>");
+				this.connectionStatus.text = "<color=#009900>Ready !</color>";
+			}
 		}
 	}
 
@@ -301,6 +333,19 @@ public class Launcher : MonoBehaviourPunCallbacks
 		roomOptions.IsOpen = true;
 		PhotonNetwork.CreateRoom(name, roomOptions);
 	}
+	
+	/// <summary>
+	/// Create entertainment room with a name, a max numerOfPlayers = 1, hide and open
+	/// </summary>
+	public void ConnectToEntertainmentRoom()
+	{
+		RoomOptions roomOptions = new RoomOptions();
+		roomOptions.MaxPlayers = 1;
+		roomOptions.IsVisible = false;
+		roomOptions.IsOpen = true;
+		PhotonNetwork.CreateRoom("Entertainment", roomOptions);
+		Connect();
+	}
 
 	public bool IsRoomExist(string name)
 	{
@@ -321,6 +366,33 @@ public class Launcher : MonoBehaviourPunCallbacks
 		return false;
 	}
 
+	// thread to reconnect to photon servers
+	private IEnumerator TryReconnectToPhoton()
+	{
+		while (PhotonNetwork.NetworkingClient.LoadBalancingPeer.PeerState != ExitGames.Client.Photon.PeerStateValue.Disconnected)
+		{
+			Debug.Log("Waiting for client to be fully disconnected..", this);
+
+			yield return new WaitForSeconds(0.2f);
+		}
+		
+		if (Application.internetReachability == NetworkReachability.NotReachable)
+		{
+			LogFeedback("<color=#990000>Not Connected to internet</color>");
+			Debug.Log("Not Connected to internet, Client is disconnected!", this);
+
+			// wait internet connection
+			while (Application.internetReachability == NetworkReachability.NotReachable)
+			{
+				Debug.Log("Internet Waiting...");
+				yield return new WaitForSeconds(5f);
+			}
+		}
+		
+		// try to reconnect to photon server
+		ConnectingToDefaultPhotonServer();
+
+	}
 
 	#region MonoBehaviourPunCallbacks CallBacks
 	// below, we implement some callbacks of PUN
@@ -358,9 +430,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		this.isLobbyReady = true;
 		this.connectionStatus.text = "<color=#009900>Ready !</color>";
+		this.feedbackText.text = ""; // delete previous feedbarcks
 		LogFeedback("<color=#009900>OnJoinedLobby</color>: Joined Lobby");
 		Debug.Log("Joined Lobby");
 	}
+	
 	/// <summary>
 	/// Called when a JoinRandom() call failed. The parameter provides ErrorCode and message.
 	/// </summary>
@@ -414,9 +488,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.isConnecting = false;
 		this.connectionStatus.text = "<color=red>Disconnected !</color>";
 		this.roomJoinUI.SetActive(true);
-
+		
+		// try reconnecting
+		StartCoroutine(TryReconnectToPhoton());
 	}
-
+	
 	/// <summary>
 	/// Called when entering a room (by creating or joining it). Called on all clients (including the Master Client).
 	/// </summary>
