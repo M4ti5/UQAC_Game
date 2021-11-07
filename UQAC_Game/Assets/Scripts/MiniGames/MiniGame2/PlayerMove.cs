@@ -135,7 +135,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private void Update()
     {
         update += Time.deltaTime;
-        if (update > 1.0f/40f)
+        if (update > 1.0f/30f)
         {
             update = 0.0f;
             if (dragActive == false && victory == false)
