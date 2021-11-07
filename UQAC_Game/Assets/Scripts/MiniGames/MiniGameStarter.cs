@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class MiniGameStarter : MonoBehaviour
 {
@@ -9,12 +10,10 @@ public class MiniGameStarter : MonoBehaviour
     private string nameMiniGame;
 
     protected bool isOpen = false;
+    protected bool gameActive = false;
     public float distanceToStart;
     public GameObject allPlayers;
-    public GameObject allObjects;
-
-    protected Transform player;
-    protected Transform miniGameActive;
+    public Button exitButton;
 
     // Start is called before the first frame update
     void Start()
@@ -23,17 +22,13 @@ public class MiniGameStarter : MonoBehaviour
         nameMiniGame = nameMiniGame.Split('_')[0];
 
         distanceToStart = 3;
-
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N) && !isOpen){
-            
-
+        if (Input.GetKeyDown(KeyCode.N) && !isOpen)
+        {
             int allPlayersCount = allPlayers.transform.childCount;
             int grabberPlayerId = -1;
             float minDistance = float.PositiveInfinity;
@@ -46,20 +41,12 @@ public class MiniGameStarter : MonoBehaviour
                     minDistance = _dist;
                     grabberPlayerId = i;
                     if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                        Debug.Log("break ? ");
-                    break;
+                        break;
                 }
-                Debug.Log("Reachable ? " + _isReachable);
             }
-            Debug.Log("Grabber ID ? " + grabberPlayerId);
+
             if (grabberPlayerId >= 0)
             {
-                player = allPlayers.transform.GetChild(grabberPlayerId);
-                miniGameActive = player.transform.Find("MiniGameActive");
-                //if (EquipmentDest.GetComponent<UseObject>().hasObject == false && player.GetComponent<PhotonView>().IsMine)
-                //{
-                //    OnEquipmentTriggered(player);
-                //}
                 int j = 0;
                 foreach (GameObject miniGame in miniGameManager.allMiniGames)
                 {
@@ -67,31 +54,49 @@ public class MiniGameStarter : MonoBehaviour
                     {
                         miniGameManager.allMiniGamesEnabled[j] = true;
                         isOpen = true;
+                        gameActive = true;
+                        exitButton.gameObject.SetActive(true);
                         break;
                     }
                     j += 1;
                 }
             }
         }
-
-        (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
+        else if (isOpen && !gameActive)
         {
-            float dist = Vector3.Distance(objectA.position, playerA.position);
-            float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
-
-            Debug.Log("Dist ID ? " + dist);
-            Debug.Log("Angle ? " + angle);
-            if (dist < range && angle <= Mathf.Abs(30))
+            int j = 0;
+            foreach (GameObject miniGame in miniGameManager.allMiniGames)
             {
-                Debug.Log("true ? ");
-                return (true, dist);
+                if (miniGame.name == nameMiniGame)
+                {
+                    miniGameManager.allMiniGamesEnabled[j] = false;
+                    isOpen = false;
+                    break;
+                }
+                j += 1;
             }
-            else
-            {
-                Debug.Log("false ? ");
-                return (false, dist);
-            }
-
         }
+    }
+
+    (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
+    {
+        float dist = Vector3.Distance(objectA.position, playerA.position);
+        float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
+
+        if (dist < range && angle <= Mathf.Abs(30))
+        {
+            return (true, dist);
+        }
+        else
+        {
+            return (false, dist);
+        }
+
+    }
+
+    public void LeaveMiniGame()
+    {
+        gameActive = false;
+        exitButton.gameObject.SetActive(false);
     }
 }
