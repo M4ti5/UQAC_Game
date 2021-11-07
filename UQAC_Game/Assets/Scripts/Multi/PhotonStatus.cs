@@ -21,10 +21,7 @@ public class PhotonStatus : MonoBehaviourPun
     {
         if (activated)
         {
-            playerName.text = NA;
-            roomName.text = NA;
-            nbrPlayers.text = NA;
-            ping.text = NA + " ms";
+            CantGetSatus();
         }
         else
         {
@@ -42,25 +39,42 @@ public class PhotonStatus : MonoBehaviourPun
         {
             if (PhotonNetwork.IsConnected)
             {
-                playerName.text = PhotonNetwork.NickName.ToString();
-                roomName.text = (PhotonNetwork.InRoom ? 
-                    PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsVisible ? "visible" : "hidden") + "]" : 
-                    NA);
-                nbrPlayers.text =
-                    (PhotonNetwork.Server == ServerConnection.MasterServer ?
-                        PhotonNetwork.CountOfPlayers.ToString() + " using app\n" :
-                        "")  +
-                    (PhotonNetwork.Server == ServerConnection.MasterServer ?
-                        PhotonNetwork.CountOfPlayersInRooms.ToString() + " in all rooms\n" :
-                        "")  +
-                    (PhotonNetwork.Server == ServerConnection.MasterServer ? 
-                        PhotonNetwork.CountOfPlayersOnMaster.ToString() + " on master\n" :
-                        "")  +
-                    (PhotonNetwork.InRoom ? 
-                        PhotonNetwork.CurrentRoom.PlayerCount.ToString() + " in this room" :
-                        "");
-                ping.text = PhotonNetwork.GetPing().ToString() + " ms";
+                DisplayStatus();
+            }
+            else
+            {
+                CantGetSatus();
             }
         }
+    }
+
+    private void CantGetSatus()
+    {
+        playerName.text = NA;
+        roomName.text = NA;
+        nbrPlayers.text = NA;
+        ping.text = NA + " ms";
+    }
+
+    private void DisplayStatus()
+    {
+        playerName.text = PhotonNetwork.NickName.ToString();
+        roomName.text = (PhotonNetwork.InRoom ? 
+            PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsVisible ? "visible" : "hidden") + "]" : 
+            NA);
+        nbrPlayers.text =
+            (PhotonNetwork.Server == ServerConnection.MasterServer ?
+                PhotonNetwork.CountOfPlayers.ToString() + " using app\n" :
+                "")  +
+            (PhotonNetwork.Server == ServerConnection.MasterServer ?
+                PhotonNetwork.CountOfPlayersInRooms.ToString() + " in all rooms\n" :
+                "")  +
+            (PhotonNetwork.Server == ServerConnection.MasterServer ? 
+                PhotonNetwork.CountOfPlayersOnMaster.ToString() + " on master\n" :
+                "")  +
+            (PhotonNetwork.InRoom ? 
+                PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " in this room" :
+                "");
+        ping.text = PhotonNetwork.GetPing().ToString() + " ms";
     }
 }
