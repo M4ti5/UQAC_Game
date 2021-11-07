@@ -44,6 +44,7 @@ MonoBehaviour:
   - EquipmentTriggered
   - CustomBehaviour
   - RandomSkinColor
+  - SetScore
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
