@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -12,9 +13,11 @@ public class PhotonStatus : MonoBehaviourPun
 {
     public bool activated = true;
     public GameObject photonStatus;
-    public TextMeshProUGUI playerName, roomName, nbrPlayers, ping;
+    public TextMeshProUGUI playerName, roomName, nbrPlayers, ping, roomsList;
 
     private string NA = "N/A";
+
+    public List<RoomInfo> roomsInfos;
 
     // Start is called before the first frame update
     void Start()
@@ -76,5 +79,38 @@ public class PhotonStatus : MonoBehaviourPun
                 PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " in this room" :
                 "");
         ping.text = PhotonNetwork.GetPing().ToString() + " ms";
+
+        DisplayRoomsList();
+    }
+
+    private void DisplayRoomsList()
+    {
+        if (PhotonNetwork.Server == ServerConnection.MasterServer)
+        {
+            if (FindObjectOfType<Launcher>())
+            {
+                roomsInfos = FindObjectOfType<Launcher>().GetRoomList();
+                // reset list of all rooms
+                roomsList.text = "Created Rooms:";
+                foreach (RoomInfo roomInfo in roomsInfos)
+                {
+                    // txt
+                    roomsList.text += "\n" + 
+                                      (roomInfo.IsOpen ? "open" : "close") + " - " +
+                                      (roomInfo.IsVisible ? "visible" : "hidden") + " - " + 
+                                      roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers +  " - " + 
+                                      roomInfo.Name;
+
+                }
+            }
+            else
+            {
+                roomsList.text = NA;
+            }
+        }
+        else
+        {
+            roomsList.text = "";
+        }
     }
 }

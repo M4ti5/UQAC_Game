@@ -19,7 +19,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 	public TMP_Dropdown dropDownListOfRooms;
 	public GameObject buttonStart;
 	public TextMeshProUGUI connectionStatus, feedbackText;
-	public TextMeshProUGUI listRoom;
 
 	private string gameVersion;
 	private bool isConnecting;
@@ -144,19 +143,26 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.RefreshRoomListUI();
 	}
 
+	public List<RoomInfo> GetRoomList()
+	{
+		return roomNameList;
+	}
+
 	// Fonction qui met à jour la liste des listes existantes
 	private void RefreshRoomListUI()
 	{
 		List<TMP_Dropdown.OptionData> optionList = new List<TMP_Dropdown.OptionData>();
 		optionList.Add(new TMP_Dropdown.OptionData("-- Choose an existing room --"));
 		// reset list of all rooms
-		listRoom.text = "List:";
 		foreach (RoomInfo roomInfo in roomNameList)
 		{
-			listRoom.text += "\n" + roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close");
 			Debug.Log(roomInfo.Name + " - " + roomInfo.PlayerCount + "/" + roomInfo.MaxPlayers + " - " + (roomInfo.IsVisible ? "visible" : "hidden") + " - " + (roomInfo.IsOpen ? "open" : "close"));
-
-			optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
+			
+			if (roomInfo.IsOpen && roomInfo.IsVisible)// on autorise seulement les rooms visibles et ouvertes
+			{
+				// drop down
+				optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
+			}
 		}
 
 		if (dropDownListOfRooms != null)
