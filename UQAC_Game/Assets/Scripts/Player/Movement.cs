@@ -132,7 +132,11 @@ public class Movement : MonoBehaviourPun
     }
 
     void Animations () {
-        inMove = ( Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) );
+        inMove = ( Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/ || 
+                   Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/ || 
+                   Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/ || 
+                   Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/ 
+                   );
 
         if (inMove) {
             playerAnim.SetBool("isWalking" , true);

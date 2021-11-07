@@ -91,10 +91,17 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
             }
             else if (victory)
             {
-                Debug.Log("victory");
-                victoryText.SetActive(true);
+                StartCoroutine(EndMiniGame());
             }
         }
+    }
+
+    IEnumerator EndMiniGame()
+    {
+        Debug.Log("victory");
+        victoryText.SetActive(true);
+        yield return new WaitForSeconds(2);
+        Debug.Log("Fin de partie");
     }
 
     /// <summary>
@@ -128,7 +135,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private void Update()
     {
         update += Time.deltaTime;
-        if (update > 1.0f/40f)
+        if (update > 1.0f/30f)
         {
             update = 0.0f;
             if (dragActive == false && victory == false)
@@ -155,9 +162,9 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
                     rect.transform.Translate(new Vector3(-moveSpeed, 0, transform.position.z));
                 }
             }
-            if (victory == true)
+            if (victory == true && !victoryText.activeSelf)
             {
-                victoryText.SetActive(true);
+                StartCoroutine(EndMiniGame());
             }
         }
     } 

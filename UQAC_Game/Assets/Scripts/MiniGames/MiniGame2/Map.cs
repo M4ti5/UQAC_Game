@@ -65,7 +65,7 @@ public class Map : MonoBehaviour
         player.rectTransform.sizeDelta = new Vector2(Mathf.Min(widthWall, heightWall) * 0.4f, Mathf.Min(widthWall, heightWall) * 0.4f);
 
         //Une fois que le joueur atteint ce collider, il a fini le mini-jeu
-        arrive.rectTransform.sizeDelta = new Vector2(hW, widthWall + hW);
+        arrive.rectTransform.sizeDelta = new Vector2(hW, heightWall);
 
         //Empêche le joueur de sortir par l'entrée
         entrance.rectTransform.sizeDelta = new Vector2(hW, widthWall + hW);
@@ -83,7 +83,7 @@ public class Map : MonoBehaviour
         collider[0].size = new Vector2(Mathf.Min(widthWall, heightWall) * 0.4f, Mathf.Min(widthWall, heightWall) * 0.4f);
 
         BoxCollider arriveCollider = arrive.gameObject.GetComponent<BoxCollider>();
-        arriveCollider.size = new Vector2(hW, widthWall + hW);
+        arriveCollider.size = new Vector2(hW, heightWall);
 
 
         CreateMapGrid();
@@ -243,7 +243,7 @@ public class Map : MonoBehaviour
         var createdExternalWall4 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall4.transform.SetParent(panel.transform, false);
 
-        arrive.transform.Translate(new Vector3(widthWall * column + marginWidthMap, -heightWall * row + marginHeightMap, 0));
+        arrive.transform.Translate(new Vector3(widthWall * column + marginWidthMap, -heightWall * (row - 0.5f), 0));
         entrance.transform.Translate(new Vector3(marginWidthMap, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
         player.transform.Translate(new Vector3(marginWidthMap + widthWall * 0.5f, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
 
