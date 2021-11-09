@@ -30,6 +30,7 @@ public class Movement : MonoBehaviourPun
     public bool inMove = false;
     public bool inJump = false;
     public bool inRun = false;
+    public bool canRun = true; // modified by stamina
    
     private Animator playerAnim;
     private Rigidbody rb;
@@ -96,12 +97,20 @@ public class Movement : MonoBehaviourPun
 
         //// Sprint 
         //start
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            moveSpeed = sprintSpeed;
-            inRun = true;
+        if (canRun)
+        {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                moveSpeed = sprintSpeed;
+                inRun = true;
+            }
+        }
+        else
+        {
+            moveSpeed = defaultMoveSpeed;
+            inRun = false;
         }
         //stop
-        if (Input.GetKeyUp(KeyCode.LeftShift)) {
+        if (Input.GetKeyUp(KeyCode.LeftShift) && inRun) {
             moveSpeed = defaultMoveSpeed;
             inRun = false;
         }
@@ -141,7 +150,7 @@ public class Movement : MonoBehaviourPun
         if (inMove) {
             playerAnim.SetBool("isWalking" , true);
 
-            if (inRun) { // Sprint
+            if (canRun && inRun) { // Sprint
                 playerAnim.SetBool("isRunning" , true);
             } else {
                 playerAnim.SetBool("isRunning" , false);
@@ -167,14 +176,14 @@ public class Movement : MonoBehaviourPun
 
     void OnCollisionStay(Collision collision) {
         
-        if (collision.gameObject.tag == "Wall") {
+        if (collision.gameObject.CompareTag("Wall")) {
             playerAnim.SetBool("inCollide" , true);
             playerAnim.SetBool("isWalking" , false);
         } else {
             playerAnim.SetBool("inCollide" , false);
         }
 
-        if (collision.gameObject.tag == "Ground") {
+        if (collision.gameObject.CompareTag("Ground")) {
             isGrounded = true;
             inJump = false;
         }

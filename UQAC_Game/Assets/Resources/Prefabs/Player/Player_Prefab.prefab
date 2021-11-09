@@ -267,6 +267,7 @@ MonoBehaviour:
   inMove: 0
   inJump: 0
   inRun: 0
+  canRun: 1
   deathLimitY: -100
 --- !u!114 &2297088295379410321
 MonoBehaviour:
