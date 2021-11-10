@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class PlayerStatManager : MonoBehaviourPun
 {
-    public int currHP = 100;
+    public int currentHP;
     public GameObject allObjects;
     public GameObject display;
     public TextMeshProUGUI text;
 
+    
     public float distanceToHold = 5;
     // Start is called before the first frame update
     void Start()
     {
+        currentHP = 100;
         allObjects = GameObject.Find("Objects");
         display = GameObject.Find("TakeObject");
         text = display.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
@@ -35,6 +37,10 @@ public class PlayerStatManager : MonoBehaviourPun
             {
                 display.SetActive(false);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TakeDamage(10);
         }
         
     }
@@ -88,6 +94,18 @@ public class PlayerStatManager : MonoBehaviourPun
         }
 
         return nearestObj;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHP -= damage;
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            Debug.Log("Game Over");
+        } 
+        
+        
     }
     
 }

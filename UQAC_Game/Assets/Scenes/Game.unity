@@ -1276,6 +1276,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 827729344}
     m_Modifications:
     - target: {fileID: 866895135254270156, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
+      propertyPath: damage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 866895135254270156, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
       propertyPath: allObjects
       value: 
       objectReference: {fileID: 827729343}
@@ -1285,7 +1289,7 @@ PrefabInstance:
       objectReference: {fileID: 1828196081}
     - target: {fileID: 1726358540697482864, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1726358540697482864, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1577,6 +1581,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3208441695496774543, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
+      propertyPath: allObjects
+      value: 
+      objectReference: {fileID: 827729343}
+    - target: {fileID: 3208441695496774543, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
     - target: {fileID: 6503671064153239741, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
       propertyPath: m_Name
       value: Object
@@ -1735,7 +1747,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1148903710966650604, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1148903710966650604, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2026,6 +2038,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 749609046}
     m_Modifications:
+    - target: {fileID: 1257889680, guid: 53670d90641386940b9db5f22ff464e3, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
     - target: {fileID: 2127864432144606108, guid: 53670d90641386940b9db5f22ff464e3, type: 3}
       propertyPath: m_Name
       value: Panel HP

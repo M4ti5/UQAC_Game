@@ -13,6 +13,7 @@ public class Object : MonoBehaviourPun
     protected Transform HitObj;
     protected Transform EquipmentDest;
     protected Transform player;
+    
 
     // Start is called before the first frame update
     void Start()
