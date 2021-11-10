@@ -1745,6 +1745,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 827729344}
     m_Modifications:
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: rangeCut
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: allObjects
+      value: 
+      objectReference: {fileID: 827729343}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: distanceToCut
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: distanceToHeld
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1148903710966650604, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1793,14 +1813,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knife
       objectReference: {fileID: 0}
-    - target: {fileID: 4996760339064238127, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
-      propertyPath: allObjects
-      value: 
-      objectReference: {fileID: 827729343}
-    - target: {fileID: 4996760339064238127, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
-      propertyPath: allPlayers
-      value: 
-      objectReference: {fileID: 1828196081}
     - target: {fileID: 8246909091726720861, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: sceneViewId
       value: 5
