@@ -23,7 +23,12 @@ public class MiniGamesManager : MonoBehaviour
         int i = 0;
         foreach (bool enabled in allMiniGamesEnabled)
         {
-            allMiniGames[i].SetActive(enabled);
+            //allMiniGames[i].SetActive(enabled);
+            if (enabled)
+            {
+                //var createdMiniGame = Instantiate(allMiniGames[i], allMiniGames[i].transform.position, allMiniGames[i].transform.rotation);
+                //createdMiniGame.SetActive(true);
+            }
             i++;
         }
     }

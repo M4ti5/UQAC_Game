@@ -14,6 +14,7 @@ public class MiniGameStarter : MonoBehaviour
     public float distanceToStart;
     public GameObject allPlayers;
     public Button exitButton;
+    private GameObject createdMiniGame;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,8 @@ public class MiniGameStarter : MonoBehaviour
                 {
                     if (miniGame.name == nameMiniGame)
                     {
+                        createdMiniGame = Instantiate(miniGameManager.allMiniGames[j], miniGameManager.allMiniGames[j].transform.position, miniGameManager.allMiniGames[j].transform.rotation);
+                        createdMiniGame.SetActive(true);
                         miniGameManager.allMiniGamesEnabled[j] = true;
                         isOpen = true;
                         gameActive = true;
@@ -69,6 +72,7 @@ public class MiniGameStarter : MonoBehaviour
             {
                 if (miniGame.name == nameMiniGame)
                 {
+                    Destroy(createdMiniGame);
                     miniGameManager.allMiniGamesEnabled[j] = false;
                     isOpen = false;
                     break;
