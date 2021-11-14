@@ -53,8 +53,11 @@ public class MiniGameStarter : MonoBehaviour
                 {
                     if (miniGame.name == nameMiniGame)
                     {
-                        createdMiniGame = Instantiate(miniGameManager.allMiniGames[j], miniGameManager.allMiniGames[j].transform.position, miniGameManager.allMiniGames[j].transform.rotation);
+                        Vector3 position = new Vector3(miniGameManager.allMiniGames[j].transform.position.x, miniGameManager.allMiniGames[j].transform.position.y, 0);
+                        createdMiniGame = Instantiate(miniGameManager.allMiniGames[j], position, miniGameManager.allMiniGames[j].transform.rotation);
                         createdMiniGame.SetActive(true);
+                        var test2 = createdMiniGame.GetComponent<PiecesManager>();
+                        createdMiniGame.transform.SetParent(gameObject.transform, false);
                         miniGameManager.allMiniGamesEnabled[j] = true;
                         isOpen = true;
                         gameActive = true;
@@ -65,21 +68,39 @@ public class MiniGameStarter : MonoBehaviour
                 }
             }
         }
-        else if (isOpen && !gameActive)
+        else if (gameActive)
         {
+            bool ended = false;
             int j = 0;
             foreach (GameObject miniGame in miniGameManager.allMiniGames)
             {
-                if (miniGame.name == nameMiniGame)
+                if (miniGameManager.allMiniGamesEnabled[j] == true)
                 {
-                    Destroy(createdMiniGame);
-                    miniGameManager.allMiniGamesEnabled[j] = false;
-                    isOpen = false;
+                    ended = true;
                     break;
-                }
+                } 
                 j += 1;
             }
+            if (ended == false)
+            {
+                WinMiniGame();
+            }
         }
+        //else if (isOpen && !gameActive)
+        //{
+        //    int j = 0;
+        //    foreach (GameObject miniGame in miniGameManager.allMiniGames)
+        //    {
+        //        if (miniGame.name == nameMiniGame)
+        //        {
+        //            Destroy(createdMiniGame);
+        //            miniGameManager.allMiniGamesEnabled[j] = false;
+        //            isOpen = false;
+        //            break;
+        //        }
+        //        j += 1;
+        //    }
+        //}
     }
 
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
@@ -102,5 +123,20 @@ public class MiniGameStarter : MonoBehaviour
     {
         gameActive = false;
         exitButton.gameObject.SetActive(false);
+        Destroy(createdMiniGame);
+        int j = 0;
+        foreach (GameObject miniGame in miniGameManager.allMiniGames)
+        {
+            miniGameManager.allMiniGamesEnabled[j] = false;
+            j += 1;
+        }
+        isOpen = false;
+    }
+
+    public void WinMiniGame()
+    {
+        exitButton.gameObject.SetActive(false);
+        Destroy(createdMiniGame);
+        Debug.Log("Victory kdjfhsdfhjskdghjkqsghd");
     }
 }

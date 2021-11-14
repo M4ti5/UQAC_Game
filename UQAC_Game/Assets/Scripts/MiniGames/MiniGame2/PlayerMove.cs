@@ -23,6 +23,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     GameObject translationFromPlayer;
     RectTransform rectTranslationFromPlayer;
     BoxCollider colliderTranslationFromPlayer;
+    
+    public MiniGamesManager miniGamesManager;
 
 
     // Start is called before the first frame update
@@ -100,7 +102,13 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         Debug.Log("victory");
         victoryText.SetActive(true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
+        int j = 0;
+        foreach (GameObject miniGame in miniGamesManager.allMiniGames)
+        {
+            miniGamesManager.allMiniGamesEnabled[j] = false;
+            j += 1;
+        }
         Debug.Log("Fin de partie");
     }
 

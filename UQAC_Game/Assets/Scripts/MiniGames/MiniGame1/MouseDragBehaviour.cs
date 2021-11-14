@@ -32,7 +32,7 @@ public class MouseDragBehaviour : MonoBehaviour, IDragHandler, IBeginDragHandler
         Vector2 diff = currentMousePosition - lastMousePosition;
         RectTransform rect = GetComponent<RectTransform>();
 
-        Vector3 newPosition = rect.position + new Vector3(diff.x, diff.y, transform.position.z);
+        Vector3 newPosition = rect.position + new Vector3(diff.x, diff.y, 0);
         Vector3 oldPos = rect.position;
         rect.position = newPosition;
         if (!IsRectTransformInsideSreen(rect))

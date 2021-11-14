@@ -53,10 +53,16 @@ public class PiecesManager : MonoBehaviour
     /// Bool to know if puzzle is completed
     /// </summary>
     public bool puzzleEnd;
+
     /// <summary>
     /// Object where is write a congratulation message 
     /// </summary>
     public GameObject successObj;
+
+    /// <summary>
+    /// Object that contains all the miniGames
+    /// </summary>
+    public MiniGamesManager miniGamesManager;
 
     // Start is called before the first frame update
     void Start()
@@ -78,7 +84,11 @@ public class PiecesManager : MonoBehaviour
     {
 
         CheckEndOfGame();
-        EndPuzzle();
+        if (!successObj.activeSelf && puzzleEnd)
+        {
+            StartCoroutine(EndPuzzle());
+        }
+       
     }
 
     /// <summary>
@@ -179,8 +189,17 @@ public class PiecesManager : MonoBehaviour
     /// Show or hide success message if all pieces are in the right place<br/>
     /// It could be modified to call end animation function 
     /// </summary>
-    void EndPuzzle()
+    IEnumerator EndPuzzle()
     {
+        Debug.Log("victory");
+        yield return new WaitForSeconds(1);
+        int j = 0;
+        foreach (GameObject miniGame in miniGamesManager.allMiniGames)
+        {
+            miniGamesManager.allMiniGamesEnabled[j] = false;
+            j += 1;
+        }
+        Debug.Log("Fin de partie");
         successObj.SetActive(puzzleEnd);
-    }
+    }    
 }
