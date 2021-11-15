@@ -129,3 +129,4 @@ MonoBehaviour:
   distanceToStart: 0
   allPlayers: {fileID: 0}
   exitButton: {fileID: 0}
+  miniGame: {fileID: 2045594068322787574, guid: 3bbca886d8b0fb94487861165323d4bc, type: 3}

@@ -59,11 +59,6 @@ public class PiecesManager : MonoBehaviour
     /// </summary>
     public GameObject successObj;
 
-    /// <summary>
-    /// Object that contains all the miniGames
-    /// </summary>
-    public MiniGamesManager miniGamesManager;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -191,15 +186,8 @@ public class PiecesManager : MonoBehaviour
     /// </summary>
     IEnumerator EndPuzzle()
     {
-        Debug.Log("victory");
-        yield return new WaitForSeconds(1);
-        int j = 0;
-        foreach (GameObject miniGame in miniGamesManager.allMiniGames)
-        {
-            miniGamesManager.allMiniGamesEnabled[j] = false;
-            j += 1;
-        }
-        Debug.Log("Fin de partie");
         successObj.SetActive(puzzleEnd);
+        yield return new WaitForSeconds(1);
+        gameObject.transform.parent.parent.parent.gameObject.SetActive(false);
     }    
 }

@@ -6,21 +6,21 @@ using UnityEngine.UI;
 
 public class MiniGameStarter : MonoBehaviour
 {
-    public MiniGamesManager miniGameManager;
-    private string nameMiniGame;
+    //private string nameMiniGame;
 
     protected bool isOpen = false;
-    protected bool gameActive = false;
+    protected bool gameEnded = false;
     public float distanceToStart;
     public GameObject allPlayers;
-    public Button exitButton;
+
     private GameObject createdMiniGame;
+    public GameObject miniGame;
 
     // Start is called before the first frame update
     void Start()
     {
-        nameMiniGame = gameObject.name;
-        nameMiniGame = nameMiniGame.Split('_')[0];
+        //nameMiniGame = gameObject.name;
+        //nameMiniGame = nameMiniGame.Split('_')[0];
 
         distanceToStart = 3;
     }
@@ -28,79 +28,47 @@ public class MiniGameStarter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N) && !isOpen)
+        if (!gameEnded)
         {
-            int allPlayersCount = allPlayers.transform.childCount;
-            int grabberPlayerId = -1;
-            float minDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < allPlayersCount; i++)
+            if (Input.GetKeyDown(KeyCode.N) && !isOpen)
             {
-                (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
-                if (_isReachable && _dist < minDistance)
-                {
-                    minDistance = _dist;
-                    grabberPlayerId = i;
-                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                        break;
-                }
-            }
+                int allPlayersCount = allPlayers.transform.childCount;
+                int grabberPlayerId = -1;
+                float minDistance = float.PositiveInfinity;
 
-            if (grabberPlayerId >= 0)
-            {
-                int j = 0;
-                foreach (GameObject miniGame in miniGameManager.allMiniGames)
+                for (int i = 0; i < allPlayersCount; i++)
                 {
-                    if (miniGame.name == nameMiniGame)
+                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
+                    if (_isReachable && _dist < minDistance)
                     {
-                        Vector3 position = new Vector3(miniGameManager.allMiniGames[j].transform.position.x, miniGameManager.allMiniGames[j].transform.position.y, 0);
-                        createdMiniGame = Instantiate(miniGameManager.allMiniGames[j], position, miniGameManager.allMiniGames[j].transform.rotation);
-                        createdMiniGame.SetActive(true);
-                        var test2 = createdMiniGame.GetComponent<PiecesManager>();
-                        createdMiniGame.transform.SetParent(gameObject.transform, false);
-                        miniGameManager.allMiniGamesEnabled[j] = true;
-                        isOpen = true;
-                        gameActive = true;
-                        exitButton.gameObject.SetActive(true);
-                        break;
+                        minDistance = _dist;
+                        grabberPlayerId = i;
+                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                            break;
                     }
-                    j += 1;
+                }
+
+                if (grabberPlayerId >= 0)
+                {
+                    isOpen = true;
+                    createdMiniGame = Instantiate(miniGame, new Vector3(0, 0, 0), miniGame.transform.rotation);
+                    createdMiniGame.SetActive(true);
+                    createdMiniGame.transform.SetParent(gameObject.transform, false);
                 }
             }
+            else if (gameObject.transform.childCount == 0 && isOpen)
+            {
+                isOpen = false;
+            }
         }
-        else if (gameActive)
+        if (gameObject.transform.childCount != 0)
         {
-            bool ended = false;
-            int j = 0;
-            foreach (GameObject miniGame in miniGameManager.allMiniGames)
+            if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
             {
-                if (miniGameManager.allMiniGamesEnabled[j] == true)
-                {
-                    ended = true;
-                    break;
-                } 
-                j += 1;
-            }
-            if (ended == false)
-            {
-                WinMiniGame();
+                Destroy(gameObject.transform.GetChild(0).gameObject);
+                gameEnded = true;
             }
         }
-        //else if (isOpen && !gameActive)
-        //{
-        //    int j = 0;
-        //    foreach (GameObject miniGame in miniGameManager.allMiniGames)
-        //    {
-        //        if (miniGame.name == nameMiniGame)
-        //        {
-        //            Destroy(createdMiniGame);
-        //            miniGameManager.allMiniGamesEnabled[j] = false;
-        //            isOpen = false;
-        //            break;
-        //        }
-        //        j += 1;
-        //    }
-        //}
     }
 
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
@@ -117,26 +85,5 @@ public class MiniGameStarter : MonoBehaviour
             return (false, dist);
         }
 
-    }
-
-    public void LeaveMiniGame()
-    {
-        gameActive = false;
-        exitButton.gameObject.SetActive(false);
-        Destroy(createdMiniGame);
-        int j = 0;
-        foreach (GameObject miniGame in miniGameManager.allMiniGames)
-        {
-            miniGameManager.allMiniGamesEnabled[j] = false;
-            j += 1;
-        }
-        isOpen = false;
-    }
-
-    public void WinMiniGame()
-    {
-        exitButton.gameObject.SetActive(false);
-        Destroy(createdMiniGame);
-        Debug.Log("Victory kdjfhsdfhjskdghjkqsghd");
     }
 }

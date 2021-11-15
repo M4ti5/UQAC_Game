@@ -103,13 +103,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         Debug.Log("victory");
         victoryText.SetActive(true);
         yield return new WaitForSeconds(1);
-        int j = 0;
-        foreach (GameObject miniGame in miniGamesManager.allMiniGames)
-        {
-            miniGamesManager.allMiniGamesEnabled[j] = false;
-            j += 1;
-        }
-        Debug.Log("Fin de partie");
+        gameObject.transform.parent.parent.parent.gameObject.SetActive(false);
     }
 
     /// <summary>
