@@ -120,6 +120,7 @@ public class Object : MonoBehaviourPun
     protected void DesequipmentTriggered()
     {
         transform.parent = allObjects.transform;
+        transform.position = EquipmentDest.parent.Find("Inventory").position;
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
