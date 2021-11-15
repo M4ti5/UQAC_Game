@@ -6,9 +6,14 @@ using UnityEngine;
 public class PlayerStatManager : MonoBehaviourPun
 {
     public int currentHP;
+    public int stamina;
+    
     public GameObject allObjects;
     public GameObject display;
     public TextMeshProUGUI text;
+
+    public GameObject storedEquipement;
+    public string storedEquipementPath;
 
     
     public float distanceToHold = 5;

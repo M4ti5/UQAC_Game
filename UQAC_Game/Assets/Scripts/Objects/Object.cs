@@ -10,8 +10,9 @@ public class Object : MonoBehaviourPun
     public GameObject allObjects;
 
     protected bool isHeld = false;
+    public bool isStored = false;
     protected Transform HitObj;
-    protected Transform EquipmentDest;
+    public Transform EquipmentDest;
     protected Transform player;
     
 
@@ -61,7 +62,7 @@ public class Object : MonoBehaviourPun
 
         }
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == true && PhotonNetwork.LocalPlayer == player.GetComponent<PhotonView>().Owner)
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == true && PhotonNetwork.LocalPlayer == player.GetComponent<PhotonView>().Owner && isStored == false)
         {
             OnDesequipmentTriggered();
         }
