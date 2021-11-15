@@ -83,18 +83,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	}
 
-	/// <summary>
-	/// MonoBehaviour method called on GameObject by Unity on every frame.
-	/// </summary>
-	void Update()
-	{
-		// "back" button of phone equals "Escape". quit app if that's pressed
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			QuitApplication();
-		}
-	}
-
     #endregion
 
     #region Photon Callbacks
@@ -150,17 +138,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 			PhotonNetwork.CurrentRoom.IsOpen = false;
 		}
 		PhotonNetwork.LeaveRoom();
-	}
-
-	/// <summary>
-	/// Close programme or stop playing mode if we use unity
-	/// </summary>
-	public void QuitApplication()
-	{
-#if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
-#endif
-		Application.Quit();
 	}
 
 	#endregion
