@@ -119,7 +119,7 @@ public class Movement : MonoBehaviourPun
 
 
         //// Dash
-        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash) {
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash && inMove) {
             inDash = true;
             canDash = false;
         }
@@ -158,7 +158,7 @@ public class Movement : MonoBehaviourPun
                 playerAnim.SetBool("isRunning" , false);
             }
 
-            if (inDash) { // Dash
+            if (inDash && !inWallCollide) { // Dash
                 playerAnim.SetBool("inDash" , true);
             } else {
                 playerAnim.SetBool("inDash" , false);
@@ -167,6 +167,7 @@ public class Movement : MonoBehaviourPun
         } else {
             playerAnim.SetBool("isWalking" , false);
             playerAnim.SetBool("isRunning" , false);
+            playerAnim.SetBool("inDash" , false);
         }
 
         if(inJump) { // Jump
