@@ -31,7 +31,9 @@ public class Movement : MonoBehaviourPun
     public bool inJump = false;
     public bool inRun = false;
     public bool canRun = true; // modified by stamina
-   
+    private bool inWallCollide = false;
+
+    
     private Animator playerAnim;
     private Rigidbody rb;
 
@@ -121,7 +123,7 @@ public class Movement : MonoBehaviourPun
             inDash = true;
             canDash = false;
         }
-        if (inDash) {
+        if (inDash && !inWallCollide) {
             transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
             dashTime -= Time.deltaTime;
             if(dashTime < 0) {
@@ -179,8 +181,10 @@ public class Movement : MonoBehaviourPun
         if (collision.gameObject.CompareTag("Wall")) {
             playerAnim.SetBool("inCollide" , true);
             playerAnim.SetBool("isWalking" , false);
+            inWallCollide = true;
         } else {
             playerAnim.SetBool("inCollide" , false);
+            inWallCollide = false;
         }
 
         if (collision.gameObject.CompareTag("Ground")) {
