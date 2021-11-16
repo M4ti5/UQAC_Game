@@ -23,6 +23,9 @@ public class MiniGameStarter : MonoBehaviour
     private PersonalScore personalScore;
     private GlobalScore globalScore;
 
+    public GameObject panelHP;
+    private HealthBar healthBar;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +33,7 @@ public class MiniGameStarter : MonoBehaviour
         distanceToStart = 3;
         globalScore = panelScore.GetComponentInChildren<GlobalScore>();
         personalScore = panelScore.GetComponentInChildren<PersonalScore>();
-        Debug.Log("Je teste la récupération du score global dans MiniGameStarter");
+        healthBar = panelHP.GetComponentInChildren<HealthBar>();
 
     }
 
@@ -83,7 +86,7 @@ public class MiniGameStarter : MonoBehaviour
                     globalScore.IncreaseScore();
                     personalScore.IncreaseScore();
                 }
-
+                healthBar.RecoverHP(15);
                 Destroy(gameObject.transform.GetChild(0).gameObject);
                 gameEnded = true;
             }

@@ -45,7 +45,7 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHP -= damage;
         if (currentHP <= 0)
@@ -56,14 +56,14 @@ public class HealthBar : MonoBehaviour
         ModifyDisplay();
     }
 
-    private void IncreaseHpMax(int bonusHealth)
+    public void IncreaseHpMax(int bonusHealth)
     {
         hpMax += bonusHealth;
         currentHP += bonusHealth;
         ModifyDisplay();
     }
 
-    private void DecreaseHpMax(int malusHealth)
+    public void DecreaseHpMax(int malusHealth)
     {
         hpMax -= malusHealth;
         if (hpMax <= 100)
@@ -77,7 +77,7 @@ public class HealthBar : MonoBehaviour
         ModifyDisplay();
     }
 
-    private void RecoverHP(int heal)
+    public void RecoverHP(int heal)
     {
         currentHP += heal;
         if (currentHP >= hpMax)

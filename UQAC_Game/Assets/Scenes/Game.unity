@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &47791341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2127864432144606108, guid: 53670d90641386940b9db5f22ff464e3, type: 3}
+  m_PrefabInstance: {fileID: 3531091246717932423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &113533604 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6685854046324533638, guid: 434eafdf3bae38c4ba563a44eb7d2b72, type: 3}
@@ -1495,6 +1500,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4188016481541688787, guid: f54c791ac62a670498ccc789222cdf4b, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 4188016481541688787, guid: f54c791ac62a670498ccc789222cdf4b, type: 3}
       propertyPath: allPlayers
       value: 
       objectReference: {fileID: 1828196081}
@@ -1895,6 +1904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LabyrintheGame_Starter
       objectReference: {fileID: 0}
+    - target: {fileID: 8326829881733349061, guid: c718e5944a1cae347bad47be968e9599, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
     - target: {fileID: 8326829881733349061, guid: c718e5944a1cae347bad47be968e9599, type: 3}
       propertyPath: allPlayers
       value: 
