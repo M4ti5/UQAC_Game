@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8246909091726720861}
   - component: {fileID: 7464443748979620967}
   - component: {fileID: 1544057659920519413}
-  - component: {fileID: 4996760339064238127}
+  - component: {fileID: -456982295233155035}
   m_Layer: 0
   m_Name: Knife
   m_TagString: Knife
@@ -86,7 +86,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4996760339064238127
+--- !u!114 &-456982295233155035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,7 +101,11 @@ MonoBehaviour:
   distanceToHeld: 5
   allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
-  distanceToCut: 3
+  isStored: 0
+  EquipmentDest: {fileID: 0}
+  distanceToCut: 0.5
+  rangeCut: 2
+  damage: 10
 --- !u!1001 &5449298580226895216
 PrefabInstance:
   m_ObjectHideFlags: 0

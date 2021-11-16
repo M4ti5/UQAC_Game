@@ -1,14 +1,16 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviourPun
 {
     public Image healthBar;
     public GameObject mask;
     public TextMeshProUGUI hpText;
     private int hpMax;
-    private int currentHP;
+    public int currentHP;
+    public GameObject allPlayers;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +23,18 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //test des fonctions
-        if (Input.GetKeyDown(KeyCode.R))
+        int allPlayersCount = allPlayers.transform.childCount;
+        for (int i = 0; i < allPlayersCount; i++)
+        {
+            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+            {
+                currentHP = allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().currentHP;
+                ModifyDisplay();
+            }
+        }
+
+            //test des fonctions
+        /*if (Input.GetKeyDown(KeyCode.R))
         {
             TakeDamage(10);
         }
@@ -37,7 +49,7 @@ public class HealthBar : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             DecreaseHpMax(10);
-        }
+        }*/
 
         if (currentHP <= 0)
         {
