@@ -29,18 +29,26 @@ public class Map : MonoBehaviour
 
     private float hW;
 
+    private Vector3 canvaScale;
+
     // Start is called before the first frame update
     void Start()
     {
+        player.transform.parent = panel.transform;
+        canvaScale = panel.transform.parent.localScale;
+
         row = 10;
         column = 15;
         RectTransform rt = GetComponent<RectTransform>();
+
+        heightMap = rt.rect.height;
+        widthMap = rt.rect.width;
+
         //taille de la marge
         marginWidthMap = widthMap * 10 / 100;
         marginHeightMap = heightMap * 10 / 100;
 
-        heightMap = rt.rect.height;
-        widthMap = rt.rect.width;
+        
 
         //longueur d'un mur horizontal
         widthWall = (widthMap - 2 * marginWidthMap) / column;
@@ -88,7 +96,6 @@ public class Map : MonoBehaviour
 
         CreateMapGrid();
         DisplayMap();
-        
     }
 
     //Création de la map du labyrinthe
@@ -242,10 +249,11 @@ public class Map : MonoBehaviour
         createdExternalWall3.transform.SetParent(panel.transform, false);
         var createdExternalWall4 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall4.transform.SetParent(panel.transform, false);
+        
 
-        arrive.transform.Translate(new Vector3(widthWall * column + marginWidthMap, -heightWall * (row - 0.5f), 0));
-        entrance.transform.Translate(new Vector3(marginWidthMap, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
-        player.transform.Translate(new Vector3(marginWidthMap + widthWall * 0.5f, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
+        player.transform.Translate(new Vector3((marginWidthMap + widthWall * 0.5f) * canvaScale.x, (hW / 2 - 0.5f * heightWall - marginHeightMap)*canvaScale.y, 0));
+        arrive.transform.Translate(new Vector3((widthWall * column + marginWidthMap) * canvaScale.x, (-heightWall * (row - 0.5f) - marginHeightMap) * canvaScale.y, 0));
+        entrance.transform.Translate(new Vector3(marginWidthMap * canvaScale.x, (hW / 2 - 0.5f * heightWall - marginHeightMap) * canvaScale.y, 0));
 
 
         //Affichage des murs intérieurs
