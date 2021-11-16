@@ -31,7 +31,9 @@ public class Movement : MonoBehaviourPun
     public bool inJump = false;
     public bool inRun = false;
     public bool canRun = true; // modified by stamina
-   
+    private bool inWallCollide = false;
+
+    
     private Animator playerAnim;
     private Rigidbody rb;
 
@@ -117,11 +119,11 @@ public class Movement : MonoBehaviourPun
 
 
         //// Dash
-        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash) {
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canDash && inMove) {
             inDash = true;
             canDash = false;
         }
-        if (inDash) {
+        if (inDash && !inWallCollide) {
             transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
             dashTime -= Time.deltaTime;
             if(dashTime < 0) {
@@ -156,7 +158,7 @@ public class Movement : MonoBehaviourPun
                 playerAnim.SetBool("isRunning" , false);
             }
 
-            if (inDash) { // Dash
+            if (inDash && !inWallCollide) { // Dash
                 playerAnim.SetBool("inDash" , true);
             } else {
                 playerAnim.SetBool("inDash" , false);
@@ -165,6 +167,7 @@ public class Movement : MonoBehaviourPun
         } else {
             playerAnim.SetBool("isWalking" , false);
             playerAnim.SetBool("isRunning" , false);
+            playerAnim.SetBool("inDash" , false);
         }
 
         if(inJump) { // Jump
@@ -179,8 +182,10 @@ public class Movement : MonoBehaviourPun
         if (collision.gameObject.CompareTag("Wall")) {
             playerAnim.SetBool("inCollide" , true);
             playerAnim.SetBool("isWalking" , false);
+            inWallCollide = true;
         } else {
             playerAnim.SetBool("inCollide" , false);
+            inWallCollide = false;
         }
 
         if (collision.gameObject.CompareTag("Ground")) {
