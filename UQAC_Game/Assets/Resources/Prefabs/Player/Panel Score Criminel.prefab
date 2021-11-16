@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 564967379387287780}
   - component: {fileID: 564967379387287781}
   - component: {fileID: 564967379387287783}
+  - component: {fileID: 336365113033144637}
   m_Layer: 0
   m_Name: Global Score
   m_TagString: Untagged
@@ -88,8 +89,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ff5c11fd011174bb21bb35865ada85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalScore: {fileID: 564967379387287781}
-  mask: {fileID: 564967380707630203}
+  scoreProgressBar: {fileID: 0}
+  stepIncrease: 30
+  stepDecrease: 20
+  score: 0
+--- !u!114 &336365113033144637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564967379387287787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &564967379590496217
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &564967379687683248
 RectTransform:
   m_ObjectHideFlags: 0

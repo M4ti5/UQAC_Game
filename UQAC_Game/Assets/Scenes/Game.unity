@@ -1131,6 +1131,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+--- !u!1 &1826627604 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6473607467225633512, guid: 29644e9af2499f4438919a6293c6309a, type: 3}
+  m_PrefabInstance: {fileID: 6473607466061144931}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1828196081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,6 +1502,10 @@ PrefabInstance:
       propertyPath: exitButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4188016481541688787, guid: f54c791ac62a670498ccc789222cdf4b, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
     - target: {fileID: 4188016481541688787, guid: f54c791ac62a670498ccc789222cdf4b, type: 3}
       propertyPath: miniGameManager
       value: 
@@ -1894,6 +1903,10 @@ PrefabInstance:
       propertyPath: exitButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8326829881733349061, guid: c718e5944a1cae347bad47be968e9599, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
     - target: {fileID: 8326829881733349061, guid: c718e5944a1cae347bad47be968e9599, type: 3}
       propertyPath: miniGameManager
       value: 

@@ -43,4 +43,16 @@ public class PersonalScore : MonoBehaviour
     {
         return scoreProgressBar.GetScore();
     }
+
+    public void IncreaseScore()
+    {
+        scoreProgressBar.IncreaseScore(stepIncrease);
+        score = GetScore();
+    }
+
+    public void DecreaseScore()
+    {
+        scoreProgressBar.DecreaseScore(stepDecrease);
+        score = GetScore();
+    }
 }

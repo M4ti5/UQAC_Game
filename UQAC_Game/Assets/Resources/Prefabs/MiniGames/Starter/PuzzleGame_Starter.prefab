@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b553b6393a9447a89e39de2f38258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miniGameManager: {fileID: 0}
   distanceToStart: 0
   allPlayers: {fileID: 0}
-  exitButton: {fileID: 0}
   miniGame: {fileID: 4908679925020252098, guid: d1d4759f8ceed9048b38999cd042017b, type: 3}
+  criminal: 0
+  panelScore: {fileID: 6473607467225633512, guid: 29644e9af2499f4438919a6293c6309a, type: 3}

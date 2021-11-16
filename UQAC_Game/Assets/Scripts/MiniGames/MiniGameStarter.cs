@@ -16,13 +16,22 @@ public class MiniGameStarter : MonoBehaviour
     private GameObject createdMiniGame;
     public GameObject miniGame;
 
+    //Booléen indiquant si le joueur qui ouvre le mini-jeu est un criminel ou un enquêteur
+    public bool criminal = false;
+
+    public GameObject panelScore;
+    private PersonalScore personalScore;
+    private GlobalScore globalScore;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //nameMiniGame = gameObject.name;
-        //nameMiniGame = nameMiniGame.Split('_')[0];
-
         distanceToStart = 3;
+        globalScore = panelScore.GetComponentInChildren<GlobalScore>();
+        personalScore = panelScore.GetComponentInChildren<PersonalScore>();
+        Debug.Log("Je teste la récupération du score global dans MiniGameStarter");
+
     }
 
     // Update is called once per frame
@@ -66,6 +75,9 @@ public class MiniGameStarter : MonoBehaviour
             if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
             {
                 Destroy(gameObject.transform.GetChild(0).gameObject);
+                globalScore.IncreaseScore();
+                personalScore.IncreaseScore();
+
                 gameEnded = true;
             }
         }
