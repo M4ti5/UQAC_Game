@@ -43,6 +43,22 @@ public class GlobalScore : MonoBehaviourPun
         }
     }
 
+    public void IncreaseScore()
+    {
+        scoreProgressBar.IncreaseScore(stepIncrease);
+        score = GetScore();
+        // synchronise
+        OnChangeScore(score);
+    }
+
+    public void DecreaseScore()
+    {
+        scoreProgressBar.DecreaseScore(stepDecrease);
+        score = GetScore();
+        // synchronise
+        OnChangeScore(score);
+    }
+
     public void OnChangeScore(float score)
     {
         photonView.RPC(nameof(SetScore), RpcTarget.AllBufferedViaServer, score, PhotonNetwork.LocalPlayer);

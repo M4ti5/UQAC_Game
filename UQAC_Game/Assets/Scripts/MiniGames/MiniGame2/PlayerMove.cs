@@ -24,6 +24,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     RectTransform rectTranslationFromPlayer;
     BoxCollider colliderTranslationFromPlayer;
 
+    private Vector3 canvaScale;
+    private Vector2 playerSize;
 
     // Start is called before the first frame update
     private void Start()
@@ -31,8 +33,15 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         //Etre sûr que l'affichage du text de victoire est bien désactivé
         victoryText.SetActive(false);
 
+        //Récupère le scaleFactor du canva lors de l'adaptation à la taille de la fenêtre
+        canvaScale = gameObject.transform.parent.parent.localScale;
+
         //Récupération du RectTransform du player
         rect = GetComponent<RectTransform>();
+
+        playerSize = new Vector3(rect.sizeDelta.x * canvaScale.x, rect.sizeDelta.y * canvaScale.y);
+
+        
     }
 
     /// <summary>
@@ -77,8 +86,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
                 //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
                 translationFromPlayer.transform.position = transform.position + new Vector3(diff.x / 2, diff.y / 2);
-                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
-                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
+                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
+                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
                 colliderTranslationFromPlayer.transform.Translate(-diff);
 
                 //Récupère la position du joueur avant son déplacement
@@ -100,8 +109,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         Debug.Log("victory");
         victoryText.SetActive(true);
-        yield return new WaitForSeconds(2);
-        Debug.Log("Fin de partie");
+        yield return new WaitForSeconds(1);
+        gameObject.transform.parent.parent.parent.gameObject.SetActive(false);
     }
 
     /// <summary>

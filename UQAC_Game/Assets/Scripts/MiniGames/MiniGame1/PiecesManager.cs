@@ -53,6 +53,7 @@ public class PiecesManager : MonoBehaviour
     /// Bool to know if puzzle is completed
     /// </summary>
     public bool puzzleEnd;
+
     /// <summary>
     /// Object where is write a congratulation message 
     /// </summary>
@@ -78,7 +79,11 @@ public class PiecesManager : MonoBehaviour
     {
 
         CheckEndOfGame();
-        EndPuzzle();
+        if (!successObj.activeSelf && puzzleEnd)
+        {
+            StartCoroutine(EndPuzzle());
+        }
+       
     }
 
     /// <summary>
@@ -179,8 +184,10 @@ public class PiecesManager : MonoBehaviour
     /// Show or hide success message if all pieces are in the right place<br/>
     /// It could be modified to call end animation function 
     /// </summary>
-    void EndPuzzle()
+    IEnumerator EndPuzzle()
     {
         successObj.SetActive(puzzleEnd);
-    }
+        yield return new WaitForSeconds(1);
+        gameObject.transform.parent.parent.parent.gameObject.SetActive(false);
+    }    
 }
