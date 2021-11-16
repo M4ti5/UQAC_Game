@@ -74,10 +74,17 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
             {
-                Destroy(gameObject.transform.GetChild(0).gameObject);
-                globalScore.IncreaseScore();
-                personalScore.IncreaseScore();
+                if (criminal)
+                {
+                    globalScore.DecreaseScore();
+                }
+                else
+                {
+                    globalScore.IncreaseScore();
+                    personalScore.IncreaseScore();
+                }
 
+                Destroy(gameObject.transform.GetChild(0).gameObject);
                 gameEnded = true;
             }
         }
