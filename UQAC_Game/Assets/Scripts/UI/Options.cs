@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Options : MonoBehaviour
 {
-    public GameObject Panel;
+    public GameObject panel;
     bool visible = false;
 
     public AudioSource[] volumeMusique;
@@ -12,7 +14,7 @@ public class Options : MonoBehaviour
 
     private void Start()
     {
-        Panel.SetActive(visible);
+        panel.SetActive(visible);
         volumeMusique = FindObjectsOfType<AudioSource>();
     }
 
@@ -21,12 +23,12 @@ public class Options : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             visible = !visible;
-            Panel.SetActive(visible);
+            panel.SetActive(visible);
         }
         
     }
 
-    public void SliderChange()
+    public void OnVolumeMusiqueSliderChange()
     {
         foreach (AudioSource v in volumeMusique)
         {
@@ -43,6 +45,19 @@ public class Options : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
         Application.Quit();
+    }
+    
+    public void LeaveRoom()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+            }
+
+            PhotonNetwork.LeaveRoom();
+        }
     }
 
 }
