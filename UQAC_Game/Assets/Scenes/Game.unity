@@ -731,7 +731,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -2184,21 +2184,5 @@ PrefabInstance:
       propertyPath: miniGameManager
       value: 
       objectReference: {fileID: 1911558699}
-    - target: {fileID: 8326829881733349065, guid: c718e5944a1cae347bad47be968e9599, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326829881733349065, guid: c718e5944a1cae347bad47be968e9599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326829881733349065, guid: c718e5944a1cae347bad47be968e9599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8326829881733349065, guid: c718e5944a1cae347bad47be968e9599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c718e5944a1cae347bad47be968e9599, type: 3}

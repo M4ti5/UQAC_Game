@@ -968,6 +968,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeaveMiniGame
       objectReference: {fileID: 0}
+    - target: {fileID: 7521909958987044599, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
+      propertyPath: m_fontSize
+      value: 31.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
 --- !u!224 &579322139448602773 stripped
