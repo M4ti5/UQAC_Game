@@ -11,7 +11,7 @@ public class StaminaBar : MonoBehaviour
     private float staminaBarMaxSize;
     public TextMeshProUGUI staminaText;
     private float staminaMax;
-    private float currentStamina;
+    public float currentStamina;
     private float stepDecrease = 0.3f;
     private float stepIncrease = 0.1f;
     public Movement movementScript;
@@ -184,7 +184,7 @@ public class StaminaBar : MonoBehaviour
         }
 
         //modifie l'avancement de la barre de vie ainsi que le texte correspondant
-        staminaBar.transform.position = staminaBar.parent.position + new Vector3(currentStamina * staminaBarMaxSize / staminaMax - staminaBarMaxSize / 2f, 0, 0);
+        staminaBar.transform.localPosition = new Vector3(currentStamina * staminaBarMaxSize / staminaMax - staminaBarMaxSize, 0, 0);
         staminaText.text = "Stamina : " + (int)currentStamina + " / " + (int)staminaMax;
     }
 }
