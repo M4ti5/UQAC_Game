@@ -6,74 +6,89 @@ using UnityEngine.UI;
 
 public class MiniGameStarter : MonoBehaviour
 {
-    public MiniGamesManager miniGameManager;
-    private string nameMiniGame;
+    //private string nameMiniGame;
 
     protected bool isOpen = false;
-    protected bool gameActive = false;
+    protected bool gameEnded = false;
     public float distanceToStart;
     public GameObject allPlayers;
-    public Button exitButton;
+
+    private GameObject createdMiniGame;
+    public GameObject miniGame;
+
+    //Booléen indiquant si le joueur qui ouvre le mini-jeu est un criminel ou un enquêteur
+    public bool criminal = false;
+
+    public GameObject panelScore;
+    private PersonalScore personalScore;
+    private GlobalScore globalScore;
+
+    public GameObject panelHP;
+    private HealthBar healthBar;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        nameMiniGame = gameObject.name;
-        nameMiniGame = nameMiniGame.Split('_')[0];
-
         distanceToStart = 3;
+        globalScore = panelScore.GetComponentInChildren<GlobalScore>();
+        personalScore = panelScore.GetComponentInChildren<PersonalScore>();
+        healthBar = panelHP.GetComponentInChildren<HealthBar>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N) && !isOpen)
+        if (!gameEnded)
         {
-            int allPlayersCount = allPlayers.transform.childCount;
-            int grabberPlayerId = -1;
-            float minDistance = float.PositiveInfinity;
-
-            for (int i = 0; i < allPlayersCount; i++)
+            if (Input.GetKeyDown(KeyCode.N) && !isOpen)
             {
-                (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
-                if (_isReachable && _dist < minDistance)
+                int allPlayersCount = allPlayers.transform.childCount;
+                int grabberPlayerId = -1;
+                float minDistance = float.PositiveInfinity;
+
+                for (int i = 0; i < allPlayersCount; i++)
                 {
-                    minDistance = _dist;
-                    grabberPlayerId = i;
-                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                        break;
+                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
+                    if (_isReachable && _dist < minDistance)
+                    {
+                        minDistance = _dist;
+                        grabberPlayerId = i;
+                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                            break;
+                    }
+                }
+
+                if (grabberPlayerId >= 0)
+                {
+                    isOpen = true;
+                    createdMiniGame = Instantiate(miniGame, new Vector3(0, 0, 0), miniGame.transform.rotation);
+                    createdMiniGame.SetActive(true);
+                    createdMiniGame.transform.SetParent(gameObject.transform, false);
                 }
             }
-
-            if (grabberPlayerId >= 0)
+            else if (gameObject.transform.childCount == 0 && isOpen)
             {
-                int j = 0;
-                foreach (GameObject miniGame in miniGameManager.allMiniGames)
-                {
-                    if (miniGame.name == nameMiniGame)
-                    {
-                        miniGameManager.allMiniGamesEnabled[j] = true;
-                        isOpen = true;
-                        gameActive = true;
-                        exitButton.gameObject.SetActive(true);
-                        break;
-                    }
-                    j += 1;
-                }
+                isOpen = false;
             }
         }
-        else if (isOpen && !gameActive)
+        if (gameObject.transform.childCount != 0)
         {
-            int j = 0;
-            foreach (GameObject miniGame in miniGameManager.allMiniGames)
+            if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
             {
-                if (miniGame.name == nameMiniGame)
+                if (criminal)
                 {
-                    miniGameManager.allMiniGamesEnabled[j] = false;
-                    isOpen = false;
-                    break;
+                    globalScore.DecreaseScore();
                 }
-                j += 1;
+                else
+                {
+                    globalScore.IncreaseScore();
+                    personalScore.IncreaseScore();
+                }
+                healthBar.RecoverHP(15);
+                Destroy(gameObject.transform.GetChild(0).gameObject);
+                gameEnded = true;
             }
         }
     }
@@ -92,11 +107,5 @@ public class MiniGameStarter : MonoBehaviour
             return (false, dist);
         }
 
-    }
-
-    public void LeaveMiniGame()
-    {
-        gameActive = false;
-        exitButton.gameObject.SetActive(false);
     }
 }

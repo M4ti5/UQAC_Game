@@ -29,25 +29,33 @@ public class Map : MonoBehaviour
 
     private float hW;
 
+    private Vector3 canvaScale;
+
     // Start is called before the first frame update
     void Start()
     {
+        player.transform.parent = panel.transform;
+        canvaScale = panel.transform.parent.localScale;
+
         row = 10;
         column = 15;
         RectTransform rt = GetComponent<RectTransform>();
-        //taille de la marge
-        marginWidthMap = widthMap * 10 / 100;
-        marginHeightMap = heightMap * 10 / 100;
 
         heightMap = rt.rect.height;
         widthMap = rt.rect.width;
 
+        //taille de la marge
+        marginWidthMap = widthMap * 10f / 100f;
+        marginHeightMap = heightMap * 10f / 100f;
+
+        
+
         //longueur d'un mur horizontal
-        widthWall = (widthMap - 2 * marginWidthMap) / column;
+        widthWall = (widthMap - 2f * marginWidthMap) / column;
         //longueur d'un mur vertical
-        heightWall = (heightMap - 2 * marginHeightMap) / row;
+        heightWall = (heightMap - 2f * marginHeightMap) / row;
         //épaisseur d'un mur
-        hW = heightMap / 100;
+        hW = heightMap / 100f;
 
         
         player.gameObject.SetActive(true);
@@ -88,7 +96,6 @@ public class Map : MonoBehaviour
 
         CreateMapGrid();
         DisplayMap();
-        
     }
 
     //Création de la map du labyrinthe
@@ -233,19 +240,20 @@ public class Map : MonoBehaviour
     void DisplayMap()
     {
         //On commence par affiché les murs extérieurs, l'arrivée, l'entrée (invisible) et le joueur
-        var createdExternalWall1 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        var createdExternalWall1 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2f - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall1.transform.SetParent(panel.transform, false);
-        var createdExternalWall2 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2 - marginHeightMap - row * heightWall, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        var createdExternalWall2 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2f - marginHeightMap - row * heightWall, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall2.transform.SetParent(panel.transform, false);
 
-        var createdExternalWall3 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap, hW / 2 - row * 0.5f * heightWall - 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        var createdExternalWall3 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap, hW / 2f - row * 0.5f * heightWall - 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall3.transform.SetParent(panel.transform, false);
-        var createdExternalWall4 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2 - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+        var createdExternalWall4 = Instantiate(verticalExternalWall, new Vector3(marginWidthMap + column * widthWall, hW / 2f - row * 0.5f * heightWall + 0.5f * heightWall - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall4.transform.SetParent(panel.transform, false);
+        
 
-        arrive.transform.Translate(new Vector3(widthWall * column + marginWidthMap, -heightWall * (row - 0.5f), 0));
-        entrance.transform.Translate(new Vector3(marginWidthMap, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
-        player.transform.Translate(new Vector3(marginWidthMap + widthWall * 0.5f, hW / 2 - 0.5f * heightWall - marginHeightMap, 0));
+        player.rectTransform.anchoredPosition = new Vector2(marginWidthMap + widthWall * 0.5f, hW / 2 - 0.5f * heightWall - marginHeightMap);
+        arrive.rectTransform.anchoredPosition = new Vector2(widthWall * column + marginWidthMap, -heightWall * (row - 0.5f) - marginHeightMap);
+        entrance.rectTransform.anchoredPosition = new Vector2(marginWidthMap , hW / 2f - 0.5f * heightWall - marginHeightMap);
 
 
         //Affichage des murs intérieurs
@@ -255,12 +263,12 @@ public class Map : MonoBehaviour
             {
                 if (grid[i, j].down == true)
                 {
-                    var createdWall = Instantiate(horizontalWall, new Vector3(widthWall * (0.5f + i) + marginWidthMap, hW / 2 - (j + 1) * heightWall - marginHeightMap, 0), horizontalWall.transform.rotation);
+                    var createdWall = Instantiate(horizontalWall, new Vector3(widthWall * (0.5f + i) + marginWidthMap, hW / 2f - (j + 1) * heightWall - marginHeightMap, 0), horizontalWall.transform.localRotation);
                     createdWall.transform.SetParent(panel.transform, false);
                 }
                 if (grid[i, j].right == true)
                 {
-                    var createdWall = Instantiate(verticalWall, new Vector3(widthWall * (1 + i) + marginWidthMap, hW / 2 - (j + 0.5f) * heightWall - marginHeightMap, 0), verticalWall.transform.rotation);
+                    var createdWall = Instantiate(verticalWall, new Vector3(widthWall * (1 + i) + marginWidthMap, hW / 2f - (j + 0.5f) * heightWall - marginHeightMap, 0), verticalWall.transform.localRotation);
                     createdWall.transform.SetParent(panel.transform, false);
                 }
             }

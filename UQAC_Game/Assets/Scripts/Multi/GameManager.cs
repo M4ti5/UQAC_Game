@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 				Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
 				// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-				PhotonNetwork.Instantiate("Prefabs/Player/" + this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+				PhotonNetwork.Instantiate("Prefabs/Player/" + this.playerPrefab.name, new Vector3(0f, 0.1f, 0f), Quaternion.identity, 0);
 			}
 			else
 			{
@@ -81,18 +81,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 		}
 
-	}
-
-	/// <summary>
-	/// MonoBehaviour method called on GameObject by Unity on every frame.
-	/// </summary>
-	void Update()
-	{
-		// "back" button of phone equals "Escape". quit app if that's pressed
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			QuitApplication();
-		}
 	}
 
     #endregion
@@ -150,17 +138,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 			PhotonNetwork.CurrentRoom.IsOpen = false;
 		}
 		PhotonNetwork.LeaveRoom();
-	}
-
-	/// <summary>
-	/// Close programme or stop playing mode if we use unity
-	/// </summary>
-	public void QuitApplication()
-	{
-#if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
-#endif
-		Application.Quit();
 	}
 
 	#endregion

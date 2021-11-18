@@ -53,8 +53,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -102,7 +101,10 @@ MonoBehaviour:
   distanceToHeld: 5
   allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
+  isStored: 0
+  EquipmentDest: {fileID: 0}
   maxDistance: 20
+  damage: 10
 --- !u!1001 &8624999683872247559
 PrefabInstance:
   m_ObjectHideFlags: 0

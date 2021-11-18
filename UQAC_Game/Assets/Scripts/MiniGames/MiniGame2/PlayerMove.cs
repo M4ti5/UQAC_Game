@@ -24,6 +24,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     RectTransform rectTranslationFromPlayer;
     BoxCollider colliderTranslationFromPlayer;
 
+    private Vector3 canvaScale;
+    private Vector2 playerSize;
 
     // Start is called before the first frame update
     private void Start()
@@ -31,8 +33,15 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         //Etre sûr que l'affichage du text de victoire est bien désactivé
         victoryText.SetActive(false);
 
+        //Récupère le scaleFactor du canva lors de l'adaptation à la taille de la fenêtre
+        canvaScale = gameObject.transform.parent.parent.localScale;
+
         //Récupération du RectTransform du player
         rect = GetComponent<RectTransform>();
+
+        playerSize = new Vector3(rect.sizeDelta.x * canvaScale.x, rect.sizeDelta.y * canvaScale.y);
+
+        
     }
 
     /// <summary>
@@ -49,14 +58,14 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         //Si cet objet est en collision avec un mur, le joueur ne se déplacera pas
         translationFromPlayer = new GameObject("TranslationFromPlayer");
         translationFromPlayer.transform.parent = this.gameObject.transform;
-        translationFromPlayer.transform.position = transform.position;
+        translationFromPlayer.transform.localPosition = transform.localPosition;
         translationFromPlayer.AddComponent<BoxCollider>();
         translationFromPlayer.AddComponent<RectTransform>();
         
-        previousPlayerPos = rect.position;
+        previousPlayerPos = rect.anchoredPosition;
         rectTranslationFromPlayer  = translationFromPlayer.GetComponent<RectTransform>();
         colliderTranslationFromPlayer = translationFromPlayer.GetComponent<BoxCollider>();
-
+        rectTranslationFromPlayer.anchoredPosition = previousPlayerPos;
     }
 
     /// <summary>
@@ -76,16 +85,18 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
                 diff = currentMousePosition - lastMousePosition;
 
                 //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
-                translationFromPlayer.transform.position = transform.position + new Vector3(diff.x / 2, diff.y / 2);
-                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
-                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + rect.sizeDelta;
-                colliderTranslationFromPlayer.transform.Translate(-diff);
+                //translationFromPlayer.transform.localPosition = transform.localPosition + new Vector3(diff.x / 2f, diff.y / 2f);
+                rectTranslationFromPlayer.anchoredPosition = new Vector2(diff.x / 2f, diff.y / 2f);
+                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
+                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
+                //colliderTranslationFromPlayer.transform.Translate(-diff);
+                rectTranslationFromPlayer.anchoredPosition = -new Vector2(diff.x / 2f, diff.y / 2f);
 
                 //Récupère la position du joueur avant son déplacement
-                previousPlayerPos = rect.transform.position;
+                previousPlayerPos = rect.anchoredPosition;
                 
                 //On déplace le joueur (reviendra en arrière si il rencontre un objet dans la méthode OnTriggerStay)
-                rect.transform.Translate(new Vector3(diff.x, diff.y, transform.position.z));
+                rect.anchoredPosition += new Vector2(diff.x, diff.y);
 
                 lastMousePosition = currentMousePosition;
             }
@@ -100,8 +111,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     {
         Debug.Log("victory");
         victoryText.SetActive(true);
-        yield return new WaitForSeconds(2);
-        Debug.Log("Fin de partie");
+        yield return new WaitForSeconds(1);
+        gameObject.transform.parent.parent.parent.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -128,38 +139,42 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         }
         else
         {
-            rect.transform.position = previousPlayerPos;
+            rect.anchoredPosition = previousPlayerPos;
         }
     }
 
     private void Update()
     {
         update += Time.deltaTime;
-        if (update > 1.0f/30f)
+        if (update > 1.0f/60f)
         {
             update = 0.0f;
             if (dragActive == false && victory == false)
             {
                 //Récupère  la position du joueur avant son déplacement
-                previousPlayerPos = rect.position;
+                previousPlayerPos = rect.anchoredPosition;
                 int moveSpeed = 4;
 
                 //On regarde les touches sélectionnées par le joueur et on déplace l'objet player en conséquence
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    rect.transform.Translate(new Vector3(0, moveSpeed, transform.position.z));
+                    //rect.transform.localPosition += new Vector3(0, moveSpeed, 0);
+                    rect.anchoredPosition += new Vector2(0, moveSpeed);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
-                    rect.transform.Translate(new Vector3(0, -moveSpeed, transform.position.z));
+                    //rect.transform.localPosition += new Vector3(0, -moveSpeed, 0);
+                    rect.anchoredPosition += new Vector2(0, -moveSpeed);
                 }
                 if (Input.GetKey(KeyCode.RightArrow))
                 {
-                    rect.transform.Translate(new Vector3(moveSpeed, 0, transform.position.z));
+                    //rect.transform.localPosition += new Vector3(moveSpeed, 0, 0);
+                    rect.anchoredPosition += new Vector2(moveSpeed, 0);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
-                    rect.transform.Translate(new Vector3(-moveSpeed, 0, transform.position.z));
+                    //rect.transform.localPosition += new Vector3(-moveSpeed, 0, 0);
+                    rect.anchoredPosition += new Vector2(-moveSpeed, 0);
                 }
             }
             if (victory == true && !victoryText.activeSelf)

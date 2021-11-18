@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77628b2c4f9fe1408db83c30bbbba6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceToHeld: 2
+  distanceToHeld: 5
   allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
+  isStored: 0
+  EquipmentDest: {fileID: 0}

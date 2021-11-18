@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manage one piece of a puzzle game
@@ -59,16 +61,16 @@ public class Piece : MonoBehaviour
         // Get canvas scale factor (without it all is break !)
         float canvasScaleFactor = canvas.scaleFactor;// https://answers.unity.com/questions/806948/how-to-get-width-of-recttransform-in-screen-coordi.html
         // Set random position
-        transform.position = new Vector3(
+        transform.localPosition = new Vector3(
             Random.Range(
-                tempZoneRectTransform.position.x - (tempZone.GetComponent<RectTransform>().rect.width* canvasScaleFactor) / 2f + (GetComponent<RectTransform>().sizeDelta.x * canvasScaleFactor) / 2f,
-                tempZoneRectTransform.position.x + (tempZone.GetComponent<RectTransform>().rect.width* canvasScaleFactor) / 2f -( GetComponent<RectTransform>().sizeDelta.x * canvasScaleFactor) / 2f
+                tempZoneRectTransform.localPosition.x - transform.parent.parent.localPosition.x - (tempZone.GetComponent<RectTransform>().rect.width) / 2f + (GetComponent<RectTransform>().sizeDelta.x) / 2f,
+                tempZoneRectTransform.localPosition.x - transform.parent.parent.localPosition.x + (tempZone.GetComponent<RectTransform>().rect.width) / 2f - (GetComponent<RectTransform>().sizeDelta.x) / 2f
                 ),
             Random.Range(
-                tempZoneRectTransform.position.y - (tempZone.GetComponent<RectTransform>().rect.height * canvasScaleFactor) / 2f + (GetComponent<RectTransform>().sizeDelta.y * canvasScaleFactor) / 2f ,
-                tempZoneRectTransform.position.y + (tempZone.GetComponent<RectTransform>().rect.height * canvasScaleFactor) / 2f - (GetComponent<RectTransform>().sizeDelta.y * canvasScaleFactor) / 2f - (tempZone.GetComponent<RectTransform>().rect.height * 0.1f * canvasScaleFactor)
+                tempZoneRectTransform.localPosition.y - transform.parent.parent.localPosition.y - (tempZone.GetComponent<RectTransform>().rect.height) / 2f + (GetComponent<RectTransform>().sizeDelta.y) / 2f ,
+                tempZoneRectTransform.localPosition.y - transform.parent.parent.localPosition.y + (tempZone.GetComponent<RectTransform>().rect.height) / 2f - (GetComponent<RectTransform>().sizeDelta.y) / 2f - (tempZone.GetComponent<RectTransform>().rect.height * 0.1f)
                 ),
-            0
+            1f
             );
         // Reset right position indicator
         inRightPosition = false; 

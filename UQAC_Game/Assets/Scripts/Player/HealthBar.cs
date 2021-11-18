@@ -1,14 +1,16 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviourPun
 {
     public Image healthBar;
     public GameObject mask;
     public TextMeshProUGUI hpText;
     private int hpMax;
-    private int currentHP;
+    public int currentHP;
+    public GameObject allPlayers;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +23,18 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //test des fonctions
-        if (Input.GetKeyDown(KeyCode.R))
+        int allPlayersCount = allPlayers.transform.childCount;
+        for (int i = 0; i < allPlayersCount; i++)
+        {
+            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+            {
+                currentHP = allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().currentHP;
+                ModifyDisplay();
+            }
+        }
+
+            //test des fonctions
+        /*if (Input.GetKeyDown(KeyCode.R))
         {
             TakeDamage(10);
         }
@@ -37,7 +49,7 @@ public class HealthBar : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             DecreaseHpMax(10);
-        }
+        }*/
 
         if (currentHP <= 0)
         {
@@ -45,7 +57,7 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHP -= damage;
         if (currentHP <= 0)
@@ -56,14 +68,14 @@ public class HealthBar : MonoBehaviour
         ModifyDisplay();
     }
 
-    private void IncreaseHpMax(int bonusHealth)
+    public void IncreaseHpMax(int bonusHealth)
     {
         hpMax += bonusHealth;
         currentHP += bonusHealth;
         ModifyDisplay();
     }
 
-    private void DecreaseHpMax(int malusHealth)
+    public void DecreaseHpMax(int malusHealth)
     {
         hpMax -= malusHealth;
         if (hpMax <= 100)
@@ -77,7 +89,7 @@ public class HealthBar : MonoBehaviour
         ModifyDisplay();
     }
 
-    private void RecoverHP(int heal)
+    public void RecoverHP(int heal)
     {
         currentHP += heal;
         if (currentHP >= hpMax)
@@ -106,7 +118,7 @@ public class HealthBar : MonoBehaviour
         }
 
         //modifie l'avancement de la barre de vie ainsi que le texte correspondant
-        healthBar.transform.position = mask.transform.position + new Vector3(currentHP * 200 / hpMax - 200, 0, 0);
+        healthBar.transform.localPosition = new Vector3(currentHP * 200 / hpMax - 200, 0, 0);
         hpText.text = "HP : " + currentHP + " / " + hpMax;
     }
 }

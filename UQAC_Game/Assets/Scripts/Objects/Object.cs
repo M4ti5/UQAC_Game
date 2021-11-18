@@ -10,9 +10,11 @@ public class Object : MonoBehaviourPun
     public GameObject allObjects;
 
     protected bool isHeld = false;
+    public bool isStored = false;
     protected Transform HitObj;
-    protected Transform EquipmentDest;
+    public Transform EquipmentDest;
     protected Transform player;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +62,7 @@ public class Object : MonoBehaviourPun
 
         }
 
-        if (Input.GetKeyUp(KeyCode.A) && isHeld == true && PhotonNetwork.LocalPlayer == player.GetComponent<PhotonView>().Owner)
+        if (Input.GetKeyUp(KeyCode.A) && isHeld == true && PhotonNetwork.LocalPlayer == player.GetComponent<PhotonView>().Owner && isStored == false)
         {
             OnDesequipmentTriggered();
         }
@@ -118,6 +120,7 @@ public class Object : MonoBehaviourPun
     protected void DesequipmentTriggered()
     {
         transform.parent = allObjects.transform;
+        transform.position = EquipmentDest.parent.Find("Inventory").position;
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
