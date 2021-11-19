@@ -26,6 +26,8 @@ public class MiniGameStarter : MonoBehaviour
     public GameObject panelHP;
     private HealthBar healthBar;
 
+    private GameObject miniGameActive;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,7 @@ public class MiniGameStarter : MonoBehaviour
         personalScore = panelScore.GetComponentInChildren<PersonalScore>();
         healthBar = panelHP.GetComponentInChildren<HealthBar>();
 
+        
     }
 
     // Update is called once per frame
@@ -63,19 +66,22 @@ public class MiniGameStarter : MonoBehaviour
                 if (grabberPlayerId >= 0)
                 {
                     isOpen = true;
+                    miniGameActive = new GameObject();
+                    miniGameActive.transform.SetParent(gameObject.transform.parent);
+
                     createdMiniGame = Instantiate(miniGame, new Vector3(0, 0, 0), miniGame.transform.rotation);
                     createdMiniGame.SetActive(true);
-                    createdMiniGame.transform.SetParent(gameObject.transform, false);
+                    createdMiniGame.transform.SetParent(miniGameActive.transform, false);
                 }
             }
-            else if (gameObject.transform.childCount == 0 && isOpen)
+            else if (miniGameActive == null && isOpen)
             {
                 isOpen = false;
             }
         }
-        if (gameObject.transform.childCount != 0)
+        if (miniGameActive != null)
         {
-            if (!gameObject.transform.GetChild(0).gameObject.activeSelf)
+            if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
                 if (criminal)
                 {
@@ -87,7 +93,7 @@ public class MiniGameStarter : MonoBehaviour
                     personalScore.IncreaseScore();
                 }
                 healthBar.RecoverHP(15);
-                Destroy(gameObject.transform.GetChild(0).gameObject);
+                Destroy(miniGameActive);
                 gameEnded = true;
             }
         }
