@@ -108,9 +108,8 @@ public class PlayerStatManager : MonoBehaviourPun
         {
             currentHP = 0;
             Debug.Log("Game Over");
-        } 
-        
-        
+        }
     }
+
     
 }
