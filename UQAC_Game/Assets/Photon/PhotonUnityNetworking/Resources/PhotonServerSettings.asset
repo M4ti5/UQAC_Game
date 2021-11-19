@@ -45,6 +45,8 @@ MonoBehaviour:
   - CustomBehaviour
   - RandomSkinColor
   - SetScore
+  - storeEquipement
+  - StoreEquipement
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
