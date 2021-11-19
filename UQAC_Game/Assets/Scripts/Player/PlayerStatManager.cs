@@ -9,11 +9,13 @@ public class PlayerStatManager : MonoBehaviourPun
     public int stamina;
     
     public GameObject allObjects;
-    public GameObject display;
-    public TextMeshProUGUI text;
+    public GameObject interractionDisplay;
+    public TextMeshProUGUI interactionText;
+    public GameObject inventoryDisplay;
+    public TextMeshProUGUI inventoryText;
 
     public GameObject storedEquipement;
-    public string storedEquipementPath;
+    
 
     
     public float distanceToHold = 5;
@@ -22,8 +24,11 @@ public class PlayerStatManager : MonoBehaviourPun
     {
         currentHP = 100;
         allObjects = GameObject.Find("Objects");
-        display = GameObject.Find("TakeObject");
-        text = display.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        
+        interractionDisplay = GameObject.Find("TakeObject");
+        interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        inventoryDisplay = GameObject.Find("InventoryDisplay");
+        inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -35,18 +40,26 @@ public class PlayerStatManager : MonoBehaviourPun
         {
             if (_reachableObjects.Count > 0)
             {
-                display.SetActive(true);
-                text.text = "Take " + nearestObj.name + "\nPress E";
+                interractionDisplay.SetActive(true);
+                interactionText.text = "Take " + nearestObj.name + "\nPress E";
             }
             else
             {
-                display.SetActive(false);
+                interractionDisplay.SetActive(false);
             }
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10);
+
+        if (storedEquipement != null)
+        {   
+            inventoryDisplay.SetActive(true);
+            inventoryText.text = storedEquipement.name;
         }
+        else
+        {
+            inventoryDisplay.SetActive(false);
+            inventoryText.text = "";
+        }
+        
         
     }
 

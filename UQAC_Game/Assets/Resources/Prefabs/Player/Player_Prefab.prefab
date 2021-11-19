@@ -338,10 +338,11 @@ MonoBehaviour:
   currentHP: 100
   stamina: 0
   allObjects: {fileID: 0}
-  display: {fileID: 0}
-  text: {fileID: 0}
+  interractionDisplay: {fileID: 0}
+  interactionText: {fileID: 0}
+  inventoryDisplay: {fileID: 0}
+  inventoryText: {fileID: 0}
   storedEquipement: {fileID: 0}
-  storedEquipementPath: 
   distanceToHold: 5
 --- !u!1 &6023304739165050249
 GameObject:

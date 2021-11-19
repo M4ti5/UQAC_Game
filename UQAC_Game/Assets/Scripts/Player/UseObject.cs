@@ -66,17 +66,20 @@ public class UseObject : MonoBehaviourPun
             equipedObject.transform.parent = Inventory;
             EquipementDest.GetComponent<UseObject>().hasObject = false;
             equipedObject.GetComponent<Object>().isStored = true;
+            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
         }
         else if(storedObject != null && equipedObject == null)
         {
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
             storedObject.GetComponent<Object>().isStored = false;
             EquipementDest.GetComponent<UseObject>().hasObject = true;
+            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = null;
         }
         else if (storedObject != null && equipedObject != null)
         {
             equipedObject.transform.parent = Inventory;
             equipedObject.GetComponent<Object>().isStored = true;
+            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
             storedObject.GetComponent<Object>().isStored = false;
         }
