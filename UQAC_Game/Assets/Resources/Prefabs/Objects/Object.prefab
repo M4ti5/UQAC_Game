@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2710394647924641043}
   - component: {fileID: 8646584475661178197}
+  - component: {fileID: 8306107576550067761}
   - component: {fileID: 3208441695496774540}
   - component: {fileID: 3208441695496774541}
   - component: {fileID: 3208441695496774542}
@@ -54,10 +55,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8306107576550067761}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8306107576550067761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6503671064153239741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!33 &3208441695496774540
 MeshFilter:
   m_ObjectHideFlags: 0
