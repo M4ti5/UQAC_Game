@@ -32,7 +32,15 @@ public class StaminaBar : MonoBehaviour
         
         // get automaticaly size of the bar
         staminaBarMaxSize = staminaBar.rect.width;
+
+        FindMovementScript();
         
+        // first display
+        ModifyDisplay();
+    }
+
+    void FindMovementScript()
+    {
         // find mine player in all children of players parent
         foreach (Transform player in GameObject.Find("Players").transform)
         {
@@ -41,14 +49,16 @@ public class StaminaBar : MonoBehaviour
                 movementScript = player.GetComponent<Movement>();
             }
         }
-        
-        // first display
-        ModifyDisplay();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (movementScript == null)
+        {
+            FindMovementScript();
+        }
+        
         CanIHaveEnoughStaminaToRun();
 
         //test des inputs fonctions
