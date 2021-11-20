@@ -75,7 +75,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public void OnDrag(PointerEventData eventData)
     {
         update += Time.deltaTime;
-        if (update > 1.0f / 40f)
+        if (update > 1.0f / 60f)
         {
             //Le déplacement est possible jusqu'à ce que le joueur atteigne l'arrivée
             if (!victory)
@@ -86,17 +86,17 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
                 //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
                 //translationFromPlayer.transform.localPosition = transform.localPosition + new Vector3(diff.x / 2f, diff.y / 2f);
-                rectTranslationFromPlayer.anchoredPosition = new Vector2(diff.x / 2f, diff.y / 2f);
-                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
-                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x), Mathf.Abs(diff.y)) + playerSize;
+                rectTranslationFromPlayer.anchoredPosition = new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
+                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
+                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
                 //colliderTranslationFromPlayer.transform.Translate(-diff);
-                rectTranslationFromPlayer.anchoredPosition = -new Vector2(diff.x / 2f, diff.y / 2f);
+                rectTranslationFromPlayer.anchoredPosition = -new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
 
                 //Récupère la position du joueur avant son déplacement
                 previousPlayerPos = rect.anchoredPosition;
                 
                 //On déplace le joueur (reviendra en arrière si il rencontre un objet dans la méthode OnTriggerStay)
-                rect.anchoredPosition += new Vector2(diff.x, diff.y);
+                rect.anchoredPosition += new Vector2(diff.x / canvaScale.x, diff.y / canvaScale.y);
 
                 lastMousePosition = currentMousePosition;
             }
@@ -146,35 +146,35 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private void Update()
     {
         update += Time.deltaTime;
-        if (update > 1.0f/60f)
+        if (update > 1.0f/40f)
         {
             update = 0.0f;
             if (dragActive == false && victory == false)
             {
                 //Récupère  la position du joueur avant son déplacement
                 previousPlayerPos = rect.anchoredPosition;
-                int moveSpeed = 4;
+                int moveSpeed = 5;
 
                 //On regarde les touches sélectionnées par le joueur et on déplace l'objet player en conséquence
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
                     //rect.transform.localPosition += new Vector3(0, moveSpeed, 0);
-                    rect.anchoredPosition += new Vector2(0, moveSpeed);
+                    rect.anchoredPosition += new Vector2(0, moveSpeed * canvaScale.y);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
                     //rect.transform.localPosition += new Vector3(0, -moveSpeed, 0);
-                    rect.anchoredPosition += new Vector2(0, -moveSpeed);
+                    rect.anchoredPosition += new Vector2(0, -moveSpeed * canvaScale.y);
                 }
                 if (Input.GetKey(KeyCode.RightArrow))
                 {
                     //rect.transform.localPosition += new Vector3(moveSpeed, 0, 0);
-                    rect.anchoredPosition += new Vector2(moveSpeed, 0);
+                    rect.anchoredPosition += new Vector2(moveSpeed * canvaScale.x, 0);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
                     //rect.transform.localPosition += new Vector3(-moveSpeed, 0, 0);
-                    rect.anchoredPosition += new Vector2(-moveSpeed, 0);
+                    rect.anchoredPosition += new Vector2(-moveSpeed * canvaScale.x, 0);
                 }
             }
             if (victory == true && !victoryText.activeSelf)
