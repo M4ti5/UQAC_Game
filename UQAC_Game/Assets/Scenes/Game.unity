@@ -2030,6 +2030,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bonus
       objectReference: {fileID: 0}
+    - target: {fileID: 4658850755517010674, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850755517010675, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850755517010675, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850757205343024, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850757205343024, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850757205343024, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_FillOrigin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4658850757205343024, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
+      propertyPath: m_FillClockwise
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74bf4dea7fb5bf44addffcafec5bfaf, type: 3}
 --- !u!1001 &6473607466061144931
