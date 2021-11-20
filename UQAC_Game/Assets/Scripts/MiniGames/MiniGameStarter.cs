@@ -83,6 +83,16 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
+                int playerCount = allPlayers.transform.childCount;
+                for (int i = 0; i < playerCount; i++)
+                {
+                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                    {
+                        allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>().RecoverHP(15);
+                    }
+                }
+
+
                 if (criminal)
                 {
                     globalScore.DecreaseScore();
@@ -92,7 +102,7 @@ public class MiniGameStarter : MonoBehaviour
                     globalScore.IncreaseScore();
                     personalScore.IncreaseScore();
                 }
-                healthBar.RecoverHP(15);
+                //healthBar.RecoverHP(15);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }

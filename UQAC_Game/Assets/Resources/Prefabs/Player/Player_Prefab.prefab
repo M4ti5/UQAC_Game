@@ -337,6 +337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHP: 100
   stamina: 0
+  hpMax: 0
   allObjects: {fileID: 0}
   interractionDisplay: {fileID: 0}
   interactionText: {fileID: 0}

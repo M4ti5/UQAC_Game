@@ -7,6 +7,7 @@ public class PlayerStatManager : MonoBehaviourPun
 {
     public int currentHP;
     public int stamina;
+    public int hpMax;
     
     public GameObject allObjects;
     public GameObject interractionDisplay;
@@ -23,6 +24,7 @@ public class PlayerStatManager : MonoBehaviourPun
     void Start()
     {
         currentHP = 100;
+        hpMax = 100;
         allObjects = GameObject.Find("Objects");
         
         interractionDisplay = GameObject.Find("TakeObject");
@@ -124,5 +126,15 @@ public class PlayerStatManager : MonoBehaviourPun
         }
     }
 
-    
+    public void RecoverHP(int heal)
+    {
+        currentHP += heal;
+        if (currentHP >= hpMax)
+        {
+            currentHP = hpMax;
+            //Debug.Log("Full Life");
+        }
+    }
+
+
 }
