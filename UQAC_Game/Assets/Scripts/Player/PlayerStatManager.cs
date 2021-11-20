@@ -8,6 +8,10 @@ public class PlayerStatManager : MonoBehaviourPun
     public int currentHP;
     public int stamina;
     public int hpMax;
+
+    public GameObject canvas;
+    public PersonalScore personalScore;
+    public GlobalScore globalScore;
     
     public GameObject allObjects;
     public GameObject interractionDisplay;
@@ -25,12 +29,26 @@ public class PlayerStatManager : MonoBehaviourPun
     {
         currentHP = 100;
         hpMax = 100;
+
         allObjects = GameObject.Find("Objects");
         
         interractionDisplay = GameObject.Find("TakeObject");
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+
+
+        canvas = GameObject.Find("PlayerCanvas");
+        int canvasCount = canvas.transform.childCount;
+        for (int i = 0; i < canvasCount; i++)
+        {
+            if (canvas.transform.GetChild(i).tag == "Score")
+            {
+                personalScore = canvas.transform.GetChild(i).GetComponent<PersonalScore>();
+                globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
+            }
+        }
+        
     }
 
     // Update is called once per frame
@@ -65,6 +83,7 @@ public class PlayerStatManager : MonoBehaviourPun
         
     }
 
+    #region object
     List<(GameObject, float)> reachableObjects()
     {
         List<(GameObject, float)> _reachableObjects = new List<(GameObject, float)>();
@@ -115,7 +134,11 @@ public class PlayerStatManager : MonoBehaviourPun
 
         return nearestObj;
     }
+    #endregion
 
+    #region hp
+    //Gère la modification des pv du joueur
+    //Pris en compte dans le fichier HealthBar
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
@@ -135,6 +158,30 @@ public class PlayerStatManager : MonoBehaviourPun
             //Debug.Log("Full Life");
         }
     }
+    #endregion
+
+    #region score
+    //Appelle les fonctions contenues dans GlobalScore et PersonalScore afin de gérer la modification du score
+    public void IncreasePersonalScore()
+    {
+        personalScore.IncreaseScore();
+    }
+
+    public void DecreasePersonalScore()
+    {
+        personalScore.DecreaseScore();
+    }
+
+    public void IncreaseGlobalScore()
+    {
+        globalScore.IncreaseScore();
+    }
+
+    public void DecreaseGlobalScore()
+    {
+        globalScore.DecreaseScore();
+    }
+    #endregion
 
 
 }

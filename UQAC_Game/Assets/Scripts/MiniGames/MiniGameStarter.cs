@@ -47,10 +47,12 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.N) && !isOpen)
             {
+                //appelé si le joueur débute veut ouvrir un mini jeu
                 int allPlayersCount = allPlayers.transform.childCount;
                 int grabberPlayerId = -1;
                 float minDistance = float.PositiveInfinity;
 
+                //On récupère l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
                 for (int i = 0; i < allPlayersCount; i++)
                 {
                     (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
@@ -63,6 +65,7 @@ public class MiniGameStarter : MonoBehaviour
                     }
                 }
 
+                //Si le joueur est assez proche, on crée une instance de mini jeu que le joueur devra résoudre
                 if (grabberPlayerId >= 0)
                 {
                     isOpen = true;
@@ -76,6 +79,7 @@ public class MiniGameStarter : MonoBehaviour
             }
             else if (miniGameActive == null && isOpen)
             {
+                //appelé si le joueur appui sur LeaveMiniGame
                 isOpen = false;
             }
         }
@@ -83,32 +87,39 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
+                //Appelé si le joueur a terminé un mini jeu
+
+                //Récupération du script contenant les stats du joueur
+                PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 int playerCount = allPlayers.transform.childCount;
                 for (int i = 0; i < playerCount; i++)
                 {
                     if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
                     {
-                        allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>().RecoverHP(15);
+                        playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
                     }
                 }
 
-
+                //Diminution du score global si le joueur est un criminel
+                //Augmentation du score personnel et global si le joueur est un enquêteur
                 if (criminal)
                 {
-                    globalScore.DecreaseScore();
+                    playerStatManager.DecreaseGlobalScore();
                 }
                 else
                 {
-                    globalScore.IncreaseScore();
-                    personalScore.IncreaseScore();
+                    playerStatManager.IncreaseGlobalScore();
+                    playerStatManager.IncreasePersonalScore();
                 }
-                //healthBar.RecoverHP(15);
+                //Le joueur récupère des PV
+                playerStatManager.RecoverHP(15);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
         }
     }
 
+    //On regarde si le joueur est assez proche du miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
