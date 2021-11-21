@@ -15,6 +15,8 @@ public class Options : MonoBehaviour
     public Slider slider;
     const string volumeMusiquePrefKey = "VolumeMusique";
 
+    public GameObject allPlayers;
+
     private void Start()
     {
         panel.SetActive(visible);
@@ -64,6 +66,17 @@ public class Options : MonoBehaviour
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
+
+            PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+            int playerCount = allPlayers.transform.childCount;
+            for (int i = 0; i < playerCount; i++)
+            {
+                if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                {
+                    playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+                }
+            }
+            playerStatManager.DesequipmentTrigger();
 
             PhotonNetwork.LeaveRoom();
         }

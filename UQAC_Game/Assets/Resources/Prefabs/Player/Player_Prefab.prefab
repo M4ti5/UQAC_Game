@@ -347,6 +347,7 @@ MonoBehaviour:
   inventoryDisplay: {fileID: 0}
   inventoryText: {fileID: 0}
   storedEquipement: {fileID: 0}
+  equipements: {fileID: 4632567643014706147}
   distanceToHold: 5
 --- !u!1 &6023304739165050249
 GameObject:
