@@ -7,13 +7,20 @@ public class PlayerStatManager : MonoBehaviourPun
 {
     public int currentHP;
     public int stamina;
+    public int hpMax;
+
+    public GameObject canvas;
+    public PersonalScore personalScore;
+    public GlobalScore globalScore;
     
     public GameObject allObjects;
-    public GameObject display;
-    public TextMeshProUGUI text;
+    public GameObject interractionDisplay;
+    public TextMeshProUGUI interactionText;
+    public GameObject inventoryDisplay;
+    public TextMeshProUGUI inventoryText;
 
     public GameObject storedEquipement;
-    public string storedEquipementPath;
+    
 
     
     public float distanceToHold = 5;
@@ -21,9 +28,27 @@ public class PlayerStatManager : MonoBehaviourPun
     void Start()
     {
         currentHP = 100;
+        hpMax = 100;
+
         allObjects = GameObject.Find("Objects");
-        display = GameObject.Find("TakeObject");
-        text = display.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        
+        interractionDisplay = GameObject.Find("TakeObject");
+        interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        inventoryDisplay = GameObject.Find("InventoryDisplay");
+        inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+
+
+        canvas = GameObject.Find("PlayerCanvas");
+        int canvasCount = canvas.transform.childCount;
+        for (int i = 0; i < canvasCount; i++)
+        {
+            if (canvas.transform.GetChild(i).tag == "Score")
+            {
+                personalScore = canvas.transform.GetChild(i).GetComponent<PersonalScore>();
+                globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
+            }
+        }
+        
     }
 
     // Update is called once per frame
@@ -35,21 +60,30 @@ public class PlayerStatManager : MonoBehaviourPun
         {
             if (_reachableObjects.Count > 0)
             {
-                display.SetActive(true);
-                text.text = "Take " + nearestObj.name + "\nPress E";
+                interractionDisplay.SetActive(true);
+                interactionText.text = "Take " + nearestObj.name + "\nPress E";
             }
             else
             {
-                display.SetActive(false);
+                interractionDisplay.SetActive(false);
             }
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10);
+
+        if (storedEquipement != null)
+        {   
+            inventoryDisplay.SetActive(true);
+            inventoryText.text = storedEquipement.name;
         }
+        else
+        {
+            inventoryDisplay.SetActive(false);
+            inventoryText.text = "";
+        }
+        
         
     }
 
+    #region object
     List<(GameObject, float)> reachableObjects()
     {
         List<(GameObject, float)> _reachableObjects = new List<(GameObject, float)>();
@@ -100,7 +134,11 @@ public class PlayerStatManager : MonoBehaviourPun
 
         return nearestObj;
     }
+    #endregion
 
+    #region hp
+    //Gère la modification des pv du joueur
+    //Pris en compte dans le fichier HealthBar
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
@@ -108,9 +146,42 @@ public class PlayerStatManager : MonoBehaviourPun
         {
             currentHP = 0;
             Debug.Log("Game Over");
-        } 
-        
-        
+        }
     }
-    
+
+    public void RecoverHP(int heal)
+    {
+        currentHP += heal;
+        if (currentHP >= hpMax)
+        {
+            currentHP = hpMax;
+            //Debug.Log("Full Life");
+        }
+    }
+    #endregion
+
+    #region score
+    //Appelle les fonctions contenues dans GlobalScore et PersonalScore afin de gérer la modification du score
+    public void IncreasePersonalScore()
+    {
+        personalScore.IncreaseScore();
+    }
+
+    public void DecreasePersonalScore()
+    {
+        personalScore.DecreaseScore();
+    }
+
+    public void IncreaseGlobalScore()
+    {
+        globalScore.IncreaseScore();
+    }
+
+    public void DecreaseGlobalScore()
+    {
+        globalScore.DecreaseScore();
+    }
+    #endregion
+
+
 }

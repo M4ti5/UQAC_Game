@@ -7,6 +7,6 @@ public class LeaveMiniGame : MonoBehaviour
     //Exit mini game
     public void ExitMiniGame()
     {
-        Destroy(gameObject.transform.parent.parent.gameObject);
+        Destroy(gameObject.transform.parent.parent.parent.gameObject);
     }
 }
