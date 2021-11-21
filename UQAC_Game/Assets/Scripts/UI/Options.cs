@@ -16,6 +16,8 @@ public class Options : MonoBehaviourPun
     public Slider slider;
     const string volumeMusiquePrefKey = "VolumeMusique";
 
+    public GameObject allPlayers;
+
     private void Start()
     {
         panel.SetActive(visible);
@@ -51,7 +53,6 @@ public class Options : MonoBehaviourPun
     /// </summary>
     public void QuitApplication()
     {
-        //ClearPlayer();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
@@ -62,43 +63,25 @@ public class Options : MonoBehaviourPun
     {
         if (PhotonNetwork.InRoom)
         {   
-            //ClearPlayer();
             if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
-            
+
+            PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+            int playerCount = allPlayers.transform.childCount;
+            for (int i = 0; i < playerCount; i++)
+            {
+                if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                {
+                    playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+                }
+            }
+            playerStatManager.DesequipmentTrigger();
+
             PhotonNetwork.LeaveRoom();
         }
     }
     
-    /*
-    public void ClearPlayer()
-    {
-        GameObject allPlayers = GameObject.Find("Players");
-        
-        int id = -1;
-        //Debug.Log(GetComponent<PhotonView>().ViewID);
-        
-        for (int i = 0; i < allPlayers.transform.childCount; i++)
-        {
-            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-            {
-                id = i;
-                
-            }
-        }
-        
-        if (id >= 0)
-        {
-            if (allPlayers.transform.GetChild(id).Find("Equipements").childCount > 0)
-            {
-                allPlayers.transform.GetChild(id).Find("Equipements").GetChild(0).GetComponent<Object>().OnDesequipmentTriggered();
-            }
-            //allPlayers.transform.GetChild(id).Find("Equipements").GetChild(0).GetComponent<Object>().OnDesequipmentTriggered();
-
-        }
-        
-    }*/
 
 }

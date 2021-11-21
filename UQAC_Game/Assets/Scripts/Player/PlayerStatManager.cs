@@ -20,6 +20,7 @@ public class PlayerStatManager : MonoBehaviourPun
     public TextMeshProUGUI inventoryText;
 
     public GameObject storedEquipement;
+    public GameObject equipements;
     
 
     
@@ -135,6 +136,15 @@ public class PlayerStatManager : MonoBehaviourPun
         }
 
         return nearestObj;
+    }
+
+    public void DesequipmentTrigger()
+    {
+        if (equipements.transform.childCount != 0)
+        {
+            Object equipedObject = equipements.transform.GetChild(0).GetComponent<Object>();
+            equipedObject.OnDesequipmentTriggered();
+        }
     }
     #endregion
 
