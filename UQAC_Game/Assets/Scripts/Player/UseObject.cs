@@ -23,8 +23,8 @@ public class UseObject : MonoBehaviourPun
         {
             //add equipement behavior script
             this.transform.GetChild(0).GetComponent<Object>().Behaviour();// utiliser l'objet
-            //this.transform.GetChild(0).GetComponent<Object>().DestroyObject(PhotonNetwork.LocalPlayer);// détruire l'objet
-            //hasObject = false;
+            this.transform.GetChild(0).GetComponent<Object>().DestroyObject(PhotonNetwork.LocalPlayer);// détruire l'objet
+            hasObject = false;
         }
         
         //Store equipement
