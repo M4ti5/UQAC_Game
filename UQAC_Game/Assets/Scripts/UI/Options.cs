@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Globalization;
 
 public class Options : MonoBehaviour
 {
@@ -11,11 +13,17 @@ public class Options : MonoBehaviour
 
     public AudioSource[] volumeMusique;
     public Slider slider;
+    const string volumeMusiquePrefKey = "VolumeMusique";
 
     private void Start()
     {
         panel.SetActive(visible);
         volumeMusique = FindObjectsOfType<AudioSource>();
+        if (PlayerPrefs.HasKey(volumeMusiquePrefKey))
+        {
+            string defaultVolumeMusique = PlayerPrefs.GetString(volumeMusiquePrefKey); 
+            slider.value = (float)Convert.ToDouble(defaultVolumeMusique); ;
+        }
     }
 
     void Update()
@@ -33,6 +41,7 @@ public class Options : MonoBehaviour
         foreach (AudioSource v in volumeMusique)
         {
             v.volume = slider.value;
+            PlayerPrefs.SetString(volumeMusiquePrefKey, Convert.ToString(slider.value)); // à voir si on peut aussi mettre des float
         }
     }
 
