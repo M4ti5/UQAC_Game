@@ -885,14 +885,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -921,14 +913,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 42571495153975932, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -946,7 +930,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7521909958987044599, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
       propertyPath: m_fontSize
-      value: 31.3
+      value: 22.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
@@ -1082,6 +1066,10 @@ PrefabInstance:
     - target: {fileID: 171399921359534067, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
       propertyPath: m_Name
       value: VictoryText
+      objectReference: {fileID: 0}
+    - target: {fileID: 171399921359534067, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3765556286500278885, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
       propertyPath: m_Pivot.x
