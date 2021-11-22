@@ -75,12 +75,19 @@ public class MiniGameStarter : MonoBehaviour
                     createdMiniGame = Instantiate(miniGame, new Vector3(0, 0, 0), miniGame.transform.rotation);
                     createdMiniGame.SetActive(true);
                     createdMiniGame.transform.SetParent(miniGameActive.transform, false);
+
+                    PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+                    playerStatManager = GetPlayerStatManager();
+                    playerStatManager.canMove(false);
                 }
             }
             else if (miniGameActive == null && isOpen)
             {
                 //appelé si le joueur appui sur LeaveMiniGame
                 isOpen = false;
+                PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+                playerStatManager = GetPlayerStatManager();
+                playerStatManager.canMove(true);
             }
         }
         if (miniGameActive != null)
@@ -91,14 +98,7 @@ public class MiniGameStarter : MonoBehaviour
 
                 //Récupération du script contenant les stats du joueur
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
-                int playerCount = allPlayers.transform.childCount;
-                for (int i = 0; i < playerCount; i++)
-                {
-                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                    {
-                        playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
-                    }
-                }
+                playerStatManager = GetPlayerStatManager();
 
                 //Diminution du score global si le joueur est un criminel
                 //Augmentation du score personnel et global si le joueur est un enquêteur
@@ -112,6 +112,7 @@ public class MiniGameStarter : MonoBehaviour
                     playerStatManager.IncreasePersonalScore();
                 }
                 //Le joueur récupère des PV
+                playerStatManager.canMove(true);
                 playerStatManager.RecoverHP(15);
                 Destroy(miniGameActive);
                 gameEnded = true;
@@ -134,5 +135,19 @@ public class MiniGameStarter : MonoBehaviour
             return (false, dist);
         }
 
+    }
+
+    private PlayerStatManager GetPlayerStatManager()
+    {
+        PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+        int playerCount = allPlayers.transform.childCount;
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+            {
+                playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+            }
+        }
+        return playerStatManager;
     }
 }

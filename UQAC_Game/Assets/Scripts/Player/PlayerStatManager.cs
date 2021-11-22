@@ -196,4 +196,11 @@ public class PlayerStatManager : MonoBehaviourPun
     #endregion
 
 
+
+    #region move
+    public void canMove(bool move)
+    {
+        gameObject.GetComponent<Movement>().canMove = move;
+    }
+    #endregion
 }
