@@ -257,7 +257,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4390310180865894293}
         m_TargetAssemblyTypeName: MessageAideMain, Assembly-CSharp
-        m_MethodName: Afficher
+        m_MethodName: Toggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

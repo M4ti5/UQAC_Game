@@ -101,7 +101,7 @@ public class Movement : MonoBehaviourPun
         //start
         if (canRun)
         {
-            if (Input.GetKey(KeyCode.LeftShift)) {
+            if (Input.GetKey(KeyCode.LeftShift) && inMove) {
                 moveSpeed = sprintSpeed;
                 inRun = true;
             }
