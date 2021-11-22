@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Globalization;
+using Photon.Pun.UtilityScripts;
 
-public class Options : MonoBehaviour
+public class Options : MonoBehaviourPun
 {
     public GameObject panel;
     bool visible = false;
@@ -14,6 +15,8 @@ public class Options : MonoBehaviour
     public AudioSource[] volumeMusique;
     public Slider slider;
     const string volumeMusiquePrefKey = "VolumeMusique";
+
+    public GameObject allPlayers;
 
     private void Start()
     {
@@ -41,7 +44,7 @@ public class Options : MonoBehaviour
         foreach (AudioSource v in volumeMusique)
         {
             v.volume = slider.value;
-            PlayerPrefs.SetString(volumeMusiquePrefKey, Convert.ToString(slider.value)); // à voir si on peut aussi mettre des float
+            PlayerPrefs.SetString(volumeMusiquePrefKey, Convert.ToString(slider.value)); // ï¿½ voir si on peut aussi mettre des float
         }
     }
 
@@ -59,14 +62,26 @@ public class Options : MonoBehaviour
     public void LeaveRoom()
     {
         if (PhotonNetwork.InRoom)
-        {
+        {   
             if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
 
+            PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+            int playerCount = allPlayers.transform.childCount;
+            for (int i = 0; i < playerCount; i++)
+            {
+                if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                {
+                    playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+                }
+            }
+            playerStatManager.DesequipmentTrigger();
+
             PhotonNetwork.LeaveRoom();
         }
     }
+    
 
 }

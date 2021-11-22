@@ -20,6 +20,7 @@ public class PlayerStatManager : MonoBehaviourPun
     public TextMeshProUGUI inventoryText;
 
     public GameObject storedEquipement;
+    public GameObject equipements;
     
 
     
@@ -67,18 +68,20 @@ public class PlayerStatManager : MonoBehaviourPun
             {
                 interractionDisplay.SetActive(false);
             }
+            
+            if (storedEquipement != null)
+            {   
+                inventoryDisplay.SetActive(true);
+                inventoryText.text = storedEquipement.name;
+            }
+            else
+            {
+                inventoryDisplay.SetActive(false);
+                inventoryText.text = "";
+            }
         }
 
-        if (storedEquipement != null)
-        {   
-            inventoryDisplay.SetActive(true);
-            inventoryText.text = storedEquipement.name;
-        }
-        else
-        {
-            inventoryDisplay.SetActive(false);
-            inventoryText.text = "";
-        }
+        
         
         
     }
@@ -134,10 +137,19 @@ public class PlayerStatManager : MonoBehaviourPun
 
         return nearestObj;
     }
+
+    public void DesequipmentTrigger()
+    {
+        if (equipements.transform.childCount != 0)
+        {
+            Object equipedObject = equipements.transform.GetChild(0).GetComponent<Object>();
+            equipedObject.OnDesequipmentTriggered();
+        }
+    }
     #endregion
 
     #region hp
-    //Gère la modification des pv du joueur
+    //Gï¿½re la modification des pv du joueur
     //Pris en compte dans le fichier HealthBar
     public void TakeDamage(int damage)
     {
@@ -161,7 +173,7 @@ public class PlayerStatManager : MonoBehaviourPun
     #endregion
 
     #region score
-    //Appelle les fonctions contenues dans GlobalScore et PersonalScore afin de gérer la modification du score
+    //Appelle les fonctions contenues dans GlobalScore et PersonalScore afin de gï¿½rer la modification du score
     public void IncreasePersonalScore()
     {
         personalScore.IncreaseScore();
