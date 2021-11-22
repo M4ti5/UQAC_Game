@@ -38,4 +38,9 @@ public class MessageAideMain : MonoBehaviour
         aideBtn.gameObject.SetActive(true);
         panelAide.gameObject.SetActive(false);
     }
+
+    public void Toggle()
+    {
+        panelAide.gameObject.SetActive(!panelAide.gameObject.activeSelf);
+    }
 }
