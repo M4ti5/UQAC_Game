@@ -45,7 +45,7 @@ public class MiniGameStarter : MonoBehaviour
     {
         if (!gameEnded)
         {
-            if (Input.GetKeyDown(KeyCode.N) && !isOpen)
+            if (Input.GetKeyDown(KeyCode.E) && !isOpen)
             {
                 //appelé si le joueur débute veut ouvrir un mini jeu
                 int allPlayersCount = allPlayers.transform.childCount;
