@@ -8,7 +8,7 @@ public class UseObject : MonoBehaviourPun
 {
 
     public bool hasObject = false;
-    
+    public bool canUseObject = true;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +19,7 @@ public class UseObject : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && hasObject)
+        if (Input.GetMouseButton(0) && hasObject && canUseObject)
         {
             //add equipement behavior script
             this.transform.GetChild(0).GetComponent<Object>().Behaviour();// utiliser l'objet

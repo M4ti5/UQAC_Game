@@ -31,11 +31,12 @@ public class Options : MonoBehaviourPun
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             visible = !visible;
             panel.SetActive(visible);
-        }
+            
+        }*/
         
     }
 

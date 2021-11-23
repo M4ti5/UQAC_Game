@@ -79,6 +79,7 @@ public class MiniGameStarter : MonoBehaviour
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
                     playerStatManager.canMove(false);
+                    playerStatManager.CanNotUseObject();
                 }
             }
             else if (miniGameActive == null && isOpen)
@@ -88,6 +89,7 @@ public class MiniGameStarter : MonoBehaviour
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
                 playerStatManager.canMove(true);
+                playerStatManager.CanUseObject();
             }
         }
         if (miniGameActive != null)

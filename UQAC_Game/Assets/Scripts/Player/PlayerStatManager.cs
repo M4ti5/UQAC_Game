@@ -23,6 +23,8 @@ public class PlayerStatManager : MonoBehaviourPun
     public GameObject storedEquipement;
     public GameObject equipements;
     public GameObject inventory;
+
+    public GameObject optionPanel;
     
 
     
@@ -39,7 +41,7 @@ public class PlayerStatManager : MonoBehaviourPun
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
+        optionPanel = GameObject.Find("Options");
 
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -83,7 +85,17 @@ public class PlayerStatManager : MonoBehaviourPun
             }
         }
 
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            optionPanel.GetComponent<Options>().visible = !optionPanel.GetComponent<Options>().visible;
+            optionPanel.GetComponent<Options>().panel.SetActive(optionPanel.GetComponent<Options>().visible);
+            if(optionPanel.GetComponent<Options>().visible == false)
+                CanUseObject();
+            else
+            {
+                CanNotUseObject();
+            }
+        }
         
         
     }
@@ -213,5 +225,14 @@ public class PlayerStatManager : MonoBehaviourPun
     public void OnDestroy()
     {
         DesequipmentTriggeredWhenPlayerLeaveGame();
+    }
+
+    public void CanUseObject()
+    {
+        equipements.GetComponent<UseObject>().canUseObject = true;
+    }
+    public void CanNotUseObject()
+    {
+        equipements.GetComponent<UseObject>().canUseObject = false;
     }
 }
