@@ -19,7 +19,7 @@ public class UseObject : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && hasObject && canUseObject)
+        if (Input.GetKey(KeyCode.LeftAlt) == false && Input.GetMouseButton(0) && hasObject && canUseObject)
         {
             //add equipement behavior script
             if (transform.childCount > 0)
