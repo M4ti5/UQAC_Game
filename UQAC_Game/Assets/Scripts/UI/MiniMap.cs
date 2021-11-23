@@ -9,15 +9,12 @@ public class MiniMap : MonoBehaviour
 {
     public RenderTexture mapTexture;
     [SerializeField] private RawImage miniMaptexture, bigMiniMaptexture;
-    private Transform bigMiniMapParent;
+    [SerializeField] private Transform bigMiniMapParent;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        bigMiniMapParent = bigMiniMaptexture.transform.parent;
-
         OnBigMiniMapClick();//disable big map
-
     }
 
     public void SetTexture(RenderTexture texture)
@@ -36,12 +33,12 @@ public class MiniMap : MonoBehaviour
 
     public void OnMiniMapClick()
     {
-        bigMiniMapParent.gameObject.SetActive(!bigMiniMapParent.gameObject.activeSelf); //toogle big map
+        bigMiniMapParent.parent.gameObject.SetActive(!bigMiniMapParent.parent.gameObject.activeSelf); //toogle big map
     }
 
     public void OnBigMiniMapClick()
     {
-        bigMiniMapParent.gameObject.SetActive(false); //hide big map
+        bigMiniMapParent.parent.gameObject.SetActive(false); //hide big map
     }
 
     //https://forum.unity.com/threads/code-snippet-size-rawimage-to-parent-keep-aspect-ratio.381616/
