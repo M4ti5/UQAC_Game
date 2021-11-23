@@ -54,6 +54,8 @@ public class PlayerStatManager : MonoBehaviourPun
             }
         }
         
+        CanUseObject();
+        
     }
 
     // Update is called once per frame
