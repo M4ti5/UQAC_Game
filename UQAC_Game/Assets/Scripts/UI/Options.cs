@@ -10,7 +10,7 @@ using Photon.Pun.UtilityScripts;
 public class Options : MonoBehaviourPun
 {
     public GameObject panel;
-    bool visible = false;
+    public bool visible = false;
 
     public AudioSource[] volumeMusique;
     public Slider slider;
@@ -77,7 +77,8 @@ public class Options : MonoBehaviourPun
                     playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
                 }
             }
-            playerStatManager.DesequipmentTrigger();
+            if(playerStatManager != null)
+                playerStatManager.DesequipmentTriggeredWhenPlayerLeaveGame();
 
             PhotonNetwork.LeaveRoom();
         }
