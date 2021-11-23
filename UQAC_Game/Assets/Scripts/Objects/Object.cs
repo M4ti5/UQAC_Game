@@ -15,6 +15,8 @@ public class Object : MonoBehaviourPun
     public Transform EquipmentDest;
     public Transform player;
     
+    private float lastTimeUseObject;
+    private float deltaTimeUseObject = 10;
     
 
     // Start is called before the first frame update
@@ -183,7 +185,12 @@ public class Object : MonoBehaviourPun
 
     public void Behaviour()
     {
-        photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+        // wait cooldown
+        if (Time.time - lastTimeUseObject > deltaTimeUseObject)
+        {
+            lastTimeUseObject = Time.time;
+            photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+        }
     }
 
     [PunRPC]
