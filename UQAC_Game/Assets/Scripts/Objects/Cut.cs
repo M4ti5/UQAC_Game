@@ -27,6 +27,7 @@ public class Cut : Object
             if (hit.transform.tag == "Player")
             {
                 hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage);
+                ObjectUsed();
             }
         }
 

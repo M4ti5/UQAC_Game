@@ -26,7 +26,7 @@ public class PlayerStatManager : MonoBehaviourPun
     public GameObject inventory;
 
     public bool criminal = false;
-    public int selectedFilter;
+    public int selectedFilter = 0;
     
     public float distanceToHold = 5;
     // Start is called before the first frame update
@@ -61,7 +61,7 @@ public class PlayerStatManager : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha9) && criminal==false)
+        if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false)
         {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
