@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
@@ -24,8 +25,8 @@ public class PlayerStatManager : MonoBehaviourPun
     public GameObject equipements;
     public GameObject inventory;
 
-    
-
+    public bool criminal = false;
+    public int selectedFilter;
     
     public float distanceToHold = 5;
     // Start is called before the first frame update
@@ -51,12 +52,20 @@ public class PlayerStatManager : MonoBehaviourPun
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
         }
-        
+
+        SetRandomRole();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha9) && criminal==false)
+        {
+            transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
+        }
+
         List<(GameObject, float)> _reachableObjects = reachableObjects();
         GameObject nearestObj = findNearestObj(_reachableObjects);
         if (GetComponent<PhotonView>().IsMine)
@@ -203,6 +212,76 @@ public class PlayerStatManager : MonoBehaviourPun
     public void canMove(bool move)
     {
         gameObject.GetComponent<Movement>().canMove = move;
+    }
+    #endregion
+
+
+    #region roleAndFilter
+    public void SetRandomRole()
+    {
+        if (photonView.IsMine)
+        {
+
+            float random = UnityEngine.Random.Range(0.000f, 1.000f);
+
+            bool alreadyACriminal = false;
+            foreach (Transform player in transform.parent)
+            {
+                if (player.GetComponent<PlayerStatManager>().criminal)
+                {
+                    alreadyACriminal = true;
+                }
+            }
+
+            if (!alreadyACriminal && (transform.parent.childCount == 4 || random > 0.75f))
+            {
+                photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, true);
+            }
+            else
+            {
+                photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, false);
+                StartCoroutine(AddFilter());
+            }
+        }
+        
+    }
+
+    [PunRPC]
+    public void RandomRole(bool role)
+    {
+        criminal = role;
+        selectedFilter = -1;
+    }
+
+    IEnumerator AddFilter()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (photonView.IsMine)
+        {
+            List<int> filtersAvailable = new List<int>();
+            for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
+            {
+                filtersAvailable.Add(i);
+            }
+            foreach (Transform player in transform.parent)
+            {
+                if (player.GetComponent<PlayerStatManager>().selectedFilter != -1)
+                {
+                    filtersAvailable.Remove(player.GetComponent<PlayerStatManager>().selectedFilter);
+                }
+            }
+            int randomRange = UnityEngine.Random.Range(0, filtersAvailable.Count);
+            int randomFilter = filtersAvailable[randomRange];
+            photonView.RPC(nameof(Filter), RpcTarget.AllBuffered, randomFilter, filtersAvailable.Count);
+        }
+    }
+
+    [PunRPC]
+    public void Filter(int randomFilter, int f)
+    {
+        selectedFilter = randomFilter;
+        PostProcessManager ppm = transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>();
+        ppm.allPostProcessVolumesEnabled[randomFilter] = true;
     }
     #endregion
 
