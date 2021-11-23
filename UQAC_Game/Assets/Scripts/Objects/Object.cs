@@ -142,6 +142,27 @@ public class Object : MonoBehaviourPun
         isHeld = false;
         HitObj = allObjects.transform;
     }
+    
+    // main function to synchronize DesequipmentTriggered
+    public void OnDesequipmentTriggeredWhenPlayerLeaveGame()
+    {
+        photonView.RPC(nameof(DesequipmentTriggeredWhenPlayerLeaveGame), RpcTarget.AllBuffered);
+    }
+    
+    //Desequipe the object to the Equipment destination
+    [PunRPC]
+    protected void DesequipmentTriggeredWhenPlayerLeaveGame()
+    {
+        //transform.position = EquipmentDest.parent.Find("Inventory").position;
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.parent = allObjects.transform;
+        //EquipmentDest.GetComponent<UseObject>().hasObject = false;
+        isHeld = false;
+        isStored = false;
+        HitObj = allObjects.transform;
+    }
 
     //Check if object is not too far from player and if it's in front of the player
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)

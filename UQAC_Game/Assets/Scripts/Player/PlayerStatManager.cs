@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -22,6 +23,7 @@ public class PlayerStatManager : MonoBehaviourPun
 
     public GameObject storedEquipement;
     public GameObject equipements;
+    public GameObject inventory;
 
     public bool criminal = false;
     public int selectedFilter;
@@ -39,7 +41,6 @@ public class PlayerStatManager : MonoBehaviourPun
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
 
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -144,12 +145,16 @@ public class PlayerStatManager : MonoBehaviourPun
         return nearestObj;
     }
 
-    public void DesequipmentTrigger()
+    public void DesequipmentTriggeredWhenPlayerLeaveGame()
     {
-        if (equipements.transform.childCount != 0)
+        foreach (Transform obj in equipements.transform)
         {
-            Object equipedObject = equipements.transform.GetChild(0).GetComponent<Object>();
-            equipedObject.OnDesequipmentTriggered();
+            obj.GetComponent<Object>().OnDesequipmentTriggeredWhenPlayerLeaveGame();
+        }
+
+        foreach (Transform obj in inventory.transform)
+        {
+            obj.GetComponent<Object>().OnDesequipmentTriggeredWhenPlayerLeaveGame();
         }
     }
     #endregion
@@ -209,7 +214,6 @@ public class PlayerStatManager : MonoBehaviourPun
         gameObject.GetComponent<Movement>().canMove = move;
     }
     #endregion
-
 
 
     #region roleAndFilter
@@ -280,4 +284,9 @@ public class PlayerStatManager : MonoBehaviourPun
         ppm.allPostProcessVolumesEnabled[randomFilter] = true;
     }
     #endregion
+
+    public void OnDestroy()
+    {
+        DesequipmentTriggeredWhenPlayerLeaveGame();
+    }
 }

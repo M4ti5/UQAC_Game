@@ -47,6 +47,7 @@ MonoBehaviour:
   - SetScore
   - storeEquipement
   - StoreEquipement
+  - DesequipmentTriggeredWhenPlayerLeaveGame
   - RandomRole
   - Filter
   DisableAutoOpenWizard: 1
