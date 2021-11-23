@@ -189,9 +189,14 @@ public class Object : MonoBehaviourPun
     [PunRPC]
     protected virtual void CustomBehaviour(){
         Debug.Log("do something");
+        ObjectUsed();
     }
 
-    
+    protected void ObjectUsed()
+    {
+        this.transform.parent.GetComponent<UseObject>().hasObject = false;
+        this.DestroyObject(PhotonNetwork.LocalPlayer); // détruire l'objet
+    }
 
     [PunRPC]
     public void DestroyObject(Photon.Realtime.Player localPlayer)

@@ -28,9 +28,6 @@ public class UseObject : MonoBehaviourPun
                 if (transform.childCount > 0)
                 {
                     this.transform.GetChild(0).GetComponent<Object>().Behaviour(); // utiliser l'objet
-                    this.transform.GetChild(0).GetComponent<Object>()
-                        .DestroyObject(PhotonNetwork.LocalPlayer); // détruire l'objet
-                    hasObject = false;
                 }
             }
         }
