@@ -61,6 +61,12 @@ public class PlayerStatManager : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        if (optionPanel == null)
+        {
+            optionPanel = GameObject.Find("Options");
+            CanUseObject();
+        }
+
         List<(GameObject, float)> _reachableObjects = reachableObjects();
         GameObject nearestObj = findNearestObj(_reachableObjects);
         if (GetComponent<PhotonView>().IsMine)
