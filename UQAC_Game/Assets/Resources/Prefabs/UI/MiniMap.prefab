@@ -234,6 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2332610871719683918}
+  - component: {fileID: 2068864652674153527}
   m_Layer: 5
   m_Name: Parent
   m_TagString: Untagged
@@ -261,6 +262,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -250, y: -250}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2068864652674153527
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032626762982786348}
+  m_CullTransparentMesh: 1
 --- !u!1 &2114822756047464190
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1764430976994350223}
+  - component: {fileID: 8327782981767870258}
   - component: {fileID: 7365907095934835431}
   - component: {fileID: 4727724579077452068}
   m_Layer: 5
@@ -700,6 +710,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8327782981767870258
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4371466345629721059}
+  m_CullTransparentMesh: 1
 --- !u!114 &7365907095934835431
 MonoBehaviour:
   m_ObjectHideFlags: 0

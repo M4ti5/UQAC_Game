@@ -24,7 +24,6 @@ public class PlayerStatManager : MonoBehaviourPun
     public GameObject equipements;
     public GameObject inventory;
 
-    public GameObject optionPanel;
     
 
     
@@ -41,7 +40,6 @@ public class PlayerStatManager : MonoBehaviourPun
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-        optionPanel = GameObject.Find("Options");
 
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -54,19 +52,11 @@ public class PlayerStatManager : MonoBehaviourPun
             }
         }
         
-        CanUseObject();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (optionPanel == null)
-        {
-            optionPanel = GameObject.Find("Options");
-            CanUseObject();
-        }
-
         List<(GameObject, float)> _reachableObjects = reachableObjects();
         GameObject nearestObj = findNearestObj(_reachableObjects);
         if (GetComponent<PhotonView>().IsMine)
@@ -92,20 +82,6 @@ public class PlayerStatManager : MonoBehaviourPun
                 inventoryText.text = "";
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            optionPanel.GetComponent<Options>().visible = !optionPanel.GetComponent<Options>().visible;
-            optionPanel.GetComponent<Options>().panel.SetActive(optionPanel.GetComponent<Options>().visible);
-            if(optionPanel.GetComponent<Options>().visible == false)
-                CanUseObject();
-            else
-            {
-                CanNotUseObject();
-            }
-        }
-        
-        
     }
 
     #region object
@@ -233,14 +209,5 @@ public class PlayerStatManager : MonoBehaviourPun
     public void OnDestroy()
     {
         DesequipmentTriggeredWhenPlayerLeaveGame();
-    }
-
-    public void CanUseObject()
-    {
-        equipements.GetComponent<UseObject>().canUseObject = true;
-    }
-    public void CanNotUseObject()
-    {
-        equipements.GetComponent<UseObject>().canUseObject = false;
     }
 }

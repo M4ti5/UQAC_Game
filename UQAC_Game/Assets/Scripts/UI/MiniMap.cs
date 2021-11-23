@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,14 +36,12 @@ public class MiniMap : MonoBehaviour
 
     public void OnMiniMapClick()
     {
-        if(Input.GetKey(KeyCode.LeftAlt))
-            bigMiniMapParent.gameObject.SetActive( !bigMiniMapParent.gameObject.activeSelf);//toogle big map
+        bigMiniMapParent.gameObject.SetActive(!bigMiniMapParent.gameObject.activeSelf); //toogle big map
     }
 
     public void OnBigMiniMapClick()
     {
-        if(Input.GetKey(KeyCode.LeftAlt))
-            bigMiniMapParent.gameObject.SetActive(false);//hide big map
+        bigMiniMapParent.gameObject.SetActive(false); //hide big map
     }
 
     //https://forum.unity.com/threads/code-snippet-size-rawimage-to-parent-keep-aspect-ratio.381616/

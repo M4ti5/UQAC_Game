@@ -29,25 +29,18 @@ public class MessageAideMain : MonoBehaviour
 
     public void Afficher()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
-        {
-            aideBtn.gameObject.SetActive(false);
-            panelAide.gameObject.SetActive(true);
-        }
+        aideBtn.gameObject.SetActive(false);
+        panelAide.gameObject.SetActive(true);
     }
 
     public void Cacher()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
-        {
-            aideBtn.gameObject.SetActive(true);
-            panelAide.gameObject.SetActive(false);
-        }
+        aideBtn.gameObject.SetActive(true);
+        panelAide.gameObject.SetActive(false);
     }
 
     public void Toggle()
     {
-        if(Input.GetKey(KeyCode.LeftAlt))
-            panelAide.gameObject.SetActive(!panelAide.gameObject.activeSelf);
+        panelAide.gameObject.SetActive(!panelAide.gameObject.activeSelf);
     }
 }
