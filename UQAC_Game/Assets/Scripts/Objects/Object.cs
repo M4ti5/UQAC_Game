@@ -194,7 +194,7 @@ public class Object : MonoBehaviourPun
             lastTimeUseObject = Time.time;
             photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
             PlayerStatManager playerStatManager = GetPlayerStatManager();
-            playerStatManager.UpdateCooldownDisplay(deltaTimeUseObject);
+            playerStatManager.UpdateCooldownDisplay(lastTimeUseObject ,deltaTimeUseObject);
         }
     }
 

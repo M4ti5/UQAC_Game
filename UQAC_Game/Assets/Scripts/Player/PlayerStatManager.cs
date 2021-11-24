@@ -158,7 +158,7 @@ public class PlayerStatManager : MonoBehaviourPun
         }
     }
 
-    public void UpdateCooldownDisplay(float cooldownMax)
+    public void UpdateCooldownDisplay(float currentCooldown, float cooldownMax)
     {
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -168,7 +168,7 @@ public class PlayerStatManager : MonoBehaviourPun
             {
                 WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
                 wp.cooldownMax = cooldownMax;
-                wp.currentCooldown = 0f;
+                wp.currentCooldown = currentCooldown;
             }
         }
         StartCoroutine(EquipedWeaponDisplay());
