@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class WeaponPanel : MonoBehaviour
 {
     public List<Sprite> allWeapons = new List<Sprite>();
+    public Hashtable cooldownByWeapon = new Hashtable();
+    private string currentWeapon = "";
     public float currentCooldown = 10f;
     public float cooldownMax = 10f;
 
@@ -14,6 +16,10 @@ public class WeaponPanel : MonoBehaviour
     {
         currentCooldown = Time.time - cooldownMax;
         gameObject.SetActive(false);
+        foreach(var elem in allWeapons)
+        {
+            cooldownByWeapon.Add(elem.name, currentCooldown);
+        }
     }
 
     // Update is called once per frame
@@ -32,12 +38,13 @@ public class WeaponPanel : MonoBehaviour
         }
         else
         {
-            string name = equipments.transform.GetChild(0).name;
-
+            currentWeapon = equipments.transform.GetChild(0).name;
+            
             foreach (Sprite elem in allWeapons)
             {
-                if (elem.name == name)
+                if (elem.name == currentWeapon)
                 {
+                    currentCooldown = (float)cooldownByWeapon[currentWeapon];
                     transform.GetChild(0).GetComponent<Image>().sprite = elem;
                     gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
                     gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
@@ -46,4 +53,5 @@ public class WeaponPanel : MonoBehaviour
             }
         }
     }
+
 }
