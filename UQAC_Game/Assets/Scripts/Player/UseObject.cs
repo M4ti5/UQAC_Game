@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UseObject : MonoBehaviourPun
 {
 
     public bool hasObject = false;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +21,15 @@ public class UseObject : MonoBehaviourPun
     {
         if (Input.GetMouseButton(0) && hasObject)
         {
-            //add equipement behavior script
-            this.transform.GetChild(0).GetComponent<Object>().Behaviour();// utiliser l'objet
-            this.transform.GetChild(0).GetComponent<Object>().DestroyObject(PhotonNetwork.LocalPlayer);// détruire l'objet
-            hasObject = false;
+            // Check if the mouse was clicked over a UI element
+            if (EventSystem.current.IsPointerOverGameObject() == false)
+            {
+                //add equipement behavior script
+                if (transform.childCount > 0)
+                {
+                    this.transform.GetChild(0).GetComponent<Object>().Behaviour(); // utiliser l'objet
+                }
+            }
         }
         
         //Store equipement

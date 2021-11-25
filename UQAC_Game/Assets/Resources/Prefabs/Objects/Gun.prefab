@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7620866126704718240}
   - component: {fileID: 7620866126704718247}
   - component: {fileID: 866895135254270156}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gun
   m_TagString: Gun
   m_Icon: {fileID: 0}
@@ -121,6 +121,7 @@ MonoBehaviour:
   allObjects: {fileID: 0}
   isStored: 0
   EquipmentDest: {fileID: 0}
+  player: {fileID: 0}
   maxDistance: 20
   damage: 10
 --- !u!1001 &8624999683872247559
@@ -186,9 +187,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: -6487994197024019727, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 432911334852675641, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}
       propertyPath: m_Name
       value: gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766212503428324877, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23b52528a8f3fe74faf0e304c55cfa5b, type: 3}

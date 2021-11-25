@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
@@ -21,8 +23,10 @@ public class PlayerStatManager : MonoBehaviourPun
 
     public GameObject storedEquipement;
     public GameObject equipements;
-    
+    public GameObject inventory;
 
+    public bool criminal = false;
+    public int selectedFilter = 0;
     
     public float distanceToHold = 5;
     // Start is called before the first frame update
@@ -38,7 +42,6 @@ public class PlayerStatManager : MonoBehaviourPun
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
 
-
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
         for (int i = 0; i < canvasCount; i++)
@@ -49,12 +52,20 @@ public class PlayerStatManager : MonoBehaviourPun
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
         }
-        
+
+        SetRandomRole();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false)
+        {
+            transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
+        }
+
         List<(GameObject, float)> _reachableObjects = reachableObjects();
         GameObject nearestObj = findNearestObj(_reachableObjects);
         if (GetComponent<PhotonView>().IsMine)
@@ -80,10 +91,6 @@ public class PlayerStatManager : MonoBehaviourPun
                 inventoryText.text = "";
             }
         }
-
-        
-        
-        
     }
 
     #region object
@@ -138,12 +145,16 @@ public class PlayerStatManager : MonoBehaviourPun
         return nearestObj;
     }
 
-    public void DesequipmentTrigger()
+    public void DesequipmentTriggeredWhenPlayerLeaveGame()
     {
-        if (equipements.transform.childCount != 0)
+        foreach (Transform obj in equipements.transform)
         {
-            Object equipedObject = equipements.transform.GetChild(0).GetComponent<Object>();
-            equipedObject.OnDesequipmentTriggered();
+            obj.GetComponent<Object>().OnDesequipmentTriggeredWhenPlayerLeaveGame();
+        }
+
+        foreach (Transform obj in inventory.transform)
+        {
+            obj.GetComponent<Object>().OnDesequipmentTriggeredWhenPlayerLeaveGame();
         }
     }
     #endregion
@@ -196,4 +207,86 @@ public class PlayerStatManager : MonoBehaviourPun
     #endregion
 
 
+
+    #region move
+    public void canMove(bool move)
+    {
+        gameObject.GetComponent<Movement>().canMove = move;
+    }
+    #endregion
+
+
+    #region roleAndFilter
+    public void SetRandomRole()
+    {
+        if (photonView.IsMine)
+        {
+
+            float random = UnityEngine.Random.Range(0.000f, 1.000f);
+
+            bool alreadyACriminal = false;
+            foreach (Transform player in transform.parent)
+            {
+                if (player.GetComponent<PlayerStatManager>().criminal)
+                {
+                    alreadyACriminal = true;
+                }
+            }
+
+            if (!alreadyACriminal && (transform.parent.childCount == 4 || random > 0.75f))
+            {
+                photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, true);
+            }
+            else
+            {
+                photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, false);
+                StartCoroutine(AddFilter());
+            }
+        }
+        
+    }
+
+    [PunRPC]
+    public void RandomRole(bool role)
+    {
+        criminal = role;
+        selectedFilter = -1;
+    }
+
+    IEnumerator AddFilter()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (photonView.IsMine)
+        {
+            List<int> filtersAvailable = new List<int>();
+            for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
+            {
+                filtersAvailable.Add(i);
+            }
+            foreach (Transform player in transform.parent)
+            {
+                if (player.GetComponent<PlayerStatManager>().selectedFilter != -1)
+                {
+                    filtersAvailable.Remove(player.GetComponent<PlayerStatManager>().selectedFilter);
+                }
+            }
+            int randomRange = UnityEngine.Random.Range(0, filtersAvailable.Count);
+            int randomFilter = filtersAvailable[randomRange];
+            photonView.RPC(nameof(Filter), RpcTarget.AllBuffered, randomFilter, filtersAvailable.Count);
+        }
+    }
+
+    [PunRPC]
+    public void Filter(int randomFilter, int f)
+    {
+        selectedFilter = randomFilter;
+        PostProcessManager ppm = transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>();
+        ppm.allPostProcessVolumesEnabled[randomFilter] = true;
+    }
+    #endregion
+
+    public void OnDestroy()
+    {
+        DesequipmentTriggeredWhenPlayerLeaveGame();
+    }
 }

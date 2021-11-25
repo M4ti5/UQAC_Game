@@ -15,6 +15,8 @@ public class Object : MonoBehaviourPun
     public Transform EquipmentDest;
     public Transform player;
     
+    private float lastTimeUseObject;
+    private float deltaTimeUseObject = 10;
     
 
     // Start is called before the first frame update
@@ -142,6 +144,27 @@ public class Object : MonoBehaviourPun
         isHeld = false;
         HitObj = allObjects.transform;
     }
+    
+    // main function to synchronize DesequipmentTriggered
+    public void OnDesequipmentTriggeredWhenPlayerLeaveGame()
+    {
+        photonView.RPC(nameof(DesequipmentTriggeredWhenPlayerLeaveGame), RpcTarget.AllBuffered);
+    }
+    
+    //Desequipe the object to the Equipment destination
+    [PunRPC]
+    protected void DesequipmentTriggeredWhenPlayerLeaveGame()
+    {
+        //transform.position = EquipmentDest.parent.Find("Inventory").position;
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.parent = allObjects.transform;
+        //EquipmentDest.GetComponent<UseObject>().hasObject = false;
+        isHeld = false;
+        isStored = false;
+        HitObj = allObjects.transform;
+    }
 
     //Check if object is not too far from player and if it's in front of the player
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
@@ -162,15 +185,25 @@ public class Object : MonoBehaviourPun
 
     public void Behaviour()
     {
-        photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+        // wait cooldown
+        if (Time.time - lastTimeUseObject > deltaTimeUseObject)
+        {
+            lastTimeUseObject = Time.time;
+            photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+        }
     }
 
     [PunRPC]
     protected virtual void CustomBehaviour(){
         Debug.Log("do something");
+        ObjectUsed();
     }
 
-    
+    protected void ObjectUsed()
+    {
+        this.transform.parent.GetComponent<UseObject>().hasObject = false;
+        this.DestroyObject(PhotonNetwork.LocalPlayer); // détruire l'objet
+    }
 
     [PunRPC]
     public void DestroyObject(Photon.Realtime.Player localPlayer)

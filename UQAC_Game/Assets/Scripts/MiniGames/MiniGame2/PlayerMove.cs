@@ -27,6 +27,8 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     private Vector3 canvaScale;
     private Vector2 playerSize;
 
+    public bool dragAvailable = false;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -50,22 +52,25 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     /// <param name="eventData">mouse pointer event data</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin Drag");
-        lastMousePosition = eventData.position;
-        dragActive = true;
+        if (dragAvailable)
+        {
+            Debug.Log("Begin Drag");
+            lastMousePosition = eventData.position;
+            dragActive = true;
 
-        //Création d'un objet permettant de récupérer le trajet effectué par le joueur
-        //Si cet objet est en collision avec un mur, le joueur ne se déplacera pas
-        translationFromPlayer = new GameObject("TranslationFromPlayer");
-        translationFromPlayer.transform.parent = this.gameObject.transform;
-        translationFromPlayer.transform.localPosition = transform.localPosition;
-        translationFromPlayer.AddComponent<BoxCollider>();
-        translationFromPlayer.AddComponent<RectTransform>();
-        
-        previousPlayerPos = rect.anchoredPosition;
-        rectTranslationFromPlayer  = translationFromPlayer.GetComponent<RectTransform>();
-        colliderTranslationFromPlayer = translationFromPlayer.GetComponent<BoxCollider>();
-        rectTranslationFromPlayer.anchoredPosition = previousPlayerPos;
+            //Création d'un objet permettant de récupérer le trajet effectué par le joueur
+            //Si cet objet est en collision avec un mur, le joueur ne se déplacera pas
+            translationFromPlayer = new GameObject("TranslationFromPlayer");
+            translationFromPlayer.transform.parent = this.gameObject.transform;
+            translationFromPlayer.transform.localPosition = transform.localPosition;
+            translationFromPlayer.AddComponent<BoxCollider>();
+            translationFromPlayer.AddComponent<RectTransform>();
+
+            previousPlayerPos = rect.anchoredPosition;
+            rectTranslationFromPlayer = translationFromPlayer.GetComponent<RectTransform>();
+            colliderTranslationFromPlayer = translationFromPlayer.GetComponent<BoxCollider>();
+            rectTranslationFromPlayer.anchoredPosition = previousPlayerPos;
+        }
     }
 
     /// <summary>
@@ -74,35 +79,38 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     /// <param name="eventData">mouse pointer event data</param>
     public void OnDrag(PointerEventData eventData)
     {
-        update += Time.deltaTime;
-        if (update > 1.0f / 60f)
+        if (dragAvailable)
         {
-            //Le déplacement est possible jusqu'à ce que le joueur atteigne l'arrivée
-            if (!victory)
+            update += Time.deltaTime;
+            if (update > 1.0f / 60f)
             {
-                //Récupération des déplacements effectués par la souri
-                Vector2 currentMousePosition = eventData.position;
-                diff = currentMousePosition - lastMousePosition;
+                //Le déplacement est possible jusqu'à ce que le joueur atteigne l'arrivée
+                if (!victory)
+                {
+                    //Récupération des déplacements effectués par la souri
+                    Vector2 currentMousePosition = eventData.position;
+                    diff = currentMousePosition - lastMousePosition;
 
-                //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
-                //translationFromPlayer.transform.localPosition = transform.localPosition + new Vector3(diff.x / 2f, diff.y / 2f);
-                rectTranslationFromPlayer.anchoredPosition = new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
-                rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
-                colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
-                //colliderTranslationFromPlayer.transform.Translate(-diff);
-                rectTranslationFromPlayer.anchoredPosition = -new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
+                    //On applique ces déplacement à l'objet permettant de suivre la translation du joueur
+                    //translationFromPlayer.transform.localPosition = transform.localPosition + new Vector3(diff.x / 2f, diff.y / 2f);
+                    rectTranslationFromPlayer.anchoredPosition = new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
+                    rectTranslationFromPlayer.sizeDelta = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
+                    colliderTranslationFromPlayer.size = new Vector2(Mathf.Abs(diff.x / canvaScale.x), Mathf.Abs(diff.y / canvaScale.y)) + playerSize;
+                    //colliderTranslationFromPlayer.transform.Translate(-diff);
+                    rectTranslationFromPlayer.anchoredPosition = -new Vector2(diff.x / canvaScale.x / 2f, diff.y / canvaScale.y / 2f);
 
-                //Récupère la position du joueur avant son déplacement
-                previousPlayerPos = rect.anchoredPosition;
-                
-                //On déplace le joueur (reviendra en arrière si il rencontre un objet dans la méthode OnTriggerStay)
-                rect.anchoredPosition += new Vector2(diff.x / canvaScale.x, diff.y / canvaScale.y);
+                    //Récupère la position du joueur avant son déplacement
+                    previousPlayerPos = rect.anchoredPosition;
 
-                lastMousePosition = currentMousePosition;
-            }
-            else if (victory)
-            {
-                StartCoroutine(EndMiniGame());
+                    //On déplace le joueur (reviendra en arrière si il rencontre un objet dans la méthode OnTriggerStay)
+                    rect.anchoredPosition += new Vector2(diff.x / canvaScale.x, diff.y / canvaScale.y);
+
+                    lastMousePosition = currentMousePosition;
+                }
+                else if (victory)
+                {
+                    StartCoroutine(EndMiniGame());
+                }
             }
         }
     }
@@ -121,11 +129,14 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("End Drag");
-        dragActive = false;
+        if (dragAvailable)
+        {
+            Debug.Log("End Drag");
+            dragActive = false;
 
-        //Détruit l'objet permettant de récupérer le trajet effectué par le joueur
-        Destroy(translationFromPlayer);
+            //Détruit l'objet permettant de récupérer le trajet effectué par le joueur
+            Destroy(translationFromPlayer);
+        }
     }
 
     //Appelé lorsque le joueur rentre en contact avec un autre collider
@@ -153,7 +164,7 @@ public class PlayerMove : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
             {
                 //Récupère  la position du joueur avant son déplacement
                 previousPlayerPos = rect.anchoredPosition;
-                int moveSpeed = 5;
+                int moveSpeed = 10;
 
                 //On regarde les touches sélectionnées par le joueur et on déplace l'objet player en conséquence
                 if (Input.GetKey(KeyCode.UpArrow))

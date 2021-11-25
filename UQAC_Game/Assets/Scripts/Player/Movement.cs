@@ -33,7 +33,8 @@ public class Movement : MonoBehaviourPun
     public bool canRun = true; // modified by stamina
     private bool inWallCollide = false;
 
-    
+    public bool canMove = true;
+
     private Animator playerAnim;
     private Rigidbody rb;
 
@@ -56,7 +57,10 @@ public class Movement : MonoBehaviourPun
             return;
         }
         
-        Move();
+        if (canMove)
+        {
+            Move();
+        }
         Animations();
         CheckDeathLimitY();
     }
@@ -101,7 +105,7 @@ public class Movement : MonoBehaviourPun
         //start
         if (canRun)
         {
-            if (Input.GetKey(KeyCode.LeftShift)) {
+            if (Input.GetKey(KeyCode.LeftShift) && inMove) {
                 moveSpeed = sprintSpeed;
                 inRun = true;
             }
@@ -149,7 +153,7 @@ public class Movement : MonoBehaviourPun
                    Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/ 
                    );
 
-        if (inMove) {
+        if (inMove && canMove) {
             playerAnim.SetBool("isWalking" , true);
 
             if (canRun && inRun) { // Sprint
