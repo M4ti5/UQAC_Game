@@ -69,6 +69,8 @@ public class UseObject : MonoBehaviourPun
         if (storedObject == null && equipedObject != null)
         {
             equipedObject.transform.parent = Inventory;
+            equipedObject.transform.localPosition = Vector3.zero;
+            equipedObject.transform.localRotation = Quaternion.identity;
             EquipementDest.GetComponent<UseObject>().hasObject = false;
             equipedObject.GetComponent<Object>().isStored = true;
             transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
@@ -76,6 +78,8 @@ public class UseObject : MonoBehaviourPun
         else if(storedObject != null && equipedObject == null)
         {
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
+            storedObject.transform.localPosition = Vector3.zero;
+            storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
             EquipementDest.GetComponent<UseObject>().hasObject = true;
             transform.parent.GetComponent<PlayerStatManager>().storedEquipement = null;
@@ -83,9 +87,13 @@ public class UseObject : MonoBehaviourPun
         else if (storedObject != null && equipedObject != null)
         {
             equipedObject.transform.parent = Inventory;
+            equipedObject.transform.localPosition = Vector3.zero;
+            equipedObject.transform.localRotation = Quaternion.identity;
             equipedObject.GetComponent<Object>().isStored = true;
             transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
+            storedObject.transform.localPosition = Vector3.zero;
+            storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
         }
 

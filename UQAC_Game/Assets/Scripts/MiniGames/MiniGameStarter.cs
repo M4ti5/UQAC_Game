@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class MiniGameStarter : MonoBehaviour
     private GameObject createdMiniGame;
     public GameObject miniGame;
 
-    //Booléen indiquant si le joueur qui ouvre le mini-jeu est un criminel ou un enquêteur
+    //Boolï¿½en indiquant si le joueur qui ouvre le mini-jeu est un criminel ou un enquï¿½teur
     public bool criminal = false;
 
     public GameObject panelScore;
@@ -27,6 +28,7 @@ public class MiniGameStarter : MonoBehaviour
     private HealthBar healthBar;
 
     private GameObject miniGameActive;
+
 
 
     // Start is called before the first frame update
@@ -47,12 +49,12 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E) && !isOpen)
             {
-                //appelé si le joueur débute veut ouvrir un mini jeu
+                //appelï¿½ si le joueur dï¿½bute veut ouvrir un mini jeu
                 int allPlayersCount = allPlayers.transform.childCount;
                 int grabberPlayerId = -1;
                 float minDistance = float.PositiveInfinity;
 
-                //On récupère l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
+                //On rï¿½cupï¿½re l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
                 for (int i = 0; i < allPlayersCount; i++)
                 {
                     (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
@@ -65,7 +67,7 @@ public class MiniGameStarter : MonoBehaviour
                     }
                 }
 
-                //Si le joueur est assez proche, on crée une instance de mini jeu que le joueur devra résoudre
+                //Si le joueur est assez proche, on crï¿½e une instance de mini jeu que le joueur devra rï¿½soudre
                 if (grabberPlayerId >= 0)
                 {
                     isOpen = true;
@@ -83,7 +85,7 @@ public class MiniGameStarter : MonoBehaviour
             }
             else if (miniGameActive == null && isOpen)
             {
-                //appelé si le joueur appui sur LeaveMiniGame
+                //appelï¿½ si le joueur appui sur LeaveMiniGame
                 isOpen = false;
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
@@ -94,14 +96,14 @@ public class MiniGameStarter : MonoBehaviour
         {
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
-                //Appelé si le joueur a terminé un mini jeu
+                //Appelï¿½ si le joueur a terminï¿½ un mini jeu
 
-                //Récupération du script contenant les stats du joueur
+                //Rï¿½cupï¿½ration du script contenant les stats du joueur
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
 
                 //Diminution du score global si le joueur est un criminel
-                //Augmentation du score personnel et global si le joueur est un enquêteur
+                //Augmentation du score personnel et global si le joueur est un enquï¿½teur
                 if (criminal)
                 {
                     playerStatManager.DecreaseGlobalScore();
@@ -111,9 +113,13 @@ public class MiniGameStarter : MonoBehaviour
                     playerStatManager.IncreaseGlobalScore();
                     playerStatManager.IncreasePersonalScore();
                 }
-                //Le joueur récupère des PV
+                //Le joueur rï¿½cupï¿½re des PV
                 playerStatManager.canMove(true);
                 playerStatManager.RecoverHP(15);
+                
+                int newId = PhotonNetwork.AllocateViewID(true);
+                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                photonView.RPC("spawnObject", RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
@@ -150,4 +156,6 @@ public class MiniGameStarter : MonoBehaviour
         }
         return playerStatManager;
     }
+
+    
 }
