@@ -300,6 +300,7 @@ public class PlayerStatManager : MonoBehaviourPun
             GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
             initSpawnObject(newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
             storedEquipement = newObject;
+            newObject.GetComponent<Object>().isStored = true;
         }
         else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
         {   
@@ -313,7 +314,7 @@ public class PlayerStatManager : MonoBehaviourPun
     
     public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer)
     {
-        GetComponent<PhotonView>().ViewID = id;
+        obj.GetComponent<PhotonView>().ViewID = id;
         
         if (isOnPlayer)
         {
@@ -321,7 +322,6 @@ public class PlayerStatManager : MonoBehaviourPun
             obj.GetComponent<BoxCollider>().enabled = false;
             obj.GetComponent<Rigidbody>().useGravity = false;
             obj.GetComponent<Rigidbody>().isKinematic = true;
-            obj.GetComponent<Object>().isStored = true;
             obj.GetComponent<Object>().EquipmentDest =
                 thisPlayer.transform.Find("Equipements");
             obj.GetComponent<Object>().HitObj = thisPlayer.transform.Find("HitPos");
