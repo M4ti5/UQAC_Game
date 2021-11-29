@@ -29,19 +29,35 @@ public class PlayerStatManager : MonoBehaviourPun
     public int selectedFilter = 0;
     
     public float distanceToHold = 5;
+
+    private bool findAllObjects = false;
     // Start is called before the first frame update
     void Start()
     {
         currentHP = 100;
         hpMax = 100;
 
+        StartCoroutine(GetGameObjects());
+
+        SetRandomRole();
+
+
+    }
+
+    IEnumerator GetGameObjects()
+    {
+        yield return new WaitUntil(() => GameObject.Find("Objects") != null);
         allObjects = GameObject.Find("Objects");
         
+        yield return new WaitUntil(() => GameObject.Find("TakeObject") != null);
         interractionDisplay = GameObject.Find("TakeObject");
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        
+        yield return new WaitUntil(() => GameObject.Find("InventoryDisplay") != null);
         inventoryDisplay = GameObject.Find("InventoryDisplay");
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
+        
+        yield return new WaitUntil(() => GameObject.Find("PlayerCanvas") != null);
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
         for (int i = 0; i < canvasCount; i++)
@@ -53,14 +69,16 @@ public class PlayerStatManager : MonoBehaviourPun
             }
         }
 
-        SetRandomRole();
-
+        findAllObjects = true;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(findAllObjects == false)
+            return;
+        
         if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false)
         {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;

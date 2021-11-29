@@ -343,7 +343,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		roomOptions.MaxPlayers = 1;
 		roomOptions.IsVisible = false;
 		roomOptions.IsOpen = true;
-		PhotonNetwork.CreateRoom("Entertainment", roomOptions);
+		PhotonNetwork.CreateRoom("Entertainment\n"+ CreateRandomString(), roomOptions);
 		Connect();
 	}
 
@@ -404,7 +404,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	/// </summary>
 	public override void OnConnectedToMaster()
 	{
-		PhotonNetwork.AutomaticallySyncScene = false;
+		// this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
+		PhotonNetwork.AutomaticallySyncScene = true;
+		
 		PhotonNetwork.JoinLobby(TypedLobby.Default);
 
 		// we don't want to do anything if we are not attempting to join a room. 
@@ -512,7 +514,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.connectionStatus.text = "<color=#009900>Connected</color>\nRoom Name : " + PhotonNetwork.CurrentRoom.Name;
 		// #Critical
 		// Load the Room Level. 
-		PhotonNetwork.LoadLevel("Game");
+		PhotonNetwork.LoadLevel("Waiting");
 	}
 
 	#endregion
