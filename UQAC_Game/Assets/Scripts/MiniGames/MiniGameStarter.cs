@@ -119,11 +119,13 @@ public class MiniGameStarter : MonoBehaviour
                 playerStatManager.canMove(true);
                 playerStatManager.RecoverHP(15);
                 
-                int newId = PhotonNetwork.AllocateViewID(true);
+                //int newId = PhotonNetwork.AllocateViewID(true);
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
-                GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+playerStatManager.objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
-                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, newObject,Vector3.zero, Quaternion.identity, newId, idToSpawn);
+                
+                //photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered,Vector3.zero, Quaternion.identity, newId, idToSpawn);
+                playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
