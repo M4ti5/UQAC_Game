@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using UnityEngine;
 
@@ -187,19 +188,18 @@ public class Object : MonoBehaviourPun
 
     }
 
-    [PunRPC]
     public virtual void Behaviour()
     {
-        // wait cooldown
-        if (Time.time - lastTimeUseObject > deltaTimeUseObject)
+        if (player.GetComponent<PhotonView>().IsMine == true)
         {
-            if(this.transform.parent.parent == GetComponent<PhotonView>().IsMine) {
+            // wait cooldown
+            if (Time.time - lastTimeUseObject > deltaTimeUseObject)
+            {
                 lastTimeUseObject = Time.time;
-                photonView.RPC(nameof(CustomBehaviour) , RpcTarget.AllBuffered); // faire l'action pour tous les clients
+                photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
                 PlayerStatManager playerStatManager = GetPlayerStatManager();
-                playerStatManager.UpdateCooldownDisplay(lastTimeUseObject , deltaTimeUseObject , gameObject.name);
+                playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
             }
-            
         }
     }
 
