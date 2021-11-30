@@ -354,14 +354,15 @@ public class PlayerStatManager : MonoBehaviourPun
         if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
         {   
             
-            GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
+            //GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
+            GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+objectPrefabListToInstantiate[idToSpawn].name, pos, rot, 0);
             initSpawnObject(newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
             storedEquipement = newObject;
             newObject.GetComponent<Object>().isStored = true;
         }
         else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
         {
-            GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
+            GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+objectPrefabListToInstantiate[idToSpawn].name, pos, rot, 0);
             initSpawnObject(newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
             thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
         }
@@ -370,7 +371,7 @@ public class PlayerStatManager : MonoBehaviourPun
     
     public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer)
     {
-        obj.GetComponent<PhotonView>().ViewID = id;
+        //obj.GetComponent<PhotonView>().ViewID = id;
         obj.name = obj.tag;
         
         if (isOnPlayer)
