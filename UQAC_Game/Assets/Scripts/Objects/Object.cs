@@ -15,8 +15,8 @@ public class Object : MonoBehaviourPun
     public Transform EquipmentDest;
     public Transform player;
     
-    private float lastTimeUseObject;
-    private float deltaTimeUseObject = 10;
+    protected float lastTimeUseObject;
+    protected float deltaTimeUseObject = 10;
     
 
     // Start is called before the first frame update
@@ -183,7 +183,7 @@ public class Object : MonoBehaviourPun
 
     }
 
-    public void Behaviour()
+    public virtual void Behaviour()
     {
         // wait cooldown
         if (Time.time - lastTimeUseObject > deltaTimeUseObject)
