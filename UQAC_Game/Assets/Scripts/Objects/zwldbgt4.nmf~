@@ -18,7 +18,7 @@ public class Switcher : Object {
             Transform randomPlayer = listPlayers.GetChild(randomIndex) == GetComponent<PhotonView>().IsMine ? listPlayers.GetChild(randomIndex+1 % listPlayers.childCount) : listPlayers.GetChild(randomIndex);
 
             //Local task
-            Switch(randomPlayer.position , randomPlayer.rotation);
+            Switch(randomPlayer);
             print(randomPlayer.gameObject.GetPhotonView().ViewID);
             print(PhotonNetwork.PlayerList[0].ActorNumber);
 
