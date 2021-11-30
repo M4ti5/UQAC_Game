@@ -349,61 +349,27 @@ public class PlayerStatManager : MonoBehaviourPun
     #endregion
 
     //[PunRPC]
-    public void spawnObject(Vector3 pos, Quaternion rot, int id, int idToSpawn)//, Transform parent, PlayerStatManager playerStatManager
+    public void spawnObject(Vector3 pos, Quaternion rot, int idToSpawn)//, Transform parent, PlayerStatManager playerStatManager
     {
         GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
         newObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-        if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
-        {
-                //GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
-                
-            photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Inventory").transform, id, true, true);
-                
-        }
-        else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
-        {
-            photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Equipements").transform, id, true, false);
-                
-        }
-        
-        
-        
-        
-    }
-    
-    [PunRPC]
-    public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer, bool isStored)
-    {
-        //obj.GetComponent<PhotonView>().ViewID = id;
-        obj.name = obj.tag;
-        
-        if (isOnPlayer)
+        newObject.GetComponent<Object>().Init();
+
+        if (!(thisPlayer.transform.Find("Equipements").childCount > 0 &&
+              thisPlayer.transform.Find("Inventory").childCount > 0))
         {
             
-            obj.GetComponent<BoxCollider>().enabled = false;
-            obj.GetComponent<Rigidbody>().useGravity = false;
-            obj.GetComponent<Rigidbody>().isKinematic = true;
-            obj.GetComponent<Object>().EquipmentDest =
-                thisPlayer.transform.Find("Equipements");
-            obj.GetComponent<Object>().HitObj = thisPlayer.transform.Find("HitPos");
-            obj.GetComponent<Object>().player = thisPlayer.transform;
-            obj.GetComponent<Object>().isHeld = true;
+            if (thisPlayer.transform.Find("Equipements").childCount > 0)
+            {
+                thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().OnStoreEquipement();
+            }
+            newObject.GetComponent<Object>().EquipmentDest = thisPlayer.transform.Find("Equipements");
+            newObject.GetComponent<Object>().OnEquipmentTriggered(thisPlayer.transform);
+            
         }
-        obj.transform.parent = parent;
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
+        
 
-        if (isStored)
-        {
-            storedEquipement = obj;
-            obj.GetComponent<Object>().isStored = true;
-        }
-        else
-        {
-            thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
-        }
     }
-
     
     public IEnumerator OnDestroy()
     {

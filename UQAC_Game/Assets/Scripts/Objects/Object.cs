@@ -26,6 +26,15 @@ public class Object : MonoBehaviourPun
         Debug.Log("Start Object script");
         allObjects = GameObject.Find("Objects");
         allPlayers = GameObject.Find("Players");
+        name = tag;
+    }
+
+    public void Init()
+    {
+        allObjects = GameObject.Find("Objects");
+        allPlayers = GameObject.Find("Players");
+        transform.parent = allObjects.transform;
+        name = tag;
     }
 
     // Update is called once per frame
