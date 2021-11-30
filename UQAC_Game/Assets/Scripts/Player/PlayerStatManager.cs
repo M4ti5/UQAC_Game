@@ -175,6 +175,43 @@ public class PlayerStatManager : MonoBehaviourPun
             obj.GetComponent<Object>().OnDesequipmentTriggeredWhenPlayerLeaveGame();
         }
     }
+
+    public void UpdateCooldownDisplay(float currentCooldown, float cooldownMax, string objectName)
+    {
+        canvas = GameObject.Find("PlayerCanvas");
+        int canvasCount = canvas.transform.childCount;
+        for (int i = 0; i < canvasCount; i++)
+        {
+            if (canvas.transform.GetChild(i).name == "Weapon")
+            {
+                WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
+                wp.cooldownByWeapon[objectName] = currentCooldown;
+                wp.cooldownMax = cooldownMax;
+                wp.currentCooldown = currentCooldown;
+            }
+        }
+        StartCoroutine(EquipedWeaponDisplay());
+    }
+
+    public void UpdateEquipedWeaponDisplay()
+    {
+        StartCoroutine(EquipedWeaponDisplay());
+    }
+
+    IEnumerator EquipedWeaponDisplay()
+    {
+        yield return new WaitForSeconds(0.02f);
+        canvas = GameObject.Find("PlayerCanvas");
+        int canvasCount = canvas.transform.childCount;
+        for (int i = 0; i < canvasCount; i++)
+        {
+            if (canvas.transform.GetChild(i).name == "Weapon")
+            {
+                WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
+                wp.UpdateWeaponDisplay(equipements);
+            }
+        }
+    }
     #endregion
 
     #region hp

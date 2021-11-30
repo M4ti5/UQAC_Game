@@ -51,6 +51,7 @@ MonoBehaviour:
   - RandomRole
   - Filter
   - LoadGame
+  - Switch
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

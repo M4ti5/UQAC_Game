@@ -15,8 +15,8 @@ public class Object : MonoBehaviourPun
     public Transform EquipmentDest;
     public Transform player;
     
-    private float lastTimeUseObject;
-    private float deltaTimeUseObject = 10;
+    protected float lastTimeUseObject;
+    protected float deltaTimeUseObject = 10;
     
 
     // Start is called before the first frame update
@@ -102,7 +102,8 @@ public class Object : MonoBehaviourPun
     public void OnEquipmentTriggered(Transform _player)
     {
         photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBuffered, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
-
+        PlayerStatManager playerStatManager = GetPlayerStatManager();
+        playerStatManager.UpdateEquipedWeaponDisplay();
     }
 
     //Equipe the object to the Equipment destination
@@ -130,6 +131,8 @@ public class Object : MonoBehaviourPun
     public void OnDesequipmentTriggered()
     {
         photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBuffered);
+        PlayerStatManager playerStatManager = GetPlayerStatManager();
+        playerStatManager.UpdateEquipedWeaponDisplay();
     }
     //Desequipe the object to the Equipment destination
     [PunRPC]
@@ -183,13 +186,15 @@ public class Object : MonoBehaviourPun
 
     }
 
-    public void Behaviour()
+    public virtual void Behaviour()
     {
         // wait cooldown
         if (Time.time - lastTimeUseObject > deltaTimeUseObject)
         {
             lastTimeUseObject = Time.time;
             photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+            PlayerStatManager playerStatManager = GetPlayerStatManager();
+            playerStatManager.UpdateCooldownDisplay(lastTimeUseObject ,deltaTimeUseObject, gameObject.name);
         }
     }
 
@@ -220,7 +225,7 @@ public class Object : MonoBehaviourPun
             }
         }
     }
-    
+
     /*
     public void OnStoreEquipement(Transform _player)
     {
@@ -270,4 +275,18 @@ public class Object : MonoBehaviourPun
         }
 
     }*/
+
+    private PlayerStatManager GetPlayerStatManager()
+    {
+        PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+        int playerCount = allPlayers.transform.childCount;
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+            {
+                playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+            }
+        }
+        return playerStatManager;
+    }
 }

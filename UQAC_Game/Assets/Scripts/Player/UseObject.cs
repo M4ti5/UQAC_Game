@@ -46,6 +46,9 @@ public class UseObject : MonoBehaviourPun
 
     public void OnStoreEquipement()
     {
+        PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
+        Debug.Log(playerStatManager);
+        playerStatManager.UpdateEquipedWeaponDisplay();
         photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBuffered);
     }
     
@@ -88,9 +91,7 @@ public class UseObject : MonoBehaviourPun
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
             storedObject.GetComponent<Object>().isStored = false;
         }
-
     }
-    
     
     
     
