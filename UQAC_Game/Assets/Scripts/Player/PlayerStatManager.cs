@@ -348,33 +348,31 @@ public class PlayerStatManager : MonoBehaviourPun
     }
     #endregion
 
-    [PunRPC]
+    //[PunRPC]
     public void spawnObject(Vector3 pos, Quaternion rot, int id, int idToSpawn)//, Transform parent, PlayerStatManager playerStatManager
     {
-        if (photonView.IsMine)
+        GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
+        newObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
+        if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
         {
-            GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
-            newObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-            if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
-            {
                 //GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
                 
-                photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
-                storedEquipement = newObject;
-                newObject.GetComponent<Object>().isStored = true;
-            }
-            else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
-            {
-                photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
-                thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
-            }
+            photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Inventory").transform, id, true, true);
+                
         }
+        else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
+        {
+            photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Equipements").transform, id, true, false);
+                
+        }
+        
+        
         
         
     }
     
     [PunRPC]
-    public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer)
+    public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer, bool isStored)
     {
         //obj.GetComponent<PhotonView>().ViewID = id;
         obj.name = obj.tag;
@@ -394,6 +392,16 @@ public class PlayerStatManager : MonoBehaviourPun
         obj.transform.parent = parent;
         obj.transform.localPosition = Vector3.zero;
         obj.transform.localRotation = Quaternion.identity;
+
+        if (isStored)
+        {
+            storedEquipement = obj;
+            obj.GetComponent<Object>().isStored = true;
+        }
+        else
+        {
+            thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
+        }
     }
 
     

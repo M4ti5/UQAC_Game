@@ -123,8 +123,8 @@ public class MiniGameStarter : MonoBehaviour
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
                 
-                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered,Vector3.zero, Quaternion.identity, newId, idToSpawn);
-                    
+                //photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered,Vector3.zero, Quaternion.identity, newId, idToSpawn);
+                playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, newId, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
