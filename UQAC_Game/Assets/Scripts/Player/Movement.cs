@@ -206,7 +206,8 @@ public class Movement : MonoBehaviourPun
     /// </summary>
     void CheckDeathLimitY() {
         if (transform.localPosition.y < deathLimitY) {
-            rb.isKinematic = true;// all force at 0
+            //rb.isKinematic = true;// all force at 0
+            transform.position = Vector3.zero;
         }
     }
 
