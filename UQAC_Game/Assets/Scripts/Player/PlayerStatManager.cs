@@ -365,6 +365,8 @@ public class PlayerStatManager : MonoBehaviourPun
             }
             newObject.GetComponent<Object>().EquipmentDest = thisPlayer.transform.Find("Equipements");
             newObject.GetComponent<Object>().OnEquipmentTriggered(thisPlayer.transform);
+            newObject.GetComponent<Object>().OnDesequipmentTriggered();
+            newObject.GetComponent<Object>().OnEquipmentTriggered(thisPlayer.transform);
             
         }
         
