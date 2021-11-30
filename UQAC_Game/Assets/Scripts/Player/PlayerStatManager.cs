@@ -118,6 +118,8 @@ public class PlayerStatManager : MonoBehaviourPun {
             canMove = false;
         }
 
+        gameObject.GetComponent<Animations>().DeathAnim();
+
     }
 
     #region object

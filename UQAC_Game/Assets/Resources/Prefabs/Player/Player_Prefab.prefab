@@ -83,13 +83,14 @@ GameObject:
   - component: {fileID: 7035282860128618356}
   - component: {fileID: 2297088295379410321}
   - component: {fileID: 3024131585330824182}
+  - component: {fileID: 1729555759381835971}
   m_Layer: 3
   m_Name: Player_Prefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &129183522848883513
 Transform:
   m_ObjectHideFlags: 0
@@ -301,10 +302,13 @@ MonoBehaviour:
   currentHP: 100
   stamina: 0
   hpMax: 0
+  isDead: 0
+  canMove: 1
   canvas: {fileID: 0}
   personalScore: {fileID: 0}
   globalScore: {fileID: 0}
   allObjects: {fileID: 0}
+  allMiniGames: {fileID: 0}
   interractionDisplay: {fileID: 0}
   interactionText: {fileID: 0}
   inventoryDisplay: {fileID: 0}
@@ -320,6 +324,18 @@ MonoBehaviour:
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
+--- !u!114 &1729555759381835971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5567021325426965779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3326d87e0fed534cbc53d4d6c10616c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6023304739165050249
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +632,10 @@ PrefabInstance:
       propertyPath: bindRef
       value: 
       objectReference: {fileID: 853266541493032428}
+    - target: {fileID: 6703777973144391094, guid: e9d52e192615ba5478b74141b1477e7b, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6794589948714963556, guid: e9d52e192615ba5478b74141b1477e7b, type: 3}
       propertyPath: m_RootOrder
       value: 1
