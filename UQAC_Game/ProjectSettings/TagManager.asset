@@ -13,6 +13,7 @@ TagManager:
   - Ground
   - Score
   - Roof
+  - Switcher
   layers:
   - Default
   - TransparentFX

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -2249204140021915460}
   m_Layer: 3
   m_Name: Switcher
-  m_TagString: Untagged
+  m_TagString: Switcher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,6 +169,8 @@ MonoBehaviour:
   distanceToHeld: 5
   allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
+  isHeld: 0
   isStored: 0
+  HitObj: {fileID: 0}
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}

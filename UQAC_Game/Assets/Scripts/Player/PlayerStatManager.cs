@@ -371,6 +371,7 @@ public class PlayerStatManager : MonoBehaviourPun
     public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer)
     {
         obj.GetComponent<PhotonView>().ViewID = id;
+        obj.name = obj.tag;
         
         if (isOnPlayer)
         {

@@ -52,6 +52,7 @@ MonoBehaviour:
   - Filter
   - LoadGame
   - Switch
+  - spawnObject
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
