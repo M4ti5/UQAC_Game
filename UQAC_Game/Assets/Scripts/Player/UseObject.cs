@@ -46,6 +46,9 @@ public class UseObject : MonoBehaviourPun
 
     public void OnStoreEquipement()
     {
+        PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
+        Debug.Log(playerStatManager);
+        playerStatManager.UpdateEquipedWeaponDisplay();
         photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBuffered);
     }
     
@@ -96,9 +99,7 @@ public class UseObject : MonoBehaviourPun
             storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
         }
-
     }
-    
     
     
     

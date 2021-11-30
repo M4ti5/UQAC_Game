@@ -110,6 +110,25 @@ public class PhotonStatus : MonoBehaviourPun
         }
         else
         {
+            DisplayPlayersList();
+        }
+    }
+    private void DisplayPlayersList()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            // reset list of all rooms
+            roomsList.text = "Players:";
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                // txt
+                roomsList.text += "\n" +
+                                  player.NickName + (player.IsMasterClient ? " (Master)" : "");
+
+            }
+        }
+        else
+        {
             roomsList.text = "";
         }
     }
