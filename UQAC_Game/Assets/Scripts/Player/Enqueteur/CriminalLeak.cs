@@ -14,17 +14,17 @@ public class CriminalLeak : MonoBehaviour {
     }
 
     private GameObject FindCriminal () {
-        foreach (GameObject player in players.GetComponentsInChildren<GameObject>()) {
-            if (player.GetComponent<PlayerStatManager>().criminal) {
-                return criminal = player;
+        foreach (PlayerStatManager player in players.GetComponentsInChildren<PlayerStatManager>()) {
+            if (player.criminal) {
+                return criminal = player.gameObject;
             }
         }
         return null;
     }
 
     private void RemoveProgressPanel () {
-        GameObject progressPannel = GameObject.FindGameObjectWithTag("score");
-        Destroy(progressPannel);
+        GameObject progressPannel = GameObject.FindGameObjectWithTag("Score");
+        progressPannel.SetActive(false);
     }
 
     public void CaptureScreen () {
@@ -43,14 +43,18 @@ public class CriminalLeak : MonoBehaviour {
         RenderTexture renderTexture = new RenderTexture((int)width , (int)height , 24);
 
         // manually render scene into rt
-        criminalLeakCam.targetTexture = renderTexture;
+        criminalLeakCam.targetTexture = criminalFace;
         criminalLeakCam.Render();
 
-        Destroy(criminalLeakCam);
-        criminalFace = renderTexture;
+        criminalLeakCam.targetTexture = null;
+        RenderTexture.active = null;
+
+        Destroy(criminalLeakCam.gameObject);
+
     }
 
     private void ShowLeakPanel () {
+        CaptureScreen();
         this.gameObject.SetActive(true);
     }
 }

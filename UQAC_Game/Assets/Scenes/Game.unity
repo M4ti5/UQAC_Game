@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: players
       value: 
       objectReference: {fileID: 1828196081}
+    - target: {fileID: 5160631022502835198, guid: d74ee7dd9dd1532448c435140f0bd515, type: 3}
+      propertyPath: sceneViewId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6473607467225633512, guid: d74ee7dd9dd1532448c435140f0bd515, type: 3}
       propertyPath: m_Name
       value: PanelLeak
