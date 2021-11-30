@@ -9,9 +9,9 @@ public class Object : MonoBehaviourPun
     public GameObject allPlayers;
     public GameObject allObjects;
 
-    protected bool isHeld = false;
+    public bool isHeld = false;
     public bool isStored = false;
-    protected Transform HitObj;
+    public Transform HitObj;
     public Transform EquipmentDest;
     public Transform player;
     
@@ -23,6 +23,8 @@ public class Object : MonoBehaviourPun
     void Start()
     {
         Debug.Log("Start Object script");
+        allObjects = GameObject.Find("Objects");
+        allPlayers = GameObject.Find("Players");
     }
 
     // Update is called once per frame
@@ -122,7 +124,6 @@ public class Object : MonoBehaviourPun
             GetComponent<Rigidbody>().isKinematic = true;
             EquipmentDest.GetComponent<UseObject>().hasObject = true;
             HitObj = player.transform.Find("HitPos");
-            Debug.Log(HitObj);
             isHeld = true;
         }
     }
@@ -207,7 +208,7 @@ public class Object : MonoBehaviourPun
     protected void ObjectUsed()
     {
         this.transform.parent.GetComponent<UseObject>().hasObject = false;
-        this.DestroyObject(PhotonNetwork.LocalPlayer); // détruire l'objet
+        this.DestroyObject(PhotonNetwork.LocalPlayer); // dï¿½truire l'objet
     }
 
     [PunRPC]
@@ -225,56 +226,6 @@ public class Object : MonoBehaviourPun
             }
         }
     }
-
-    /*
-    public void OnStoreEquipement(Transform _player)
-    {
-        //Debug.Log("oui");
-        photonView.RPC(nameof(StoreEquipement), PhotonNetwork.LocalPlayer, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
-        //StoreEquipement();
-        //Debug.Log("ouiii");
-    }
-    
-    [PunRPC]
-    protected void StoreEquipement(int id, Photon.Realtime.Player _player)
-    {
-        photonView.TransferOwnership(_player);
-        EquipmentDest = FindEquipmentsPlayerByID(id);
-        Transform Inventory = FindInventoryPlayerByID(id);
-        
-        GameObject storedObject = null;
-        if (Inventory.childCount > 0)
-        {
-            storedObject = Inventory.GetChild(0).gameObject;
-        }
-        
-        GameObject equipedObject = null;
-        if (EquipmentDest.childCount > 0)
-        {
-            equipedObject = EquipmentDest.GetChild(0).gameObject;
-        }
-
-        if (storedObject == null && equipedObject != null)
-        {
-            equipedObject.transform.parent = Inventory;
-            transform.parent.GetComponent<UseObject>().hasObject = false;
-            isStored = true;
-        }
-        else if(storedObject != null && equipedObject == null)
-        {
-            storedObject.transform.parent = EquipmentDest;
-            isStored = false;
-            transform.parent.GetComponent<UseObject>().hasObject = true;
-        }
-        else if (storedObject != null && equipedObject != null)
-        {
-            equipedObject.transform.parent = Inventory;
-            equipedObject.GetComponent<Object>().isStored = true;
-            storedObject.transform.parent = EquipmentDest;
-            storedObject.GetComponent<Object>().isStored = false;
-        }
-
-    }*/
 
     private PlayerStatManager GetPlayerStatManager()
     {

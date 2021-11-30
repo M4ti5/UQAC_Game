@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerStatManager : MonoBehaviourPun
 {
+    public GameObject thisPlayer;
+    
     public int currentHP;
     public int stamina;
     public int hpMax;
@@ -29,17 +32,17 @@ public class PlayerStatManager : MonoBehaviourPun
     public int selectedFilter = 0;
     
     public float distanceToHold = 5;
-
+    public List<GameObject> objectPrefabListToInstantiate;
     private bool findAllObjects = false;
+    
     // Start is called before the first frame update
     void Start()
     {
         currentHP = 100;
         hpMax = 100;
+        thisPlayer = this.gameObject;
 
         StartCoroutine(GetGameObjects());
-
-        SetRandomRole();
 
 
     }
@@ -48,6 +51,8 @@ public class PlayerStatManager : MonoBehaviourPun
     {
         yield return new WaitUntil(() => GameObject.Find("Objects") != null);
         allObjects = GameObject.Find("Objects");
+
+        storedEquipement = null;
         
         yield return new WaitUntil(() => GameObject.Find("TakeObject") != null);
         interractionDisplay = GameObject.Find("TakeObject");
@@ -69,6 +74,8 @@ public class PlayerStatManager : MonoBehaviourPun
             }
         }
 
+        SetRandomRole();
+        
         findAllObjects = true;
 
     }
@@ -340,6 +347,49 @@ public class PlayerStatManager : MonoBehaviourPun
     }
     #endregion
 
+    [PunRPC]
+    public void spawnObject(Vector3 pos, Quaternion rot, int id)//, Transform parent, PlayerStatManager playerStatManager
+    {
+        if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
+        {   
+            int idToSpawn = Random.Range(0,objectPrefabListToInstantiate.Count);
+            GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
+            initSpawnObject(newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
+            storedEquipement = newObject;
+            newObject.GetComponent<Object>().isStored = true;
+        }
+        else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
+        {   
+            int idToSpawn = Random.Range(0,objectPrefabListToInstantiate.Count);
+            GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
+            initSpawnObject(newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
+            thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
+        }
+        
+    }
+    
+    public void initSpawnObject(GameObject obj,Transform parent, int id, bool isOnPlayer)
+    {
+        obj.GetComponent<PhotonView>().ViewID = id;
+        
+        if (isOnPlayer)
+        {
+            photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+            obj.GetComponent<BoxCollider>().enabled = false;
+            obj.GetComponent<Rigidbody>().useGravity = false;
+            obj.GetComponent<Rigidbody>().isKinematic = true;
+            obj.GetComponent<Object>().EquipmentDest =
+                thisPlayer.transform.Find("Equipements");
+            obj.GetComponent<Object>().HitObj = thisPlayer.transform.Find("HitPos");
+            obj.GetComponent<Object>().player = thisPlayer.transform;
+            obj.GetComponent<Object>().isHeld = true;
+        }
+        obj.transform.parent = parent;
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
+    }
+
+    
     public void OnDestroy()
     {
         DesequipmentTriggeredWhenPlayerLeaveGame();
