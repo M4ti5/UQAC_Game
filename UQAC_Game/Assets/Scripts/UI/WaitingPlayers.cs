@@ -69,7 +69,7 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
-            if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == nbrParticipant) // si on a atteint le nbr max de players
+            if (PhotonNetwork.IsMasterClient /*&& PhotonNetwork.CurrentRoom.PlayerCount == nbrParticipant*/) // si on a atteint le nbr max de players
             {
                 startButton.interactable = true;
             }

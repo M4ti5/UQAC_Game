@@ -1048,6 +1048,7 @@ MonoBehaviour:
   - {fileID: 0}
   slider: {fileID: 4134149146704978506}
   allPlayers: {fileID: 0}
+  leaveBtn: {fileID: 1045003881467820278}
 --- !u!1 &6382901277352232244
 GameObject:
   m_ObjectHideFlags: 0
