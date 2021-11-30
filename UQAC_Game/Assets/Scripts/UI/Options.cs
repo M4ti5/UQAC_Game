@@ -18,6 +18,8 @@ public class Options : MonoBehaviourPun
 
     public GameObject allPlayers;
 
+    public Button leaveBtn;
+
     private void Start()
     {
         panel.SetActive(visible);
@@ -38,6 +40,8 @@ public class Options : MonoBehaviourPun
             
         }
         
+        leaveBtn.interactable = PhotonNetwork.InRoom;
+
     }
 
     public void OnVolumeMusiqueSliderChange()
@@ -69,17 +73,22 @@ public class Options : MonoBehaviourPun
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
 
-            PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
-            int playerCount = allPlayers.transform.childCount;
-            for (int i = 0; i < playerCount; i++)
+            if (allPlayers != null)
             {
-                if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
+                int playerCount = allPlayers.transform.childCount;
+                for (int i = 0; i < playerCount; i++)
                 {
-                    playerStatManager = allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                    {
+                        playerStatManager =
+                            allPlayers.transform.GetChild(i).transform.GetComponent<PlayerStatManager>();
+                    }
                 }
+
+                if (playerStatManager != null)
+                    playerStatManager.DesequipmentTriggeredWhenPlayerLeaveGame();
             }
-            if(playerStatManager != null)
-                playerStatManager.DesequipmentTriggeredWhenPlayerLeaveGame();
 
             PhotonNetwork.LeaveRoom();
         }
