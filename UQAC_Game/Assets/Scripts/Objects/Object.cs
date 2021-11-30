@@ -187,15 +187,19 @@ public class Object : MonoBehaviourPun
 
     }
 
+    [PunRPC]
     public virtual void Behaviour()
     {
         // wait cooldown
         if (Time.time - lastTimeUseObject > deltaTimeUseObject)
         {
-            lastTimeUseObject = Time.time;
-            photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
-            PlayerStatManager playerStatManager = GetPlayerStatManager();
-            playerStatManager.UpdateCooldownDisplay(lastTimeUseObject ,deltaTimeUseObject, gameObject.name);
+            if(this.transform.parent.parent == GetComponent<PhotonView>().IsMine) {
+                lastTimeUseObject = Time.time;
+                photonView.RPC(nameof(CustomBehaviour) , RpcTarget.AllBuffered); // faire l'action pour tous les clients
+                PlayerStatManager playerStatManager = GetPlayerStatManager();
+                playerStatManager.UpdateCooldownDisplay(lastTimeUseObject , deltaTimeUseObject , gameObject.name);
+            }
+            
         }
     }
 
