@@ -45,6 +45,8 @@ public class PlayerStatManager : MonoBehaviourPun
         StartCoroutine(GetGameObjects());
 
 
+        SetRandomRole();
+
     }
 
     IEnumerator GetGameObjects()
@@ -73,8 +75,6 @@ public class PlayerStatManager : MonoBehaviourPun
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
         }
-
-        SetRandomRole();
         
         findAllObjects = true;
 
@@ -91,10 +91,11 @@ public class PlayerStatManager : MonoBehaviourPun
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
 
-        List<(GameObject, float)> _reachableObjects = reachableObjects();
-        GameObject nearestObj = findNearestObj(_reachableObjects);
         if (GetComponent<PhotonView>().IsMine)
         {
+            List<(GameObject, float)> _reachableObjects = reachableObjects();
+            GameObject nearestObj = findNearestObj(_reachableObjects);
+            
             if (_reachableObjects.Count > 0)
             {
                 interractionDisplay.SetActive(true);

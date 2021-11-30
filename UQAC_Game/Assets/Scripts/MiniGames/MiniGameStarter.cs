@@ -119,7 +119,7 @@ public class MiniGameStarter : MonoBehaviour
                 
                 int newId = PhotonNetwork.AllocateViewID(true);
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                photonView.RPC("spawnObject", RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId);
+                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }

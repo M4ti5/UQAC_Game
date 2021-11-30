@@ -225,7 +225,6 @@ public class Map : MonoBehaviour
     //On vérifie le nombre de murs actifs de la case
     private int TestNumberOfWalls(Box box)
     {
-        Debug.Log("TestNumberOfWalls");
         int numberOfWalls = 0;
         if (box.left == true) numberOfWalls++;
         if (box.right == true) numberOfWalls++;
