@@ -68,7 +68,7 @@ public class MiniGameStarter : MonoBehaviour
                 }
 
                 //Si le joueur est assez proche, on cr�e une instance de mini jeu que le joueur devra r�soudre
-                if (grabberPlayerId >= 0)
+                if (grabberPlayerId >= 0 && allPlayers.transform.GetChild(grabberPlayerId).GetComponent<PhotonView>().IsMine)
                 {
                     isOpen = true;
                     miniGameActive = new GameObject();
@@ -81,6 +81,7 @@ public class MiniGameStarter : MonoBehaviour
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
                     playerStatManager.canMove(false);
+                    criminal = playerStatManager.criminal;
                 }
             }
             else if (miniGameActive == null && isOpen)
@@ -126,11 +127,13 @@ public class MiniGameStarter : MonoBehaviour
         }
     }
 
+
     //On regarde si le joueur est assez proche du miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
         float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
+
 
         if (dist < range && angle <= Mathf.Abs(30))
         {
@@ -142,6 +145,7 @@ public class MiniGameStarter : MonoBehaviour
         }
 
     }
+    
 
     private PlayerStatManager GetPlayerStatManager()
     {
@@ -155,7 +159,5 @@ public class MiniGameStarter : MonoBehaviour
             }
         }
         return playerStatManager;
-    }
-
-    
+    }   
 }
