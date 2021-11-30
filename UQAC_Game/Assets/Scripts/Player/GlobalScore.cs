@@ -12,8 +12,14 @@ public class GlobalScore : MonoBehaviourPun
     public float stepIncrease = 30;
     public float stepDecrease = 20;
 
+    public bool isLeaked = false;
+
+
     [Tooltip("Score ReadOnly")]
     public float score;
+
+    public CriminalLeak criminalLeak;
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,10 +47,12 @@ public class GlobalScore : MonoBehaviourPun
             // synchronise
             OnChangeScore(score);
         }
+
     }
 
     public void IncreaseScore()
     {
+        
         scoreProgressBar.IncreaseScore(stepIncrease);
         score = GetScore();
         // synchronise
@@ -62,6 +70,7 @@ public class GlobalScore : MonoBehaviourPun
     public void OnChangeScore(float score)
     {
         photonView.RPC(nameof(SetScore), RpcTarget.AllBufferedViaServer, score, PhotonNetwork.LocalPlayer);
+
     }
 
     public float GetScore()
@@ -84,5 +93,14 @@ public class GlobalScore : MonoBehaviourPun
         }
         this.scoreProgressBar.SetScore(score);
         this.score = GetScore();
+
+
+        //Criminal Leak
+        if (score == scoreProgressBar.scoreMax) {
+            if (!isLeaked) {
+                criminalLeak.ShowCriminalLeak();
+                isLeaked = true;
+            }
+        }
     }
 }

@@ -119,7 +119,9 @@ MonoBehaviour:
   distanceToHeld: 5
   allPlayers: {fileID: 0}
   allObjects: {fileID: 0}
+  isHeld: 0
   isStored: 0
+  HitObj: {fileID: 0}
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}
   maxDistance: 20
