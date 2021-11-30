@@ -14,11 +14,13 @@ public class Switcher : Object {
             Transform listPlayers = player.parent;
 
             //Player random
-            int randomIndex = Random.Range(0 , listPlayers.childCount);
+            int randomIndex = Random.Range(0 , listPlayers.childCount-1);
             Transform randomPlayer = listPlayers.GetChild(randomIndex) == GetComponent<PhotonView>().IsMine ? listPlayers.GetChild(randomIndex+1 % listPlayers.childCount) : listPlayers.GetChild(randomIndex);
 
             //Local task
             Switch(randomPlayer);
+            print(randomPlayer.gameObject.GetPhotonView().ViewID);
+            print(PhotonNetwork.PlayerList[0].UserId);
 
             Photon.Realtime.Player networkBindRandomPlayer = PhotonNetwork.PlayerList.Where(player => player.UserId == randomPlayer.gameObject.GetPhotonView().ViewID.ToString()).First();
 
