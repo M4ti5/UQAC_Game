@@ -15,7 +15,7 @@ public class Switcher : Object {
 
             //Player random
             int randomIndex = Random.Range(0 , listPlayers.childCount-1);
-            Transform randomPlayer = listPlayers.GetChild(randomIndex) == GetComponent<PhotonView>().IsMine ? listPlayers.GetChild(randomIndex+1 % listPlayers.childCount) : listPlayers.GetChild(randomIndex);
+            Transform randomPlayer = listPlayers.GetChild(randomIndex) == GetComponent<PhotonView>().IsMine ? listPlayers.GetChild(randomIndex+1 % listPlayers.childCount-1) : listPlayers.GetChild(randomIndex);
 
             //Local task
             Switch(randomPlayer);
