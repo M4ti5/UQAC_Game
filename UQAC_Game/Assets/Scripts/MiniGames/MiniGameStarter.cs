@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MiniGameStarter : MonoBehaviour
 {
@@ -68,7 +69,7 @@ public class MiniGameStarter : MonoBehaviour
                 }
 
                 //Si le joueur est assez proche, on cr�e une instance de mini jeu que le joueur devra r�soudre
-                if (grabberPlayerId >= 0)
+                if (grabberPlayerId >= 0 && allPlayers.transform.GetChild(grabberPlayerId).GetComponent<PhotonView>().IsMine)
                 {
                     isOpen = true;
                     miniGameActive = new GameObject();
@@ -81,6 +82,7 @@ public class MiniGameStarter : MonoBehaviour
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
                     playerStatManager.canMove(false);
+                    criminal = playerStatManager.criminal;
                 }
             }
             else if (miniGameActive == null && isOpen)
@@ -119,18 +121,22 @@ public class MiniGameStarter : MonoBehaviour
                 
                 int newId = PhotonNetwork.AllocateViewID(true);
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId);
+                int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
+                GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+playerStatManager.objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
+                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, newObject,Vector3.zero, Quaternion.identity, newId, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
         }
     }
 
+
     //On regarde si le joueur est assez proche du miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
         float dist = Vector3.Distance(objectA.position, playerA.position);
         float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
+
 
         if (dist < range && angle <= Mathf.Abs(30))
         {
@@ -142,6 +148,7 @@ public class MiniGameStarter : MonoBehaviour
         }
 
     }
+    
 
     private PlayerStatManager GetPlayerStatManager()
     {
@@ -155,7 +162,5 @@ public class MiniGameStarter : MonoBehaviour
             }
         }
         return playerStatManager;
-    }
-
-    
+    }   
 }
