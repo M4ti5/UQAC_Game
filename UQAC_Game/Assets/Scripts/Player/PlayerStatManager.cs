@@ -359,13 +359,13 @@ public class PlayerStatManager : MonoBehaviourPun
             {
                 //GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
                 
-                initSpawnObject(newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
+                photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
                 storedEquipement = newObject;
                 newObject.GetComponent<Object>().isStored = true;
             }
             else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
             {
-                initSpawnObject(newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
+                photonView.RPC(nameof(initSpawnObject), RpcTarget.AllBuffered, newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
                 thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;
             }
         }
