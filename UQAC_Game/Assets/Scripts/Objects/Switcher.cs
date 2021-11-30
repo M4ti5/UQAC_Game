@@ -22,10 +22,9 @@ public class Switcher : Object {
             print(randomPlayer.gameObject.GetPhotonView().ViewID);
             print(PhotonNetwork.PlayerList[0].ActorNumber);
 
-            Photon.Realtime.Player networkBindRandomPlayer = PhotonNetwork.PlayerList.Where(player => player.ActorNumber == randomPlayer.gameObject.GetPhotonView().ControllerActorNr).First();
-
             //Network task
-            photonView.RPC(nameof(Switch) , networkBindRandomPlayer , player.position , player.rotation);//, randomPlayer.gameObject.GetPhotonView().ViewID ); ;
+            Photon.Realtime.Player networkBindRandomPlayer = PhotonNetwork.PlayerList.Where(player => player.ActorNumber == randomPlayer.gameObject.GetPhotonView().ControllerActorNr).First();
+            photonView.RPC(nameof(Switch) , networkBindRandomPlayer , player.position , player.rotation, randomPlayer.gameObject.GetPhotonView().ViewID ); ;
            
         }
     }
@@ -37,7 +36,7 @@ public class Switcher : Object {
         transform.parent.parent.position = otherPos;
         transform.parent.parent.rotation = otherRot;
     }
-    /*
+    
     Transform FindPlayerByID (int id) {
         foreach (Transform child in allPlayers.transform) {
             if (child.GetComponent<PhotonView>().ViewID == id) {
@@ -47,9 +46,9 @@ public class Switcher : Object {
         return null;
     }
     [PunRPC]
-    private void Switch (Transform other , int otherId) {
+    private void Switch (Vector3 otherPos , Quaternion otherRot , int otherId) {
         Transform temp = FindPlayerByID(otherId);
-        temp.position = other.position;
-        temp.rotation = other.rotation;
-    } */
+        temp.position = otherPos;
+        temp.rotation = otherRot;
+    } 
 }
