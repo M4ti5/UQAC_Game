@@ -45,7 +45,6 @@ public class PlayerStatManager : MonoBehaviourPun {
 
         StartCoroutine(GetGameObjects());
 
-
         SetRandomRole();
 
     }
@@ -218,6 +217,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     //Pris en compte dans le fichier HealthBar
     public void TakeDamage (int damage) {
         currentHP -= damage;
+        gameObject.GetComponent<Animations>().HitAnim();
         if (currentHP <= 0) {
             currentHP = 0;
             Debug.Log("Game Over");
