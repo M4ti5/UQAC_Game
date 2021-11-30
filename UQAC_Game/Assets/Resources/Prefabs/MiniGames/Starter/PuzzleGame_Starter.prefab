@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4188016481541688787}
   m_Layer: 0
   m_Name: PuzzleGame_Starter
-  m_TagString: Untagged
+  m_TagString: MiniGame
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

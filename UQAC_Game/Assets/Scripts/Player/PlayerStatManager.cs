@@ -19,6 +19,8 @@ public class PlayerStatManager : MonoBehaviourPun
     public GlobalScore globalScore;
     
     public GameObject allObjects;
+    public GameObject allMiniGames;
+    
     public GameObject interractionDisplay;
     public TextMeshProUGUI interactionText;
     public GameObject inventoryDisplay;
@@ -53,6 +55,7 @@ public class PlayerStatManager : MonoBehaviourPun
     {
         yield return new WaitUntil(() => GameObject.Find("Objects") != null);
         allObjects = GameObject.Find("Objects");
+        allMiniGames = GameObject.Find("MiniGame_Starter");
 
         storedEquipement = null;
         
@@ -99,7 +102,14 @@ public class PlayerStatManager : MonoBehaviourPun
             if (_reachableObjects.Count > 0)
             {
                 interractionDisplay.SetActive(true);
-                interactionText.text = "Take " + nearestObj.name + "\nPress E";
+                if (nearestObj.tag == "MiniGame")
+                {
+                    interactionText.text = "Start Minigame" + "\nPress E";
+                }
+                else
+                {
+                    interactionText.text = "Take " + nearestObj.name + "\nPress E";
+                }
             }
             else
             {
@@ -131,6 +141,16 @@ public class PlayerStatManager : MonoBehaviourPun
             if (_isReachable)
             {
                 _reachableObjects.Add((allObjects.transform.GetChild(i).gameObject,_dist));
+            }
+        }
+        int allMiniGameCount = allMiniGames.transform.childCount;
+        for (int i = 0; i < allMiniGameCount; i++)
+        {
+            (bool _isReachable, float _dist) =
+                IsReachable(allMiniGames.transform.GetChild(i), gameObject.transform, distanceToHold);
+            if (_isReachable)
+            {
+                _reachableObjects.Add((allMiniGames.transform.GetChild(i).gameObject,_dist));
             }
         }
 
