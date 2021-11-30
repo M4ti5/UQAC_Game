@@ -81,7 +81,7 @@ public class MiniGameStarter : MonoBehaviour
 
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
-                    playerStatManager.canMove(false);
+                    playerStatManager.canMove= false;
                     criminal = playerStatManager.criminal;
                 }
             }
@@ -91,7 +91,7 @@ public class MiniGameStarter : MonoBehaviour
                 isOpen = false;
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
-                playerStatManager.canMove(true);
+                playerStatManager.canMove = true;
             }
         }
         if (miniGameActive != null)
@@ -116,7 +116,7 @@ public class MiniGameStarter : MonoBehaviour
                     playerStatManager.IncreasePersonalScore();
                 }
                 //Le joueur r�cup�re des PV
-                playerStatManager.canMove(true);
+                playerStatManager.canMove = true;
                 playerStatManager.RecoverHP(15);
                 
                 //int newId = PhotonNetwork.AllocateViewID(true);
