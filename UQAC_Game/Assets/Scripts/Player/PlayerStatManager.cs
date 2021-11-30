@@ -36,6 +36,9 @@ public class PlayerStatManager : MonoBehaviourPun
     public float distanceToHold = 5;
     public List<GameObject> objectPrefabListToInstantiate;
     private bool findAllObjects = false;
+
+    public bool isMinePlayer;
+    public string playerName;
     
     // Start is called before the first frame update
     void Start()
@@ -78,6 +81,10 @@ public class PlayerStatManager : MonoBehaviourPun
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
         }
+
+        isMinePlayer = photonView.IsMine;
+        playerName = PhotonNetwork.PlayerList[photonView.ControllerActorNr-1].NickName;
+        //GameObject.Find("EndGame").GetComponent<EndGame>().AddLooser(this);
         
         findAllObjects = true;
 

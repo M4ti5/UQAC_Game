@@ -6,8 +6,9 @@ using UnityEngine.UI;
 using System;
 using System.Globalization;
 using Photon.Pun.UtilityScripts;
+using UnityEngine.SceneManagement;
 
-public class Options : MonoBehaviourPun
+public class Options : MonoBehaviourPunCallbacks
 {
     public GameObject panel;
     public bool visible = false;
@@ -92,6 +93,14 @@ public class Options : MonoBehaviourPun
 
             PhotonNetwork.LeaveRoom();
         }
+    }
+    
+    /// <summary>
+    /// Called when the local player left the room. We need to load the launcher scene.
+    /// </summary>
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("Launcher");
     }
     
 
