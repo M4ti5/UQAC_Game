@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class CriminalLeak : MonoBehaviour {
@@ -9,7 +10,7 @@ public class CriminalLeak : MonoBehaviour {
 
     public void ShowCriminalLeak () { 
         criminal = FindCriminal();
-        RemoveProgressPanel();
+        HideProgressPanel();
         ShowLeakPanel();
     }
 
@@ -22,39 +23,42 @@ public class CriminalLeak : MonoBehaviour {
         return null;
     }
 
-    private void RemoveProgressPanel () {
+    private void HideProgressPanel () {
         GameObject progressPannel = GameObject.FindGameObjectWithTag("Score");
         progressPannel.SetActive(false);
     }
 
     public void CaptureScreen () {
-        new WaitForEndOfFrame();
 
-        //Positioning of Camera
-        criminalLeakCam.transform.position = criminal.transform.position;
-        criminalLeakCam.transform.Translate(Vector3.forward);
-        criminalLeakCam.transform.rotation = criminal.transform.rotation;
-        criminalLeakCam.transform.Rotate(new Vector3(0 , -180 , 0));
+        if (criminal != null) // pas de screen si pas de criminal
+        {
+            new WaitForEndOfFrame();
+            
+            //Positioning of Camera
+            criminalLeakCam.transform.position = criminal.transform.position;
+            criminalLeakCam.transform.rotation = criminal.transform.rotation;
+            criminalLeakCam.transform.Translate(new Vector3(0,1.75f,2));// ajuster la position de la cam ici
+            criminalLeakCam.transform.Rotate(new Vector3(0 , -180 , 0));
 
-        float height = Screen.height;
-        float width = Screen.width;
+            float height = Screen.height;
+            float width = Screen.width;
 
-        // creates off-screen render texture that can rendered into
-        RenderTexture renderTexture = new RenderTexture((int)width , (int)height , 24);
 
-        // manually render scene into rt
-        criminalLeakCam.targetTexture = criminalFace;
-        criminalLeakCam.Render();
+            // manually render scene into rt
+            criminalLeakCam.targetTexture = criminalFace;
+            criminalLeakCam.Render();
 
-        criminalLeakCam.targetTexture = null;
-        RenderTexture.active = null;
+            criminalLeakCam.targetTexture = null;
+            RenderTexture.active = null;
 
-        Destroy(criminalLeakCam.gameObject);
-
+        }
+        
+        criminalLeakCam.gameObject.SetActive(false);
+        //Destroy(criminalLeakCam.gameObject);
     }
 
     private void ShowLeakPanel () {
-        CaptureScreen();
         this.gameObject.SetActive(true);
+        CaptureScreen();
     }
 }
