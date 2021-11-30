@@ -349,19 +349,18 @@ public class PlayerStatManager : MonoBehaviourPun
     #endregion
 
     [PunRPC]
-    public void spawnObject(Vector3 pos, Quaternion rot, int id)//, Transform parent, PlayerStatManager playerStatManager
+    public void spawnObject(Vector3 pos, Quaternion rot, int id, int idToSpawn)//, Transform parent, PlayerStatManager playerStatManager
     {
         if (storedEquipement == null && objectPrefabListToInstantiate.Count > 0)
         {   
-            int idToSpawn = Random.Range(0,objectPrefabListToInstantiate.Count);
+            
             GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
             initSpawnObject(newObject, thisPlayer.transform.Find("Inventory").transform, id, true);
             storedEquipement = newObject;
             newObject.GetComponent<Object>().isStored = true;
         }
         else if (thisPlayer.transform.Find("Equipements").transform.childCount <= 0 && objectPrefabListToInstantiate.Count > 0)
-        {   
-            int idToSpawn = Random.Range(0,objectPrefabListToInstantiate.Count);
+        {
             GameObject newObject = Instantiate(objectPrefabListToInstantiate[idToSpawn], pos, rot);
             initSpawnObject(newObject, thisPlayer.transform.Find("Equipements").transform, id, true);
             thisPlayer.transform.Find("Equipements").GetComponent<UseObject>().hasObject = true;

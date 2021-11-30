@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MiniGameStarter : MonoBehaviour
 {
@@ -120,7 +121,8 @@ public class MiniGameStarter : MonoBehaviour
                 
                 int newId = PhotonNetwork.AllocateViewID(true);
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId);
+                int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
+                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, Vector3.zero, Quaternion.identity, newId, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
