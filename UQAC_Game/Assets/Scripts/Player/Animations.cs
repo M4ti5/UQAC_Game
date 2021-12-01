@@ -18,26 +18,46 @@ public class Animations : MonoBehaviour
             playerAnim.SetBool("isDead" , true);
         }
     }
-    
+     
     public void HitAnim () {
-        playerAnim.Play("Hit");
+        IEnumerator Hit () {
+            playerAnim.SetBool("inHit",true);
+            yield return new WaitForSeconds(1.25f);
+            playerAnim.SetBool("inHit" , false);
+        }
+
+        StartCoroutine(Hit());
+        //playerAnim.Play("Hit");
     }
     
     public void AttackAnim (string objectUse) {
         switch (objectUse) {
             case "Gun":
-                playerAnim.Play("Shooting",-1);
+            IEnumerator Shoot () {
+                playerAnim.SetBool("inShoot" , true);
+                yield return new WaitForSeconds(1.10f);
+                playerAnim.SetBool("inShoot" , false);
+            }
+
+            StartCoroutine(Shoot());
+            //playerAnim.Play("Shooting",-1);
             break;
 
             case "Knife":
 
             IEnumerator Knife () {
-                playerAnim.applyRootMotion = true;
-                playerAnim.Play("Cut",-1);
-                yield return new WaitForSeconds(1.32f);
-                playerAnim.applyRootMotion = false;
+                playerAnim.SetBool("inCut" , true);
+                yield return new WaitForSeconds(1.10f);
+                playerAnim.SetBool("inCut" , false);
             }
-
+            /*
+           IEnumerator Knife () {
+               playerAnim.applyRootMotion = true;
+               playerAnim.Play("Cut",-1);
+               yield return new WaitForSeconds(1.32f);
+               playerAnim.applyRootMotion = false;
+           }
+           */
             StartCoroutine(Knife());
             break;
         }
