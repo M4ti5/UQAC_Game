@@ -6,7 +6,11 @@ public class Animations : MonoBehaviour
 {
     private Animator playerAnim;
     void Start () {
+        
         playerAnim = GetComponent<Animator>();
+
+        //Perpendicularized the player
+        transform.rotation = Quaternion.Euler(new Vector3(0 , transform.rotation.eulerAngles.y , 0));
     }
 
     public void DeathAnim () {
@@ -17,6 +21,28 @@ public class Animations : MonoBehaviour
 
     public void HitAnim () {
         playerAnim.Play("Hit");
+    }
+
+    public void AttackAnim (string objectUse) {
+        switch (objectUse) {
+            case "Gun":
+                playerAnim.Play("Shooting");
+            break;
+
+            case "Knife":
+
+            IEnumerator Knife () {
+                playerAnim.applyRootMotion = true;
+                playerAnim.Play("Cut");
+                yield return new WaitForSeconds(1.32f);
+                playerAnim.applyRootMotion = false;
+            }
+
+            StartCoroutine(Knife());
+            break;
+        }
+
+        ;
     }
 
     /* Désactivé car effet pas jolie

@@ -202,6 +202,10 @@ public class Object : MonoBehaviourPun
             if (Time.time - lastTimeUseObject > deltaTimeUseObject)
             {
                 lastTimeUseObject = Time.time;
+                
+                //Animation Object
+                transform.parent.parent.gameObject.GetComponent<Animations>().AttackAnim(this.tag);
+                
                 photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
                 PlayerStatManager playerStatManager = GetPlayerStatManager();
                 playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
