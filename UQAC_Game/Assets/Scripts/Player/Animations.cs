@@ -27,7 +27,6 @@ public class Animations : MonoBehaviour
         }
 
         StartCoroutine(Hit());
-        //playerAnim.Play("Hit");
     }
     
     public void AttackAnim (string objectUse) {
@@ -40,24 +39,17 @@ public class Animations : MonoBehaviour
             }
 
             StartCoroutine(Shoot());
-            //playerAnim.Play("Shooting",-1);
             break;
 
             case "Knife":
 
             IEnumerator Knife () {
+                playerAnim.applyRootMotion = true;
                 playerAnim.SetBool("inCut" , true);
-                yield return new WaitForSeconds(1.10f);
+                yield return new WaitForSeconds(1.32f);
                 playerAnim.SetBool("inCut" , false);
+                playerAnim.applyRootMotion = false;
             }
-            /*
-           IEnumerator Knife () {
-               playerAnim.applyRootMotion = true;
-               playerAnim.Play("Cut",-1);
-               yield return new WaitForSeconds(1.32f);
-               playerAnim.applyRootMotion = false;
-           }
-           */
             StartCoroutine(Knife());
             break;
         }
