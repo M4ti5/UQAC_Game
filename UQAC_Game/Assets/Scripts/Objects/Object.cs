@@ -23,15 +23,15 @@ public class Object : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        Init();
+        allObjects = GameObject.Find("Objects");
+        allPlayers = GameObject.Find("Players");
+        name = tag;
     }
 
     public void Init()
     {
-        allObjects = GameObject.Find("Objects");
-        allPlayers = GameObject.Find("Players");
+        Start();
         transform.parent = allObjects.transform;
-        name = tag;
     }
 
     // Update is called once per frame
