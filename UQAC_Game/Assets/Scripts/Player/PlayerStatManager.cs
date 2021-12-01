@@ -47,9 +47,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         thisPlayer = this.gameObject;
 
         StartCoroutine(GetGameObjects());
-
-        SetRandomRole();
-
     }
 
     IEnumerator GetGameObjects () {
@@ -80,6 +77,14 @@ public class PlayerStatManager : MonoBehaviourPun {
         isMinePlayer = photonView.IsMine;
         playerName = photonView.Controller.NickName;
         
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(SetRandomRole());
+            StartCoroutine(AddFilter());
+        }
+
+
         findAllObjects = true;
 
     }
@@ -260,57 +265,52 @@ public class PlayerStatManager : MonoBehaviourPun {
 
 
     #region roleAndFilter
-    public void SetRandomRole () {
-        if (photonView.IsMine) {
-
-            float random = UnityEngine.Random.Range(0.000f , 1.000f);
-
-            bool alreadyACriminal = false;
-            foreach (Transform player in transform.parent) {
-                if (player.GetComponent<PlayerStatManager>().criminal) {
-                    alreadyACriminal = true;
-                }
-            }
-
-            if (!alreadyACriminal && ( transform.parent.childCount == 4 || random > 0.75f )) {
-                photonView.RPC(nameof(RandomRole) , RpcTarget.AllBuffered , true);
-            } else {
-                photonView.RPC(nameof(RandomRole) , RpcTarget.AllBuffered , false);
-                StartCoroutine(AddFilter());
-            }
-        }
-
+    IEnumerator SetRandomRole()
+    {
+        yield return new WaitForSeconds(0.5f);
+        //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
+        int random = UnityEngine.Random.Range(0, transform.parent.childCount);
+        photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, true, transform.parent.GetChild(random).GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]
-    public void RandomRole (bool role) {
-        criminal = role;
-        selectedFilter = -1;
+    public void RandomRole(bool role, int idPlayer)
+    {
+        //Debug.Log("test de RandomRole pour voir si c'est global");
+        Transform player = FindPlayerByID(idPlayer);
+        player.GetComponent<PlayerStatManager>().criminal = role;
+        player.GetComponent<PlayerStatManager>().selectedFilter = -1;
     }
 
-    IEnumerator AddFilter () {
-        yield return new WaitForSeconds(0.1f);
-        if (photonView.IsMine) {
-            List<int> filtersAvailable = new List<int>();
-            for (int i = 0 ; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count ; i++) {
-                filtersAvailable.Add(i);
-            }
-            foreach (Transform player in transform.parent) {
-                if (player.GetComponent<PlayerStatManager>().selectedFilter != -1) {
-                    filtersAvailable.Remove(player.GetComponent<PlayerStatManager>().selectedFilter);
-                }
-            }
-            int randomRange = UnityEngine.Random.Range(0 , filtersAvailable.Count);
-            int randomFilter = filtersAvailable[randomRange];
-            photonView.RPC(nameof(Filter) , RpcTarget.AllBuffered , randomFilter , filtersAvailable.Count);
+    IEnumerator AddFilter()
+    {
+        yield return new WaitForSeconds(0.6f);
+        List<int> filtersAvailable = new List<int>();
+        for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
+        {
+            filtersAvailable.Add(i);
         }
+        for (int i = 0; i < transform.parent.childCount; i++)
+        {
+            if (transform.parent.GetChild(i).GetComponent<PlayerStatManager>().criminal == false)
+            {
+                //Debug.Log("numéro du joueur: " + i);
+                int randomRange = UnityEngine.Random.Range(0, filtersAvailable.Count);
+                int randomFilter = filtersAvailable[randomRange];
+                photonView.RPC(nameof(Filter), RpcTarget.AllBuffered, randomFilter, transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID);
+
+                filtersAvailable.Remove(randomFilter);
+            }
+        } 
     }
 
     [PunRPC]
-    public void Filter (int randomFilter , int f) {
-        selectedFilter = randomFilter;
-        PostProcessManager ppm = transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>();
-        ppm.allPostProcessVolumesEnabled[randomFilter] = true;
+    public void Filter(int randomFilter, int idPlayer)
+    {
+        Debug.Log(randomFilter + " " + idPlayer + " Filter");
+        Transform player = FindPlayerByID(idPlayer);
+        player.GetComponent<PlayerStatManager>().selectedFilter = randomFilter;
+        player.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[randomFilter] = true;
     }
     #endregion
 
@@ -340,5 +340,17 @@ public class PlayerStatManager : MonoBehaviourPun {
     public IEnumerator OnDestroy () {
         DesequipmentTriggeredWhenPlayerLeaveGame();
         yield return new WaitForSeconds(1);
+    }
+
+    Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in transform.parent)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
     }
 }
