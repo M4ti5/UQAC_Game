@@ -77,9 +77,10 @@ public class PlayerStatManager : MonoBehaviourPun {
         yield return new WaitUntil(() => (inventoryDisplay = canvas.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "InventoryDisplay").gameObject) != null);
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         
-
-        if (PhotonNetwork.IsMasterClient)
+        // c'est que le master avec le script de son perso qui peut set les roles et filtres pour tout le monde
+        if (PhotonNetwork.IsMasterClient && GetComponent<PhotonView>().IsMine)
         {
+            //Debug.Log("isMasterClient and isMine" + GetComponent<PhotonView>().ViewID);
             StartCoroutine(SetRandomRole());
             StartCoroutine(AddFilter());
         }
@@ -267,16 +268,17 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region roleAndFilter
     IEnumerator SetRandomRole()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
         int nbrMaxCriminels = 1;
+        // on affecte un nouveau criminel s'il n'en existe pas déjà le nombre défini
         if (transform.parent.GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
-            .Count() >= nbrMaxCriminels)
+            .Count() < nbrMaxCriminels)
         {
-            yield return null;
+            int random = UnityEngine.Random.Range(0, transform.parent.childCount);
+            photonView.RPC(nameof(RandomRole), RpcTarget.AllBufferedViaServer, true,
+                transform.parent.GetChild(random).GetComponent<PhotonView>().ViewID);
         }
-        int random = UnityEngine.Random.Range(0, transform.parent.childCount);
-        photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, true, transform.parent.GetChild(random).GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]
@@ -303,11 +305,13 @@ public class PlayerStatManager : MonoBehaviourPun {
                 //Debug.Log("numéro du joueur: " + i);
                 int randomRange = UnityEngine.Random.Range(0, filtersAvailable.Count);
                 int randomFilter = filtersAvailable[randomRange];
-                photonView.RPC(nameof(Filter), RpcTarget.AllBuffered, randomFilter, transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID);
+                //Debug.Log("id du joueur: " + transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID + " randomRange: "+ randomRange + " randomFilter: " + randomFilter);
+                photonView.RPC(nameof(Filter), RpcTarget.AllBufferedViaServer, randomFilter, transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID);
 
                 filtersAvailable.Remove(randomFilter);
             }
         } 
+        //Debug.Log("AddFilter ended by player" + this.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]

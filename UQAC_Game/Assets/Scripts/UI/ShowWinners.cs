@@ -23,7 +23,8 @@ public class ShowWinners : MonoBehaviourPunCallbacks
             {
                 if (looser.isMinePlayer)
                 {
-                    textMessage.text = "<color=\"red\">You loose !</color>";
+                    textMessage.text = "Dommage "+ GetNameAndRoleOfPayer(looser) + "!\n" + 
+                                       "<color=\"red\">You loose !</color>";
                     DisplayWinners();
                     break;
                 }
@@ -33,7 +34,8 @@ public class ShowWinners : MonoBehaviourPunCallbacks
             {
                 if (winner.isMinePlayer)
                 {
-                    textMessage.text = "<color=\"green\">You win !</color>";
+                    textMessage.text = "Félicitation "+ GetNameAndRoleOfPayer(winner) + "!\n" + 
+                                       "<color=\"green\">You win !</color>";
                     if (_endGame.winners.Count > 1)// si on est pas le criminel, on affiche aussi les autres joueurs
                     {
                         DisplayWinners();
@@ -61,9 +63,14 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 textMessage.text += "\nLes gagnants sont : ";
             foreach (PlayerStatManager winner in _endGame.winners)
             {
-                textMessage.text += "\n" + winner.playerName;
+                textMessage.text += "\n" + GetNameAndRoleOfPayer(winner);
             }
         }
+    }
+
+    private string GetNameAndRoleOfPayer(PlayerStatManager playerStatManager)
+    {
+        return "<b>" + playerStatManager.playerName + "</b> (" + (playerStatManager.criminal ? "Criminel" : "Enquêteur") + ")";
     }
     
     public void LeaveRoom()
