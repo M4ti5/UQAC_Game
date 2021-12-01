@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 7035282860128618356}
   - component: {fileID: 2297088295379410321}
   - component: {fileID: 3024131585330824182}
+  - component: {fileID: 1729555759381835971}
   m_Layer: 3
   m_Name: Player_Prefab
   m_TagString: Player
@@ -182,10 +183,19 @@ MonoBehaviour:
     Name: isDead
   - Type: 4
     SynchronizeType: 2
+    Name: inJump
+  - Type: 4
+    SynchronizeType: 0
     Name: inGrabbing
   - Type: 4
     SynchronizeType: 2
-    Name: inJump
+    Name: inHit
+  - Type: 4
+    SynchronizeType: 2
+    Name: inShoot
+  - Type: 4
+    SynchronizeType: 2
+    Name: inCut
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -215,7 +225,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5567021325426965779}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 101
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -238,13 +248,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Armature'\n\tTransform 'bone_LeftHand'\n\tTransform
-    'bone_RightShoulder'\n\tTransform 'bone_RightUpLeg'\n\tTransform 'bone_LeftForeArm'\n\tTransform
-    'bone_RightArm'\n\tTransform 'bone_RightFoot'\n\tTransform 'bone_Head'\n\tTransform
-    'bone_LeftHandIndex1'\n\tTransform 'bone_Spine2'\n\tand more ...\n\tFrom animation
-    clip 'Grab'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -301,10 +305,13 @@ MonoBehaviour:
   currentHP: 100
   stamina: 0
   hpMax: 0
+  isDead: 0
+  canMove: 1
   canvas: {fileID: 0}
   personalScore: {fileID: 0}
   globalScore: {fileID: 0}
   allObjects: {fileID: 0}
+  allMiniGames: {fileID: 0}
   interractionDisplay: {fileID: 0}
   interactionText: {fileID: 0}
   inventoryDisplay: {fileID: 0}
@@ -316,10 +323,24 @@ MonoBehaviour:
   selectedFilter: 0
   distanceToHold: 5
   objectPrefabListToInstantiate:
-  - {fileID: 6503671064153239741, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
+  findAllObjects: 0
+  isMinePlayer: 0
+  playerName: 
+--- !u!114 &1729555759381835971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5567021325426965779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3326d87e0fed534cbc53d4d6c10616c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6023304739165050249
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +637,10 @@ PrefabInstance:
       propertyPath: bindRef
       value: 
       objectReference: {fileID: 853266541493032428}
+    - target: {fileID: 6703777973144391094, guid: e9d52e192615ba5478b74141b1477e7b, type: 3}
+      propertyPath: sceneViewId
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6794589948714963556, guid: e9d52e192615ba5478b74141b1477e7b, type: 3}
       propertyPath: m_RootOrder
       value: 1

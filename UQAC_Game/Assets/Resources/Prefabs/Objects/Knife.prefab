@@ -126,7 +126,7 @@ MonoBehaviour:
   player: {fileID: 0}
   distanceToCut: 0.5
   rangeCut: 2
-  damage: 10
+  damage: 30
 --- !u!1001 &5449298580226895216
 PrefabInstance:
   m_ObjectHideFlags: 0

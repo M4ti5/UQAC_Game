@@ -125,7 +125,7 @@ MonoBehaviour:
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}
   maxDistance: 20
-  damage: 10
+  damage: 30
 --- !u!1001 &8624999683872247559
 PrefabInstance:
   m_ObjectHideFlags: 0
