@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     public float distanceToHold = 5;
     public List<GameObject> objectPrefabListToInstantiate;
-    private bool findAllObjects = false;
+    public bool findAllObjects = false;
 
     public bool isMinePlayer;
     public string playerName;
@@ -45,6 +46,9 @@ public class PlayerStatManager : MonoBehaviourPun {
         currentHP = 100;
         hpMax = 100;
         thisPlayer = this.gameObject;
+
+        isMinePlayer = photonView.IsMine;
+        playerName = photonView.Controller.NickName;
 
         StartCoroutine(GetGameObjects());
     }
@@ -60,10 +64,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         interractionDisplay = GameObject.Find("TakeObject");
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
 
-        yield return new WaitUntil(() => GameObject.Find("InventoryDisplay") != null);
-        inventoryDisplay = GameObject.Find("InventoryDisplay");
-        inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
         yield return new WaitUntil(() => GameObject.Find("PlayerCanvas") != null);
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -73,9 +73,9 @@ public class PlayerStatManager : MonoBehaviourPun {
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
         }
-
-        isMinePlayer = photonView.IsMine;
-        playerName = photonView.Controller.NickName;
+        // trouver un objet desactivé
+        yield return new WaitUntil(() => (inventoryDisplay = canvas.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "InventoryDisplay").gameObject) != null);
+        inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         
 
         if (PhotonNetwork.IsMasterClient)
@@ -267,8 +267,14 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region roleAndFilter
     IEnumerator SetRandomRole()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
+        int nbrMaxCriminels = 1;
+        if (transform.parent.GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
+            .Count() >= nbrMaxCriminels)
+        {
+            yield return null;
+        }
         int random = UnityEngine.Random.Range(0, transform.parent.childCount);
         photonView.RPC(nameof(RandomRole), RpcTarget.AllBuffered, true, transform.parent.GetChild(random).GetComponent<PhotonView>().ViewID);
     }

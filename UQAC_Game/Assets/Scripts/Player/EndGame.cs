@@ -13,6 +13,7 @@ public class EndGame : MonoBehaviour
 
     public Transform allPlayers;
     public bool firstInitAllEnqueteurs = true;
+    public bool isFindingAllEnqueteurs = false;
     public List<PlayerStatManager> allEnqueteurs;
     
     public List<PlayerStatManager> loosers;
@@ -23,6 +24,8 @@ public class EndGame : MonoBehaviour
     
     private void Awake()
     {
+        firstInitAllEnqueteurs = true;
+        isFindingAllEnqueteurs = false;
         SceneManager.activeSceneChanged += DestroyOnMenuScreen;
         if (this != null)
         {
@@ -44,58 +47,54 @@ public class EndGame : MonoBehaviour
         {
             if (allPlayers != null)
             {
-                if (firstInitAllEnqueteurs == true)
+                if (firstInitAllEnqueteurs == true && isFindingAllEnqueteurs == false)
                 {
-                    new WaitForSeconds(5);
-                    // find all enqueteurs
-                    foreach (Transform player in allPlayers)
-                    {
-                        if (player.GetComponent<PlayerStatManager>().criminal == false)
-                        {
-                            allEnqueteurs.Add(player.GetComponent<PlayerStatManager>());
-                        }
-                    }
-                    firstInitAllEnqueteurs = false;
+                    isFindingAllEnqueteurs = true;
+                    StartCoroutine(FindAllEnqueteurs());
                 }
 
                 if (firstInitAllEnqueteurs == false)
                 {
-                    foreach (Transform player in allPlayers)
+                    if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // eviter de terminer directement la partie d'entrainement
                     {
-                        PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
-                        // add looser players if there are dead and no already in list
-                        if (playerStatManager.isDead && loosers.Find((looser) => looser == playerStatManager) == null)
+                        foreach (Transform player in allPlayers)
                         {
-                            AddLooser(playerStatManager);
-                            if (playerStatManager.criminal ==
-                                true) // si le criminel est mort alors tous les autres ont gagné
+                            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
+                            // add looser players if there are dead and no already in list
+                            if (playerStatManager.isDead &&
+                                loosers.Find((looser) => looser == playerStatManager) == null)
                             {
-                                foreach (Transform winner in allPlayers)
+                                AddLooser(playerStatManager);
+                                if (playerStatManager.criminal ==
+                                    true) // si le criminel est mort alors tous les autres ont gagné
                                 {
-                                    PlayerStatManager winnerPlayerStatManager =
-                                        winner.GetComponent<PlayerStatManager>();
-                                    if (winnerPlayerStatManager.isDead == false &&
-                                        winners.Find((winner) => winner == winnerPlayerStatManager) == null)
+                                    foreach (Transform winner in allPlayers)
                                     {
-                                        AddWinner(winnerPlayerStatManager);
+                                        PlayerStatManager winnerPlayerStatManager =
+                                            winner.GetComponent<PlayerStatManager>();
+                                        if (winnerPlayerStatManager.isDead == false &&
+                                            winners.Find((winner) => winner == winnerPlayerStatManager) == null)
+                                        {
+                                            AddWinner(winnerPlayerStatManager);
+                                        }
                                     }
-                                }
 
-                                break;
+                                    break;
+                                }
                             }
                         }
-                    }
 
 
-                    // si on a autant de loosers que d'enqueteurs alors le criminel a gagné
-                    if (loosers.Count == allEnqueteurs.Count)
-                    {
-                        foreach (PlayerStatManager playerStatManager in allPlayers
-                            .GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
-                            .ToList())
+                        // si on a autant de loosers que d'enqueteurs alors le criminel a gagné
+                        if (loosers.Count == allEnqueteurs.Count)
                         {
-                            if (winners.Find((winner) => winner == playerStatManager) == null)
-                                AddWinner(playerStatManager);
+                            foreach (PlayerStatManager playerStatManager in allPlayers
+                                .GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
+                                .ToList())
+                            {
+                                if (winners.Find((winner) => winner == playerStatManager) == null)
+                                    AddWinner(playerStatManager);
+                            }
                         }
                     }
                 }
@@ -103,12 +102,10 @@ public class EndGame : MonoBehaviour
             
             if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
+                endGame = true;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    new WaitForSeconds(5);// attente de la fin des animations
-                    print("End");
-                    PhotonNetwork.LoadLevel("End");
-                    endGame = true;
+                    StartCoroutine(LoadEndScene());
                 }
             }
         }
@@ -137,4 +134,27 @@ public class EndGame : MonoBehaviour
             }
         }
     }
+
+    IEnumerator FindAllEnqueteurs()
+    {
+        yield return new WaitForSeconds(5);
+        // find all enqueteurs
+        foreach (Transform player in allPlayers)
+        {
+            if (player.GetComponent<PlayerStatManager>().criminal == false)
+            {
+                allEnqueteurs.Add(player.GetComponent<PlayerStatManager>());
+            }
+        }
+        firstInitAllEnqueteurs = false;
+        isFindingAllEnqueteurs = false;
+    }
+
+    IEnumerator LoadEndScene()
+    {
+        yield return new WaitForSeconds(5);// attente de la fin des animations
+        print("End");
+        PhotonNetwork.LoadLevel("End");
+    }
+    
 }
