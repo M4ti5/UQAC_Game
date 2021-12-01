@@ -187,6 +187,15 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: inGrabbing
+  - Type: 4
+    SynchronizeType: 0
+    Name: inHit
+  - Type: 4
+    SynchronizeType: 2
+    Name: inShoot
+  - Type: 4
+    SynchronizeType: 2
+    Name: inCut
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
