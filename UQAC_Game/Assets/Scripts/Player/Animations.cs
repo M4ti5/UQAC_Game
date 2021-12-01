@@ -18,22 +18,22 @@ public class Animations : MonoBehaviour
             playerAnim.SetBool("isDead" , true);
         }
     }
-
+    
     public void HitAnim () {
         playerAnim.Play("Hit");
     }
-
+    
     public void AttackAnim (string objectUse) {
         switch (objectUse) {
             case "Gun":
-                playerAnim.Play("Shooting");
+                playerAnim.Play("Shooting",-1);
             break;
 
             case "Knife":
 
             IEnumerator Knife () {
                 playerAnim.applyRootMotion = true;
-                playerAnim.Play("Cut");
+                playerAnim.Play("Cut",-1);
                 yield return new WaitForSeconds(1.32f);
                 playerAnim.applyRootMotion = false;
             }
@@ -43,7 +43,7 @@ public class Animations : MonoBehaviour
         }
 
         ;
-    }
+    }  
 
     /* Désactivé car effet pas jolie
      public void GrabAnim () {
