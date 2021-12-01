@@ -320,10 +320,11 @@ MonoBehaviour:
   selectedFilter: 0
   distanceToHold: 5
   objectPrefabListToInstantiate:
-  - {fileID: 6503671064153239741, guid: 4274a1ca924e0924db156fc60042e090, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
+  isMinePlayer: 0
+  playerName: 
 --- !u!114 &1729555759381835971
 MonoBehaviour:
   m_ObjectHideFlags: 0

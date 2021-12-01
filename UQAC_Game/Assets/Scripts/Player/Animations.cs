@@ -6,7 +6,7 @@ public class Animations : MonoBehaviour
 {
     private Animator playerAnim;
     void Start () {
-        playerAnim = GetComponent<Animator>();
+        playerAnim = transform.GetComponent<Animator>();
     }
 
     public void DeathAnim () {

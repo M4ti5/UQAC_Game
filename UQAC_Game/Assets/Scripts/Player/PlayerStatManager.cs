@@ -78,8 +78,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         }
 
         isMinePlayer = photonView.IsMine;
-        playerName = PhotonNetwork.PlayerList[photonView.ControllerActorNr-1].NickName;
-        //GameObject.Find("EndGame").GetComponent<EndGame>().AddLooser(this);
+        playerName = photonView.Controller.NickName;
         
         findAllObjects = true;
 

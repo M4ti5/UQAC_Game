@@ -2002,6 +2002,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6770141387020200288, guid: d870c11ec2fc1e8419809a855a7e9679, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196082}
     - target: {fileID: 7047210610001081012, guid: d870c11ec2fc1e8419809a855a7e9679, type: 3}
       propertyPath: m_RootOrder
       value: 13
