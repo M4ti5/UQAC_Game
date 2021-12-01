@@ -83,6 +83,8 @@ public class Object : MonoBehaviourPun
 
     Transform FindEquipmentsPlayerByID(int id)
     {
+        if(allPlayers == null)
+            Start();
         foreach (Transform child in allPlayers.transform)
         {
             if (child.GetComponent<PhotonView>().ViewID == id)
@@ -147,7 +149,8 @@ public class Object : MonoBehaviourPun
     protected void DesequipmentTriggered()
     {
         transform.parent = allObjects.transform;
-        transform.position = EquipmentDest.parent.Find("Inventory").position;
+        if(EquipmentDest != null)
+            transform.position = EquipmentDest.parent.Find("Inventory").position;
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;

@@ -347,9 +347,8 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     }
 
-    public IEnumerator OnDestroy () {
+    public void OnDestroy () {
         DesequipmentTriggeredWhenPlayerLeaveGame();
-        yield return new WaitForSeconds(1);
     }
 
     Transform FindPlayerByID(int id)
