@@ -90,7 +90,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &129183522848883513
 Transform:
   m_ObjectHideFlags: 0
@@ -248,13 +248,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Armature'\n\tTransform 'bone_LeftHand'\n\tTransform
-    'bone_RightShoulder'\n\tTransform 'bone_RightUpLeg'\n\tTransform 'bone_LeftForeArm'\n\tTransform
-    'bone_RightArm'\n\tTransform 'bone_RightFoot'\n\tTransform 'bone_Head'\n\tTransform
-    'bone_LeftHandIndex1'\n\tTransform 'bone_Spine2'\n\tand more ...\n\tFrom animation
-    clip 'Grab'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -332,6 +326,7 @@ MonoBehaviour:
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
+  findAllObjects: 0
   isMinePlayer: 0
   playerName: 
 --- !u!114 &1729555759381835971
