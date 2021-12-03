@@ -12,6 +12,7 @@ public class Switcher : Object {
         {
             if (Time.time - lastTimeUseObject > deltaTimeUseObject)
             {
+                transform.parent.parent.gameObject.GetComponent<Animations>().AttackAnim(this.tag);
                 lastTimeUseObject = Time.time;
 
                 Transform player = transform.parent.parent;

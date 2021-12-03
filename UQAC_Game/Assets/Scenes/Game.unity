@@ -1919,6 +1919,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 827729344}
     m_Modifications:
     - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: rangeCut
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: allObjects
       value: 
       objectReference: {fileID: 827729343}
@@ -1926,6 +1930,10 @@ PrefabInstance:
       propertyPath: allPlayers
       value: 
       objectReference: {fileID: 1828196081}
+    - target: {fileID: -456982295233155035, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+      propertyPath: distanceToCut
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1148903710966650604, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
       propertyPath: m_RootOrder
       value: 1
