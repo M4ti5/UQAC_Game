@@ -81,7 +81,7 @@ public class MiniGameStarter : MonoBehaviour
 
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
-                    playerStatManager.canMove(false);
+                    playerStatManager.canMove= false;
                     criminal = playerStatManager.criminal;
                 }
             }
@@ -91,7 +91,7 @@ public class MiniGameStarter : MonoBehaviour
                 isOpen = false;
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
-                playerStatManager.canMove(true);
+                playerStatManager.canMove = true;
             }
         }
         if (miniGameActive != null)
@@ -116,14 +116,16 @@ public class MiniGameStarter : MonoBehaviour
                     playerStatManager.IncreasePersonalScore();
                 }
                 //Le joueur r�cup�re des PV
-                playerStatManager.canMove(true);
+                playerStatManager.canMove = true;
                 playerStatManager.RecoverHP(15);
                 
-                int newId = PhotonNetwork.AllocateViewID(true);
+                //int newId = PhotonNetwork.AllocateViewID(true);
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
-                GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/"+playerStatManager.objectPrefabListToInstantiate[idToSpawn].name,Vector3.zero, Quaternion.identity, 0);
-                photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered, newObject,Vector3.zero, Quaternion.identity, newId, idToSpawn);
+                
+                //photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered,Vector3.zero, Quaternion.identity, newId, idToSpawn);
+                playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
             }
