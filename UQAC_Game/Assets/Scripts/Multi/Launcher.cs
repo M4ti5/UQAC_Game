@@ -170,7 +170,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			dropDownListOfRooms.options = optionList;
 			dropDownListOfRooms.value = 0;
-			dropDownListOfRooms.RefreshShownValue();
+			dropDownListOfRooms.Hide();
+			dropDownListOfRooms.Show();
 		}
 	}
 
