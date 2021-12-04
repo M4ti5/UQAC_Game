@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -169,6 +170,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			dropDownListOfRooms.options = optionList;
 			dropDownListOfRooms.value = 0;
+			dropDownListOfRooms.Hide();
+			dropDownListOfRooms.Show();
 		}
 	}
 
@@ -293,7 +296,21 @@ public class Launcher : MonoBehaviourPunCallbacks
 			LogFeedback("Joining Room...");
 			// #Critical we need at this point to attempt joining a Room. If it fails, we'll get notified in OnJoinFailed() and we'll create one.
 			if (string.IsNullOrEmpty(this.roomName) == false)
-				PhotonNetwork.JoinRoom(this.roomName);
+			{
+				bool roomExistAndIsClose = false;
+				if (GetRoomList().Count((room) => room.Name == this.roomName) > 0) //si la room existe
+					if (GetRoomList().Where((room) => room.Name == this.roomName).ToList()[0].IsOpen ==
+					    false) // et si elle est fermée alors on ne peut pas la rejoindre
+					{
+						
+						roomExistAndIsClose = true;
+						LogFeedback("<color=orange>The room is closed...</color>");
+						this.connectionStatus.text = "<color=#009900>Ready !</color>";
+					}
+
+				if(roomExistAndIsClose == false)
+					PhotonNetwork.JoinRoom(this.roomName);
+			}
 			else
 			{
 				// choose random room
