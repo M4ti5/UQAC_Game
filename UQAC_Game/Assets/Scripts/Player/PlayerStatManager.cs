@@ -363,4 +363,9 @@ public class PlayerStatManager : MonoBehaviourPun {
         }
         return null;
     }
+
+    public void setPlayerColor(float _r, float _g, float _b)
+    {
+        transform.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+    }
 }
