@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2774866250392102684}
   m_Layer: 3
   m_Name: ColorSwitch
-  m_TagString: Switcher
+  m_TagString: Color Switch
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

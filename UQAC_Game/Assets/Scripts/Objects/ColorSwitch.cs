@@ -15,7 +15,7 @@ public class ColorSwitch : Object
         {
             if(HitObj.transform.tag == "Player")
             {
-                transform.parent.parent.GetComponent<PlayerStatManager>().playerColor = HitObj.transform.GetComponent<PlayerStatManager>().playerColor;
+                transform.parent.parent.GetComponent<PlayerStatManager>().playerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
             }
         }
     }
