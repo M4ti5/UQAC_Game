@@ -170,6 +170,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			dropDownListOfRooms.options = optionList;
 			dropDownListOfRooms.value = 0;
+			dropDownListOfRooms.RefreshShownValue();
 		}
 	}
 
@@ -303,6 +304,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 						
 						roomExistAndIsClose = true;
 						LogFeedback("<color=orange>The room is closed...</color>");
+						this.connectionStatus.text = "<color=#009900>Ready !</color>";
 					}
 
 				if(roomExistAndIsClose == false)
