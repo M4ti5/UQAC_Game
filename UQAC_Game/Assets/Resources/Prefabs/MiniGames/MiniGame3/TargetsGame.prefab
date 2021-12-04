@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0abe3d1bf01aa324db05399cf314f3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nbOfTarget: 2
+  nbOfTarget: 10
   targetPrefab: {fileID: 8793498846839733072, guid: 6c4494d0bcd986046b51e0f1c0a396ab, type: 3}
   victoryText: {fileID: 1009884326717494477}
   allTargets: []
