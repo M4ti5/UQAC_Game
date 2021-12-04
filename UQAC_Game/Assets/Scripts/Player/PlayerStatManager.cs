@@ -364,8 +364,11 @@ public class PlayerStatManager : MonoBehaviourPun {
         return null;
     }
 
-    public void setPlayerColor(float _r, float _g, float _b)
+    public void setPlayerColor(float _r, float _g, float _b, int idPlayer)
     {
-        transform.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+        
+        Transform player = FindPlayerByID(idPlayer);
+        player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+        player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
     }
 }
