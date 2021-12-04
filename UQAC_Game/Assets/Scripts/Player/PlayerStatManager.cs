@@ -13,6 +13,7 @@ public class PlayerStatManager : MonoBehaviourPun
     public int currentHP;
     public int stamina;
     public int hpMax;
+    public Vector3 playerColor ;
 
     public GameObject canvas;
     public PersonalScore personalScore;

@@ -20,7 +20,7 @@ public class RandPlayerColor : MonoBehaviourPun
             r = UnityEngine.Random.Range(0.000f, 1.000f);
             g = UnityEngine.Random.Range(0.000f, 1.000f);
             b = UnityEngine.Random.Range(0.000f, 1.000f);
-
+            
             photonView.RPC(nameof(RandomSkinColor), RpcTarget.AllBuffered, r, g, b);
         }
     }
@@ -32,6 +32,8 @@ public class RandPlayerColor : MonoBehaviourPun
 
         if (skinMeshRenderer != null)
         {
+            Vector3 playerColor = new Vector3(r, g, b);
+            transform.parent.parent.GetComponent<PlayerStatManager>().playerColor = playerColor;
             skinMeshRenderer.materials[materialIndice].color = new Color(_r, _g, _b);
         }
     }
