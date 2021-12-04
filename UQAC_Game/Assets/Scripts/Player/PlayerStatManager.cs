@@ -11,6 +11,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     public int currentHP;
     public int stamina;
     public int hpMax;
+    public Vector3 playerColor ;
 
     public bool isDead = false;
     public bool canMove = true;
@@ -361,5 +362,13 @@ public class PlayerStatManager : MonoBehaviourPun {
             }
         }
         return null;
+    }
+
+    public void setPlayerColor(float _r, float _g, float _b, int idPlayer)
+    {
+        
+        Transform player = FindPlayerByID(idPlayer);
+        player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+        player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
     }
 }

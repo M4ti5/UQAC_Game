@@ -7,7 +7,7 @@ using UnityEngine;
 public class RandPlayerColor : MonoBehaviourPun
 {
     public int materialIndice;
-    float r,g,b;
+    float r, g, b;
     void Start()
     {
         SetRandomSkinColor();
@@ -27,6 +27,11 @@ public class RandPlayerColor : MonoBehaviourPun
 
     [PunRPC]
     private void RandomSkinColor(float _r, float _g, float _b)
+    {
+        transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(_r, _g, _b, transform.parent.parent.GetComponent<PhotonView>().ViewID);
+    }
+
+    public void setSkinColor(float _r, float _g, float _b)
     {
         SkinnedMeshRenderer skinMeshRenderer = GetComponent<SkinnedMeshRenderer>();
 
