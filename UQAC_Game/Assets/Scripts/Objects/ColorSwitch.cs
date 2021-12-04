@@ -13,9 +13,10 @@ public class ColorSwitch : Object
     {
         if (Physics.Raycast(HitObj.position,HitObj.forward, out swap, maxDistance))
         {
-            if(HitObj.transform.tag == "Player")
+            if(swap.transform.tag == "Player")
             {
-                transform.parent.parent.GetComponent<PlayerStatManager>().playerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
+                Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
+                transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z);
             }
         }
     }
