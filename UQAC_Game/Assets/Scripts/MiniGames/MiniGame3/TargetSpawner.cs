@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TargetSpawner : MonoBehaviour
 {
     public int nbOfTarget = 1;
@@ -10,6 +11,8 @@ public class TargetSpawner : MonoBehaviour
     public GameObject victoryText;
     private float maxWidth;
     private float maxHeight;
+
+    private float sizeOfTargetSprite = 100;
     
     public List<GameObject> allTargets;
 
@@ -40,8 +43,8 @@ public class TargetSpawner : MonoBehaviour
         {
             GameObject tmpObj = Instantiate(targetPrefab);
             tmpObj.transform.SetParent(transform, false);
-            float x = Random.Range(-maxWidth/2, maxWidth/2);
-            float y = Random.Range(-maxHeight/2, maxHeight/2);
+            float x = Random.Range(-maxWidth/2+sizeOfTargetSprite/2, maxWidth/2-sizeOfTargetSprite/2);
+            float y = Random.Range(-maxHeight/2+sizeOfTargetSprite/2, maxHeight/2-sizeOfTargetSprite/2);
             tmpObj.transform.localPosition = new Vector3(x, y, 1);
             tmpObj.transform.localScale = new Vector3(1, 1, 1);
             tmpObj.transform.localRotation = Quaternion.identity;
