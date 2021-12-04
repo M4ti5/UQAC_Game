@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class TargetSpawner : MonoBehaviour
 {
     public int nbOfTarget = 1;
 
-    public List<GameObject> allTargets;
     public GameObject targetPrefab;
+    public GameObject victoryText;
+    private float maxWidth;
+    private float maxHeight;
+    
+    public List<GameObject> allTargets;
 
     private bool miniGameEnded = false;
-    public GameObject victoryText;
     
-    private List<Vector3> allPositions;
 
-    private List<bool> stateOfPositions;
     // Start is called before the first frame update
     void Start()
     {
+        maxWidth = gameObject.GetComponent<RectTransform>().rect.width;
+        maxHeight = gameObject.GetComponent<RectTransform>().rect.height;
         initAllTargets();
     }
 
@@ -37,8 +39,10 @@ public class TargetSpawner : MonoBehaviour
         for (int i = 0; i < nbOfTarget; i++)
         {
             GameObject tmpObj = Instantiate(targetPrefab);
-            tmpObj.transform.position = Vector3.zero;
             tmpObj.transform.SetParent(transform, false);
+            float x = Random.Range(-maxWidth/2, maxWidth/2);
+            float y = Random.Range(-maxHeight/2, maxHeight/2);
+            tmpObj.transform.localPosition = new Vector3(x, y, 1);
             tmpObj.transform.localScale = new Vector3(1, 1, 1);
             tmpObj.transform.localRotation = Quaternion.identity;
             //tmpObj.SetActive(false);

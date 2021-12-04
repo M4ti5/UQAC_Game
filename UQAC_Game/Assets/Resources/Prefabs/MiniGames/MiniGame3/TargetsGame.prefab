@@ -138,10 +138,10 @@ RectTransform:
   m_Father: {fileID: 7085200771536482646}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: -360, y: -200}
+  m_SizeDelta: {x: 952, y: 502}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5338387188752642576
 CanvasRenderer:
@@ -193,10 +193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0abe3d1bf01aa324db05399cf314f3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nbOfTarget: 1
-  allTargets: []
+  nbOfTarget: 2
   targetPrefab: {fileID: 8793498846839733072, guid: 6c4494d0bcd986046b51e0f1c0a396ab, type: 3}
   victoryText: {fileID: 1009884326717494477}
+  allTargets: []
 --- !u!1 &3652835847799932532
 GameObject:
   m_ObjectHideFlags: 0
