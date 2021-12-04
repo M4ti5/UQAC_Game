@@ -296,10 +296,15 @@ public class Launcher : MonoBehaviourPunCallbacks
 			if (string.IsNullOrEmpty(this.roomName) == false)
 			{
 				bool roomExistAndIsClose = false;
-				if (GetRoomList().Where((room) => room.Name == this.roomName) != null) //si la room existe
+				if (GetRoomList().Count((room) => room.Name == this.roomName) > 0) //si la room existe
 					if (GetRoomList().Where((room) => room.Name == this.roomName).ToList()[0].IsOpen ==
 					    false) // et si elle est fermée alors on ne peut pas la rejoindre
+					{
+						
 						roomExistAndIsClose = true;
+						LogFeedback("<color=orange>The room is closed...</color>");
+					}
+
 				if(roomExistAndIsClose == false)
 					PhotonNetwork.JoinRoom(this.roomName);
 			}
