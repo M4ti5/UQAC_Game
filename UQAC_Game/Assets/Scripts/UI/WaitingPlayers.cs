@@ -112,6 +112,9 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
 
         Debug.LogFormat("PhotonNetwork : Loading Game - PlayerCount: {0}", PhotonNetwork.CurrentRoom.PlayerCount);
         PhotonNetwork.LoadLevel("Game");
+        
+        // close room for other players
+        PhotonNetwork.CurrentRoom.IsOpen = false;
     }
     
     
