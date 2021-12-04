@@ -124,7 +124,7 @@ MonoBehaviour:
   HitObj: {fileID: 0}
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}
-  maxDistance: 20
+  maxDistance: 15
   damage: 30
 --- !u!1001 &8624999683872247559
 PrefabInstance:
