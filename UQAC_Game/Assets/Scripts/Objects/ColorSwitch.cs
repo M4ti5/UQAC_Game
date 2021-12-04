@@ -16,7 +16,7 @@ public class ColorSwitch : Object
             if(swap.transform.tag == "Player")
             {
                 Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
-                transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z);
+                transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
             }
         }
     }

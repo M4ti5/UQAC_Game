@@ -28,7 +28,7 @@ public class RandPlayerColor : MonoBehaviourPun
     [PunRPC]
     private void RandomSkinColor(float _r, float _g, float _b)
     {
-        transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(_r, _g, _b);
+        transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(_r, _g, _b, transform.parent.parent.GetComponent<PhotonView>().ViewID);
     }
 
     public void setSkinColor(float _r, float _g, float _b)
@@ -37,8 +37,6 @@ public class RandPlayerColor : MonoBehaviourPun
 
         if (skinMeshRenderer != null)
         {
-            Vector3 playerColor = new Vector3(r, g, b);
-            transform.parent.parent.GetComponent<PlayerStatManager>().playerColor = playerColor;
             skinMeshRenderer.materials[materialIndice].color = new Color(_r, _g, _b);
         }
     }
