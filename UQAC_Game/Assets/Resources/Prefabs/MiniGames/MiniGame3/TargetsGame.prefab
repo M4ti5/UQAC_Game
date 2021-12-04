@@ -684,9 +684,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7085200771536482646}
     m_Modifications:
+    - target: {fileID: 4390310180476351388, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894293, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: texte
-      value: 
+      value: "Pour gagner ce mini jeu, vous devez faire disparaitre toutes les cibles.
+        Pour faire disparaite une cible, vous devez cliquer dessus avec votre curseur
+        de souris.\nSoyez le plus rapide possible pour faire gagner votre \xE9quipe
+        !"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
