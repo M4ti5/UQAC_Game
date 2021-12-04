@@ -99,7 +99,6 @@ public class MiniGameStarter : MonoBehaviour
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
                 //Appel� si le joueur a termin� un mini jeu
-
                 //R�cup�ration du script contenant les stats du joueur
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();

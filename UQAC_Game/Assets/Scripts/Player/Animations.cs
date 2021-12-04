@@ -52,6 +52,18 @@ public class Animations : MonoBehaviour
             }
             StartCoroutine(Knife());
             break;
+            
+            case "Switcher": 
+                
+                Debug.Log("oui");
+                IEnumerator Switch() {
+                    playerAnim.SetBool("inSwitch" , true);
+                    yield return new WaitForSeconds(0.5f);
+                    playerAnim.SetBool("inSwitch" , false);
+                }
+
+                StartCoroutine(Switch());
+                break;
         }
 
         ;

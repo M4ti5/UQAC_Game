@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cut : Object
 {
     //max distance that can be reached (z axis)
-    public float distanceToCut = 0.5f;
+    public float distanceToCut = 1.5f;
     //max distance in termsof wideness (x axis)
     public float rangeCut = 1;
     private RaycastHit hit;

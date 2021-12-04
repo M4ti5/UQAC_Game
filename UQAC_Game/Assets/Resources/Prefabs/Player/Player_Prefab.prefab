@@ -196,6 +196,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: inCut
+  - Type: 4
+    SynchronizeType: 2
+    Name: inSwitch
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
