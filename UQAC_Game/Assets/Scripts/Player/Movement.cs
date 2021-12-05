@@ -199,9 +199,14 @@ public class Movement : MonoBehaviourPun {
     /// Check altitude to stop an infinite fall
     /// </summary>
     void CheckDeathLimitY () {
-        if (transform.position.y < deathLimitY) {
-            //rb.isKinematic = true;// all force at 0
-            transform.position = new Vector3(0,2,0);
+        if (transform.GetComponent<PhotonView>().IsMine)
+        {
+            if (transform.position.y < deathLimitY)
+            {
+                rb.isKinematic = true; // all force at 0
+                transform.position = new Vector3(0, 2, 0);
+                rb.isKinematic = false;
+            }
         }
     }
 
