@@ -100,12 +100,12 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 textMessage.text += "\nLes perdants sont : ";
             }
             
-            // si le perdant est criminel
-            if (_endGame.loosers[0].isCriminal)
+            // si le gagnant est criminel
+            if (_endGame.winners[0].isCriminal)
             {
                 bkgImage.sprite = criminelWin;
             }
-            // si le/les perdant(s) est/sont enqueteur(s)
+            // si le/les gagnant(s) est/sont enqueteur(s)
             else
             {
                 bkgImage.sprite = enqueteursWin;

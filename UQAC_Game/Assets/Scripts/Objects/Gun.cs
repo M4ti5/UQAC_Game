@@ -15,7 +15,8 @@ public class Gun : Object
      
         if(Physics.Raycast(HitObj.position, HitObj.forward, out hit, maxDistance)){
     
-            if(hit.transform.tag == "Player"){
+            if(hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
+            {
                 hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage);
                 ObjectUsed();
             }

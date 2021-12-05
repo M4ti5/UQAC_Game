@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 
@@ -199,10 +200,35 @@ public class Movement : MonoBehaviourPun {
     /// Check altitude to stop an infinite fall
     /// </summary>
     void CheckDeathLimitY () {
-        if (transform.localPosition.y < deathLimitY) {
-            //rb.isKinematic = true;// all force at 0
-            transform.position = Vector3.zero;
+        if (transform.GetComponent<PhotonView>().IsMine)
+        {
+            if (transform.position.y < deathLimitY)
+            {
+                StartCoroutine(Respawn());
+            }
         }
+        
+        if (transform.position.y < -4)
+        {
+            transform.GetComponent<Collider>().enabled = false;
+        }
+        else if (transform.position.y > -0.5)
+        {
+            transform.GetComponent<Collider>().enabled = true;
+        }
+
+    }
+
+    IEnumerator Respawn()
+    {
+        gameObject.GetComponent<PlayerStatManager>().canMove = false;
+        rb.isKinematic = true; // all force at 0
+        transform.position = new Vector3(0, 2.5f, 0);
+        yield return new WaitForSeconds(2);
+        
+        gameObject.GetComponent<PlayerStatManager>().canMove = true;
+        rb.isKinematic = false; // all force at 0
+        transform.GetComponent<Collider>().enabled = true;
     }
 
 

@@ -20,7 +20,8 @@ public class Animations : MonoBehaviourPun
             if (gameObject.GetComponent<PlayerStatManager>().isDead && playerAnim.GetBool("isDead") == false)
             {
                 playerAnim.SetBool("isDead", true);
-                yield return null;
+                yield return new WaitForSeconds(3f);
+                gameObject.GetComponent<PlayerStatManager>().DesequipmentTriggeredWhenPlayerLeaveGame();// déséquipement
             }
         }
         StartCoroutine(Death());

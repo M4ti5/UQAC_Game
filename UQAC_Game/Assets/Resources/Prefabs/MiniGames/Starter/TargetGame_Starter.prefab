@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b553b6393a9447a89e39de2f38258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceToStart: 0
+  distanceToStart: 5
   allPlayers: {fileID: 0}
   miniGame: {fileID: 4091993970400760648, guid: 55a96a2188f87784492af05b98a99ff8, type: 3}
   criminal: 0
