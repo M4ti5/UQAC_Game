@@ -90,8 +90,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allWeapons:
-  - {fileID: 21300000, guid: 1378bcf124a7fde4aaf25115a26d1f18, type: 3}
-  - {fileID: 21300000, guid: 5cdac7e17116eab4abe8f4b303629d8e, type: 3}
+  - {fileID: 21300000, guid: 897eaa7ab20421f4b98a97e680cdede5, type: 3}
+  - {fileID: 21300000, guid: 768cd20a2ab42ea4eaafa3ea53266059, type: 3}
+  - {fileID: 21300000, guid: f88f90367ab1f3345acfff964e0f68f5, type: 3}
+  - {fileID: 21300000, guid: 2a417034ea97c2d47830f4ac8fa6e36d, type: 3}
+  - {fileID: 21300000, guid: 56adfc6200b9437499f839275ac50b7a, type: 3}
   currentCooldown: 10
   cooldownMax: 10
 --- !u!1 &5161612360772797778
@@ -197,7 +200,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 0b9f3031fe4a07d4ab10adbaf89dfe3e, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
