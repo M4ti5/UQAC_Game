@@ -134,18 +134,20 @@ public class MiniGameStarter : MonoBehaviour
     //On regarde si le joueur est assez proche du miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
-        float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , playerA.position);
-        float angle = Vector3.Angle(playerA.forward, (objectA.position- new Vector3(0 , objectA.position.y , 0)) - playerA.position);
-
-
-        if (dist < range && angle <= Mathf.Abs(30))
+        
+        float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , (playerA.position - new Vector3(0, playerA.position.y, 0)));
+        if (dist < range)
         {
-            return (true, dist);
+            float angle = Vector3.Angle(playerA.forward,
+                (objectA.position - new Vector3(0, objectA.position.y, 0)) - (playerA.position - new Vector3(0, playerA.position.y, 0)));
+
+            if (angle <= Mathf.Abs(30))
+            {
+                return (true, dist);
+            }
         }
-        else
-        {
-            return (false, dist);
-        }
+        
+        return (false, dist);
 
     }
     

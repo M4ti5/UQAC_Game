@@ -191,17 +191,19 @@ public class Object : MonoBehaviourPun
     //Check if object is not too far from player and if it's in front of the player
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
-        float dist = Vector3.Distance(objectA.position, playerA.position);
-        float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
+        float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , (playerA.position - new Vector3(0, playerA.position.y, 0)));
+        if (dist < range)
+        {
+            float angle = Vector3.Angle(playerA.forward,
+                (objectA.position - new Vector3(0, objectA.position.y, 0)) - (playerA.position - new Vector3(0, playerA.position.y, 0)));
 
-        if (dist < range && angle <= Mathf.Abs(30))
-        {
-            return (true, dist);
+            if (angle <= Mathf.Abs(30))
+            {
+                return (true, dist);
+            }
         }
-        else
-        {
-            return (false, dist);
-        }
+        
+        return (false, dist);
 
     }
 

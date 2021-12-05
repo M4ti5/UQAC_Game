@@ -24,9 +24,9 @@ public class ShowWinners : MonoBehaviourPunCallbacks
         if (GameObject.Find("EndGame") != null)
         {
             _endGame = GameObject.Find("EndGame").GetComponent<EndGame>();
-            foreach (PlayerStatManager looser in _endGame.loosers)
+            foreach (EndGame.PlayerInfoEndGame looser in _endGame.loosers)
             {
-                if (looser.isMinePlayer)
+                if (looser.isMine)
                 {
                     textMessage.text = "Dommage "+ GetNameAndRoleOfPayer(looser) + "!\n" + 
                                        "<color=\"red\">You loose !</color>";
@@ -35,16 +35,14 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 }
             }
 
-            foreach (PlayerStatManager winner in _endGame.winners)
+            foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
-                if (winner.isMinePlayer)
+                if (winner.isMine)
                 {
                     textMessage.text = "Félicitation "+ GetNameAndRoleOfPayer(winner) + "!\n" + 
                                        "<color=\"green\">You win !</color>";
-                    if (_endGame.winners.Count > 1)// si on est pas le criminel, on affiche aussi les autres joueurs
-                    {
-                        DisplayWinners();
-                    }
+
+                    DisplayLoosers();
                     break;
                 }
             }
@@ -64,25 +62,65 @@ public class ShowWinners : MonoBehaviourPunCallbacks
         {
             if (_endGame.winners.Count == 1)
             {
-                bkgImage.sprite = criminelWin;
                 textMessage.text += "\nLe gagnant est : ";
             }
             else
             {
-                bkgImage.sprite = enqueteursWin;
                 textMessage.text += "\nLes gagnants sont : ";
             }
+            
+            // si le gagnant est criminel
+            if (_endGame.winners[0].isCriminal)
+            {
+                bkgImage.sprite = criminelWin;
+            }
+            // si le/les gagnant(s) est/sont enqueteur(s)
+            else
+            {
+                bkgImage.sprite = enqueteursWin;
+            }
 
-            foreach (PlayerStatManager winner in _endGame.winners)
+            foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
                 textMessage.text += "\n" + GetNameAndRoleOfPayer(winner);
             }
         }
     }
 
-    private string GetNameAndRoleOfPayer(PlayerStatManager playerStatManager)
+    void DisplayLoosers()
     {
-        return "<b>" + playerStatManager.playerName + "</b> (" + (playerStatManager.criminal ? "Criminel" : "Enquêteur") + ")";
+        if (_endGame.loosers.Count > 0)
+        {
+            if (_endGame.loosers.Count == 1)
+            {
+                textMessage.text += "\nLe perdant est : ";
+            }
+            else
+            {
+                textMessage.text += "\nLes perdants sont : ";
+            }
+            
+            // si le perdant est criminel
+            if (_endGame.loosers[0].isCriminal)
+            {
+                bkgImage.sprite = criminelWin;
+            }
+            // si le/les perdant(s) est/sont enqueteur(s)
+            else
+            {
+                bkgImage.sprite = enqueteursWin;
+            }
+
+            foreach (EndGame.PlayerInfoEndGame looser in _endGame.loosers)
+            {
+                textMessage.text += "\n" + GetNameAndRoleOfPayer(looser);
+            }
+        }
+    }
+
+    private string GetNameAndRoleOfPayer(EndGame.PlayerInfoEndGame playerStatManager)
+    {
+        return "<b>" + playerStatManager.name + "</b> (" + (playerStatManager.isCriminal ? "Criminel" : "Enquêteur") + ")";
     }
     
     public void LeaveRoom()

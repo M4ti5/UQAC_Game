@@ -397,7 +397,8 @@ MonoBehaviour:
   personalScore: {fileID: 0}
   globalScore: {fileID: 0}
   allObjects: {fileID: 0}
-  allMiniGames: {fileID: 0}
+  allMiniGames:
+  - {fileID: 0}
   interractionDisplay: {fileID: 0}
   interactionText: {fileID: 0}
   inventoryDisplay: {fileID: 0}

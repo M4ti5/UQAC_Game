@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class Animations : MonoBehaviour
+public class Animations : MonoBehaviourPun
 {
     private Animator playerAnim;
     void Start () {
@@ -14,9 +15,15 @@ public class Animations : MonoBehaviour
     }
 
     public void DeathAnim () {
-        if (gameObject.GetComponent<PlayerStatManager>().isDead) {
-            playerAnim.SetBool("isDead" , true);
+        IEnumerator Death()
+        {
+            if (gameObject.GetComponent<PlayerStatManager>().isDead && playerAnim.GetBool("isDead") == false)
+            {
+                playerAnim.SetBool("isDead", true);
+                yield return null;
+            }
         }
+        StartCoroutine(Death());
     }
      
     public void HitAnim () {

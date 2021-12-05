@@ -21,7 +21,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     public GlobalScore globalScore;
 
     public GameObject allObjects;
-    public GameObject allMiniGames;
+    public List<GameObject> allMiniGames;
 
     public GameObject interractionDisplay;
     public TextMeshProUGUI interactionText;
@@ -59,7 +59,8 @@ public class PlayerStatManager : MonoBehaviourPun {
     IEnumerator GetGameObjects () {
         yield return new WaitUntil(() => GameObject.Find("Objects") != null);
         allObjects = GameObject.Find("Objects");
-        allMiniGames = GameObject.Find("MiniGame_Starter");
+        //allMiniGames = GameObject.Find("MiniGame_Starter");
+        allMiniGames = GameObject.FindGameObjectsWithTag("MiniGame").ToList();
 
         storedEquipement = null;
 
@@ -90,6 +91,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         
         // active un repaire visible sur la map seulement si c'est notre joueur
         repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
+
 
         findAllObjects = true;
 
@@ -149,27 +151,33 @@ public class PlayerStatManager : MonoBehaviourPun {
                 _reachableObjects.Add((allObjects.transform.GetChild(i).gameObject, _dist));
             }
         }
-        int allMiniGameCount = allMiniGames.transform.childCount;
+        int allMiniGameCount = allMiniGames.Count;
         for (int i = 0 ; i < allMiniGameCount ; i++) {
             (bool _isReachable, float _dist) =
-                IsReachable(allMiniGames.transform.GetChild(i) , gameObject.transform , distanceToHold);
+                IsReachable(allMiniGames[i].transform , gameObject.transform , distanceToHold);
             if (_isReachable) {
-                _reachableObjects.Add((allMiniGames.transform.GetChild(i).gameObject, _dist));
+                _reachableObjects.Add((allMiniGames[i].gameObject, _dist));
             }
         }
 
         return _reachableObjects;
     }
 
-    (bool, float) IsReachable (Transform objectA , Transform playerA , float range) {
-        float dist = Vector3.Distance(objectA.position , playerA.position);
-        float angle = Vector3.Angle(playerA.forward , objectA.position - playerA.position);
+    (bool, float) IsReachable (Transform objectA , Transform playerA , float range)
+    {
+        float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , (playerA.position - new Vector3(0, playerA.position.y, 0)));
+        if (dist < range)
+        {
+            float angle = Vector3.Angle(playerA.forward,
+                (objectA.position - new Vector3(0, objectA.position.y, 0)) - (playerA.position - new Vector3(0, playerA.position.y, 0)));
 
-        if (dist < range && angle <= Mathf.Abs(30)) {
-            return (true, dist);
-        } else {
-            return (false, dist);
+            if (angle <= Mathf.Abs(30))
+            {
+                return (true, dist);
+            }
         }
+        
+        return (false, dist);
 
     }
 
@@ -293,6 +301,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
+        
     }
 
     IEnumerator AddFilter()
