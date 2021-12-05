@@ -178,7 +178,11 @@ public class Object : MonoBehaviourPun
     protected void DesequipmentTriggeredWhenPlayerLeaveGame()
     {
         //transform.position = EquipmentDest.parent.Find("Inventory").position;
-        GetComponent<BoxCollider>().enabled = true;
+        //GetComponent<BoxCollider>().enabled = true;
+        foreach (Collider coll in transform.GetComponentsInChildren<Collider>() )
+        {
+            coll.enabled = true;
+        }
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         transform.parent = allObjects.transform;
