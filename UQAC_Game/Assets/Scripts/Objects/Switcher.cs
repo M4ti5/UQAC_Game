@@ -16,15 +16,16 @@ public class Switcher : Object {
                 lastTimeUseObject = Time.time;
 
                 Transform player = transform.parent.parent;
-                Transform listPlayers = player.parent;
+                List<Transform> listPlayers = player.parent.GetComponentsInChildren<Transform>().ToList();//get all players
+                listPlayers = listPlayers.Where((p) => p.GetComponent<PlayerStatManager>().isDead == false).ToList();// without dead players
 
                 //Player random
-                int randomIndex = Random.Range(0, listPlayers.childCount - 1);
-                Transform randomPlayer = listPlayers.GetChild(randomIndex) == GetComponent<PhotonView>().IsMine
-                    ? listPlayers.GetChild(randomIndex + 1 % listPlayers.childCount)
-                    : listPlayers.GetChild(randomIndex);
+                int randomIndex = Random.Range(0, listPlayers.Count - 1);
+                Transform randomPlayer = listPlayers[randomIndex] == GetComponent<PhotonView>().IsMine
+                    ? listPlayers[randomIndex + 1 % listPlayers.Count]
+                    : listPlayers[randomIndex];
 
-                //Network task
+                //Network task - get target player
                 Photon.Realtime.Player networkBindRandomPlayer = PhotonNetwork.PlayerList.Where(player =>
                     player.ActorNumber == randomPlayer.gameObject.GetPhotonView().ControllerActorNr).First();
                 photonView.RPC(nameof(Switch), networkBindRandomPlayer, player.position, player.rotation,
