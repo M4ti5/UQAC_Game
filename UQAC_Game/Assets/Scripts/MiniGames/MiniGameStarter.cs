@@ -12,7 +12,7 @@ public class MiniGameStarter : MonoBehaviour
 
     protected bool isOpen = false;
     protected bool gameEnded = false;
-    public float distanceToStart;
+    public float distanceToStart = 3 ;
     public GameObject allPlayers;
 
     private GameObject createdMiniGame;
@@ -35,7 +35,6 @@ public class MiniGameStarter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        distanceToStart = 3;
         globalScore = panelScore.GetComponentInChildren<GlobalScore>();
         personalScore = panelScore.GetComponentInChildren<PersonalScore>();
         healthBar = panelHP.GetComponentInChildren<HealthBar>();
@@ -135,8 +134,8 @@ public class MiniGameStarter : MonoBehaviour
     //On regarde si le joueur est assez proche du miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
-        float dist = Vector3.Distance(objectA.position, playerA.position);
-        float angle = Vector3.Angle(playerA.forward, objectA.position - playerA.position);
+        float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , playerA.position);
+        float angle = Vector3.Angle(playerA.forward, (objectA.position- new Vector3(0 , objectA.position.y , 0)) - playerA.position);
 
 
         if (dist < range && angle <= Mathf.Abs(30))

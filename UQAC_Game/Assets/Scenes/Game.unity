@@ -1927,9 +1927,53 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1446030835}
     m_Modifications:
-    - target: {fileID: 1524451011676508773, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 1046381098482699297, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 1046381098482699297, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 1046381098482699297, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
+    - target: {fileID: 1943748263825214156, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 1943748263825214156, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 1943748263825214156, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
+    - target: {fileID: 2410562423889513097, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007236388076572383, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007236388648577010, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007236389037552823, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493274321220544850, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374828434166971545, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 5640911381683008103, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
       propertyPath: m_RootOrder
@@ -1963,14 +2007,86 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 5640911381683008103, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5640911381683008103, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5640911381683008103, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839792817621695092, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: sceneViewId
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7306613395423803953, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 7306613395423803953, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 7306613395423803953, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
     - target: {fileID: 7366729164114867244, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
       propertyPath: m_Name
       value: Map1
       objectReference: {fileID: 0}
-    - target: {fileID: 8475155719032044644, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4
-      objectReference: {fileID: 0}
+    - target: {fileID: 8326829880999429135, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 8326829880999429135, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 8326829880999429135, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
+    - target: {fileID: 8326829881197631306, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 8326829881197631306, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 8326829881197631306, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
+    - target: {fileID: 8326829881700433511, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 8326829881700433511, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 8326829881700433511, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
+    - target: {fileID: 8811599276371237354, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelHP
+      value: 
+      objectReference: {fileID: 47791341}
+    - target: {fileID: 8811599276371237354, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196081}
+    - target: {fileID: 8811599276371237354, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: panelScore
+      value: 
+      objectReference: {fileID: 1826627604}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
 --- !u!4 &1775308646 stripped
