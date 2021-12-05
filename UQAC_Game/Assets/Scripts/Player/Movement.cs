@@ -205,8 +205,19 @@ public class Movement : MonoBehaviourPun {
             {
                 //rb.isKinematic = true; // all force at 0
                 transform.position = new Vector3(0, 2, 0);
+                transform.GetComponent<Collider>().enabled = true;
             }
         }
+        
+        if (transform.position.y < -4)
+        {
+            transform.GetComponent<Collider>().enabled = false;
+        }
+        else if (transform.position.y > -0.5)
+        {
+            transform.GetComponent<Collider>().enabled = true;
+        }
+
     }
 
 
