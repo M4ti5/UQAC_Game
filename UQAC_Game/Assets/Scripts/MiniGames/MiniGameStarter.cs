@@ -127,10 +127,10 @@ public class MiniGameStarter : MonoBehaviour
                 }
                 //Le joueur r�cup�re des PV
                 playerStatManager.canMove = true;
-                playerStatManager.RecoverHP(15);
+                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                playerStatManager.RecoverHP(15, photonView.ViewID);
                 
                 //int newId = PhotonNetwork.AllocateViewID(true);
-                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
                 

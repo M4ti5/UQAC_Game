@@ -245,20 +245,36 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region hp
     //G�re la modification des pv du joueur
     //Pris en compte dans le fichier HealthBar
-    public void TakeDamage (int damage) {
-        currentHP -= damage;
-        gameObject.GetComponent<Animations>().HitAnim();
-        if (currentHP <= 0) {
-            currentHP = 0;
-            Debug.Log("Game Over");
+    [PunRPC]
+    public void TakeDamage (int damage, int viewId) {
+        
+        Transform player = FindPlayerByID(viewId);
+        if (player != null)
+        {
+            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
+            
+            playerStatManager.currentHP -= damage;
+            playerStatManager.gameObject.GetComponent<Animations>().HitAnim();
+            if (playerStatManager.currentHP <= 0) {
+                playerStatManager.currentHP = 0;
+                Debug.Log("Game Over");
+            }
         }
     }
 
-    public void RecoverHP (int heal) {
-        currentHP += heal;
-        if (currentHP >= hpMax) {
-            currentHP = hpMax;
-            //Debug.Log("Full Life");
+    [PunRPC]
+    public void RecoverHP (int heal, int viewId)
+    {
+        Transform player = FindPlayerByID(viewId);
+        if (player != null)
+        {
+            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
+            
+            playerStatManager.currentHP += heal;
+            if (playerStatManager.currentHP >= playerStatManager.hpMax) {
+                playerStatManager.currentHP = playerStatManager.hpMax;
+                //Debug.Log("Full Life");
+            }
         }
     }
     #endregion
@@ -382,11 +398,15 @@ public class PlayerStatManager : MonoBehaviourPun {
         return null;
     }
 
+    [PunRPC]
     public void setPlayerColor(float _r, float _g, float _b, int idPlayer)
     {
         
         Transform player = FindPlayerByID(idPlayer);
-        player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
-        player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
+        if (player != null)
+        {
+            player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+            player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
+        }
     }
 }
