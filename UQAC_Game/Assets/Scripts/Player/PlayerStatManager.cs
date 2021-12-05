@@ -41,6 +41,8 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     public bool isMinePlayer;
     public string playerName;
+
+    public GameObject repairPositionForMiniMap;
     
     // Start is called before the first frame update
     void Start () {
@@ -85,7 +87,9 @@ public class PlayerStatManager : MonoBehaviourPun {
             StartCoroutine(SetRandomRole());
             StartCoroutine(AddFilter());
         }
-
+        
+        // active un repaire visible sur la map seulement si c'est notre joueur
+        repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
 
         findAllObjects = true;
 
