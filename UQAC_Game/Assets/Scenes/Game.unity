@@ -1955,6 +1955,14 @@ PrefabInstance:
       propertyPath: panelScore
       value: 
       objectReference: {fileID: 1826627604}
+    - target: {fileID: 2109535838439725486, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2109535838439725486, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.23
+      objectReference: {fileID: 0}
     - target: {fileID: 2173816594436933752, guid: 6f0fc3b76f8aa0b4d9f498ad2480f0ed, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.37
