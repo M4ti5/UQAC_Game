@@ -218,6 +218,8 @@ public class Object : MonoBehaviourPun
                 transform.parent.parent.gameObject.GetComponent<Animations>().AttackAnim(this.tag);
                 
                 photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+                
+                // display cooldown
                 PlayerStatManager playerStatManager = GetPlayerStatManager();
                 playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
             }
@@ -252,7 +254,7 @@ public class Object : MonoBehaviourPun
         }
     }
 
-    private PlayerStatManager GetPlayerStatManager()
+    protected PlayerStatManager GetPlayerStatManager()
     {
         PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
         int playerCount = allPlayers.transform.childCount;
