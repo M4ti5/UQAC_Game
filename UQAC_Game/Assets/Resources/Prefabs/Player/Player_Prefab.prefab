@@ -409,15 +409,18 @@ MonoBehaviour:
   selectedFilter: 0
   distanceToHold: 5
   objectPrefabListToInstantiate:
+  - {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
-  - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
+  - {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+  - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
+  - {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
   - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
   findAllObjects: 0
   isMinePlayer: 0
