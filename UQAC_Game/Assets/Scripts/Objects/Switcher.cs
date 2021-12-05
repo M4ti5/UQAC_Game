@@ -16,7 +16,11 @@ public class Switcher : Object {
                 lastTimeUseObject = Time.time;
 
                 Transform player = transform.parent.parent;
-                List<Transform> listPlayers = player.parent.GetComponentsInChildren<Transform>().ToList();//get all players
+                List<Transform> listPlayers = new List<Transform>();// = player.parent.GetComponentsInChildren<Transform>().ToList();//get all players
+                foreach (Transform pl in player.parent)//get all players
+                {
+                    listPlayers.Add(pl);
+                }
                 listPlayers = listPlayers.Where((p) => p.GetComponent<PlayerStatManager>().isDead == false).ToList();// without dead players
 
                 //Player random
