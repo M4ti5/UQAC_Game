@@ -197,7 +197,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 		else
 		{
-			Debug.LogError("<Color=Red><b>Missing</b></Color> inputField PlayerName Reference.", this);
+			Debug.LogError("<Color=red><b>Missing</b></Color> inputField PlayerName Reference.", this);
 		}
 	}
 
@@ -234,7 +234,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 		else
 		{
-			Debug.LogError("<Color=Red><b>Missing</b></Color> inputField RoomName Reference.", this);
+			Debug.LogError("<Color=red><b>Missing</b></Color> inputField RoomName Reference.", this);
 		}
 	}
 	public void SetRoomName(string value)
@@ -305,7 +305,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 						
 						roomExistAndIsClose = true;
 						LogFeedback("<color=orange>The room is closed...</color>");
-						this.connectionStatus.text = "<color=#009900>Ready !</color>";
+						this.connectionStatus.text = "<color=green>Ready !</color>";
 					}
 
 				if(roomExistAndIsClose == false)
@@ -318,7 +318,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 				
 				
 				LogFeedback("<color=red>Please choose Room...</color>");
-				this.connectionStatus.text = "<color=#009900>Ready !</color>";
+				this.connectionStatus.text = "<color=green>Ready !</color>";
 			}
 		}
 	}
@@ -448,9 +448,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	public override void OnJoinedLobby()
 	{
 		this.isLobbyReady = true;
-		this.connectionStatus.text = "<color=#009900>Ready !</color>";
+		this.connectionStatus.text = "<color=green>Ready !</color>";
 		this.feedbackText.text = ""; // delete previous feedbarcks
-		LogFeedback("<color=#009900>OnJoinedLobby</color>: Joined Lobby");
+		LogFeedback("<color=green>OnJoinedLobby</color>: Joined Lobby");
 		Debug.Log("Joined Lobby");
 	}
 	
@@ -525,10 +525,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 	/// </remarks>
 	public override void OnJoinedRoom()
 	{
-		LogFeedback("<color=#009900>OnJoinedRoom</color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
+		LogFeedback("<color=green>OnJoinedRoom</color> with " + PhotonNetwork.CurrentRoom.PlayerCount + " Player(s)");
 		Debug.Log("PUN/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.\nFrom here on, your game would be running.");
 
-		this.connectionStatus.text = "<color=#009900>Connected</color>\nRoom Name : " + PhotonNetwork.CurrentRoom.Name;
+		this.connectionStatus.text = "<color=green>Connected</color>\nRoom Name : " + PhotonNetwork.CurrentRoom.Name;
 		// #Critical
 		// Load the Room Level. 
 		PhotonNetwork.LoadLevel("Waiting");

@@ -331,6 +331,12 @@ MonoBehaviour:
   - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
   - {fileID: 6503671064153239741, guid: 7a37c862130d05a4493ce719e749176b, type: 3}
   - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
+  - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
+  - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+  - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
+  - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}
+  - {fileID: 2916442496651988880, guid: c5de6a129c40a7840bba3f966da77d29, type: 3}
+  - {fileID: 6503671064153239741, guid: a70cb19c198f28948bed8b0440582eb4, type: 3}
   findAllObjects: 0
   isMinePlayer: 0
   playerName: 
