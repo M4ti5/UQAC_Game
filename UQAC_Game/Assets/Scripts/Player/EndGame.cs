@@ -78,6 +78,27 @@ public class EndGame : MonoBehaviour
                                 player.GetComponent<PlayerStatManager>().criminal,
                                 player.GetComponent<PlayerStatManager>().isDead
                             );
+                            
+                            // if looser is criminel tout les autres ont gagné
+                            if (player.GetComponent<PlayerStatManager>().criminal == true)
+                            {
+                                foreach (Transform playerBis in allPlayers)
+                                {
+                                    if (playerBis.GetComponent<PlayerStatManager>().criminal == false)
+                                    {
+                                        if (winners.Count((winner) => winner.viewId == playerBis.GetComponent<PhotonView>().ViewID) == 0)
+                                        {
+                                            AddWinner(
+                                                playerBis.GetComponent<PhotonView>().ViewID,
+                                                playerBis.GetComponent<PhotonView>().IsMine,
+                                                playerBis.GetComponent<PlayerStatManager>().playerName,
+                                                playerBis.GetComponent<PlayerStatManager>().criminal,
+                                                playerBis.GetComponent<PlayerStatManager>().isDead
+                                            );
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
