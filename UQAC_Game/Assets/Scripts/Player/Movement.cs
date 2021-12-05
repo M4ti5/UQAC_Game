@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 
@@ -203,9 +204,7 @@ public class Movement : MonoBehaviourPun {
         {
             if (transform.position.y < deathLimitY)
             {
-                //rb.isKinematic = true; // all force at 0
-                transform.position = new Vector3(0, 2, 0);
-                transform.GetComponent<Collider>().enabled = true;
+                StartCoroutine(Respawn());
             }
         }
         
@@ -218,6 +217,18 @@ public class Movement : MonoBehaviourPun {
             transform.GetComponent<Collider>().enabled = true;
         }
 
+    }
+
+    IEnumerator Respawn()
+    {
+        canMove = false;
+        rb.isKinematic = true; // all force at 0
+        transform.position = new Vector3(0, 2, 0);
+        yield return new WaitForSeconds(1);
+        
+        canMove = true;
+        rb.isKinematic = false; // all force at 0
+        transform.GetComponent<Collider>().enabled = true;
     }
 
 
