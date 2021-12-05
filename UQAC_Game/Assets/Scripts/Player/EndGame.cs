@@ -124,6 +124,44 @@ public class EndGame : MonoBehaviour
                 }
             }
             */
+
+            foreach (Transform player in allPlayers)
+            {
+                if (player.GetComponent<PlayerStatManager>().isDead)
+                {
+                    if (loosers.Count((looser) => looser.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
+                    {
+                        AddLooser(
+                            player.GetComponent<PhotonView>().ViewID, 
+                            player.GetComponent<PhotonView>().IsMine,
+                            player.GetComponent<PlayerStatManager>().playerName,
+                            player.GetComponent<PlayerStatManager>().criminal,
+                            player.GetComponent<PlayerStatManager>().isDead
+                        );
+                    }
+                }
+            }
+            // s'il ne reste plus qu'une personne alors, il a gagné
+            if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount-1)
+            {
+                foreach (Transform player in allPlayers)
+                {
+                    if (player.GetComponent<PlayerStatManager>().isDead == false)
+                    {
+                        if (winners.Count((winner) => winner.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
+                        {
+                            AddWinner(
+                                player.GetComponent<PhotonView>().ViewID, 
+                                player.GetComponent<PhotonView>().IsMine,
+                                player.GetComponent<PlayerStatManager>().playerName,
+                                player.GetComponent<PlayerStatManager>().criminal,
+                                player.GetComponent<PlayerStatManager>().isDead
+                            );
+                        }
+                    }
+                }
+            }
+
             if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
                 endGame = true;

@@ -41,10 +41,10 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 {
                     textMessage.text = "Félicitation "+ GetNameAndRoleOfPayer(winner) + "!\n" + 
                                        "<color=\"green\">You win !</color>";
-                    if (_endGame.winners.Count > 1)// si on est pas le criminel, on affiche aussi les autres joueurs
-                    {
+                    //if (_endGame.winners.Count > 1)// si on est pas le criminel, on affiche aussi les autres joueurs
+                    //{
                         DisplayWinners();
-                    }
+                    //}
                     break;
                 }
             }
@@ -64,13 +64,22 @@ public class ShowWinners : MonoBehaviourPunCallbacks
         {
             if (_endGame.winners.Count == 1)
             {
-                bkgImage.sprite = criminelWin;
                 textMessage.text += "\nLe gagnant est : ";
             }
             else
             {
-                bkgImage.sprite = enqueteursWin;
                 textMessage.text += "\nLes gagnants sont : ";
+            }
+            
+            // si le gagnant est criminel
+            if (_endGame.winners[0].isCriminal)
+            {
+                bkgImage.sprite = criminelWin;
+            }
+            // si le/les gagnant(s) est/sont enqueteur(s)
+            else
+            {
+                bkgImage.sprite = enqueteursWin;
             }
 
             foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)

@@ -92,10 +92,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         // active un repaire visible sur la map seulement si c'est notre joueur
         repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
 
-        if (GetComponent<PhotonView>().IsMine && this.criminal == false)
-        {
-            photonView.RPC(nameof(AddEnqueteur), RpcTarget.AllBuffered, transform.GetComponent<PhotonView>().ViewID, transform.GetComponent<PhotonView>().IsMine, this.playerName, this.criminal, this.isDead);
-        }
 
         findAllObjects = true;
 
@@ -305,6 +301,12 @@ public class PlayerStatManager : MonoBehaviourPun {
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
+        
+        
+        if (GetComponent<PhotonView>().IsMine && this.criminal == false)
+        {
+            photonView.RPC(nameof(AddEnqueteur), RpcTarget.AllBuffered, transform.GetComponent<PhotonView>().ViewID, transform.GetComponent<PhotonView>().IsMine, this.playerName, this.criminal, this.isDead);
+        }
     }
 
     IEnumerator AddFilter()

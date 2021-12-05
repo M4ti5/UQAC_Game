@@ -17,11 +17,12 @@ public class Animations : MonoBehaviourPun
     public void DeathAnim () {
         IEnumerator Death()
         {
-            if (gameObject.GetComponent<PlayerStatManager>().isDead)
+            if (gameObject.GetComponent<PlayerStatManager>().isDead && playerAnim.GetBool("isDead") == false)
             {
                 playerAnim.SetBool("isDead", true);
-                yield return new WaitForSeconds(100.0f);
-                photonView.RPC(nameof(PlayerStatManager.AddLooser), RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID, GetComponent<PhotonView>().IsMine, GetComponent<PlayerStatManager>().playerName, GetComponent<PlayerStatManager>().criminal, GetComponent<PlayerStatManager>().isDead);
+                //yield return new WaitForSeconds(2.0f);
+                //photonView.RPC(nameof(PlayerStatManager.AddLooser), RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID, GetComponent<PhotonView>().IsMine, GetComponent<PlayerStatManager>().playerName, GetComponent<PlayerStatManager>().criminal, GetComponent<PlayerStatManager>().isDead);
+                yield return null;
             }
         }
         StartCoroutine(Death());
