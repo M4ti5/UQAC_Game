@@ -145,12 +145,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b553b6393a9447a89e39de2f38258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameEnded: 0
   distanceToStart: 5
   allPlayers: {fileID: 0}
   miniGame: {fileID: 2045594068322787574, guid: 3bbca886d8b0fb94487861165323d4bc, type: 3}
   criminal: 0
   panelScore: {fileID: 0}
   panelHP: {fileID: 0}
+  deltaTimeUseMiniGame: 120
 --- !u!65 &1771376868087954178
 BoxCollider:
   m_ObjectHideFlags: 0

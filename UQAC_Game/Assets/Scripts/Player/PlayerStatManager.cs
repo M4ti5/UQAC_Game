@@ -153,10 +153,15 @@ public class PlayerStatManager : MonoBehaviourPun {
         }
         int allMiniGameCount = allMiniGames.Count;
         for (int i = 0 ; i < allMiniGameCount ; i++) {
-            (bool _isReachable, float _dist) =
-                IsReachable(allMiniGames[i].transform , gameObject.transform , allMiniGames[i].GetComponent<MiniGameStarter>().distanceToStart);
-            if (_isReachable) {
-                _reachableObjects.Add((allMiniGames[i].gameObject, _dist));
+            if (allMiniGames[i].GetComponent<MiniGameStarter>().gameEnded == false && allMiniGames[i].GetComponent<MiniGameStarter>().isOpen == false)// si le jeu n'est pas déjà terminé et qu'il n'est pas ouvert
+            {
+                (bool _isReachable, float _dist) =
+                    IsReachable(allMiniGames[i].transform, gameObject.transform,
+                        allMiniGames[i].GetComponent<MiniGameStarter>().distanceToStart);
+                if (_isReachable)
+                {
+                    _reachableObjects.Add((allMiniGames[i].gameObject, _dist));
+                }
             }
         }
 
