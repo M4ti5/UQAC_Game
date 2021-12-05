@@ -128,7 +128,11 @@ public class Object : MonoBehaviourPun
             transform.parent = EquipmentDest;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
-            GetComponent<BoxCollider>().enabled = false;
+            //GetComponent<BoxCollider>().enabled = false;
+            foreach (Collider coll in transform.GetComponentsInChildren<Collider>())
+            {
+                coll.enabled = false;
+            }
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().isKinematic = true;
             EquipmentDest.GetComponent<UseObject>().hasObject = true;
@@ -151,7 +155,11 @@ public class Object : MonoBehaviourPun
         transform.parent = allObjects.transform;
         if(EquipmentDest != null)
             transform.position = EquipmentDest.parent.Find("Inventory").position;
-        GetComponent<BoxCollider>().enabled = true;
+        //GetComponent<BoxCollider>().enabled = true;
+        foreach (Collider coll in transform.GetComponentsInChildren<Collider>() )
+        {
+            coll.enabled = true;
+        }
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<Rigidbody>().isKinematic = false;
         EquipmentDest.GetComponent<UseObject>().hasObject = false;

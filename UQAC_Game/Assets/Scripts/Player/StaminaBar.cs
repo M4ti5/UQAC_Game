@@ -10,14 +10,14 @@ public class StaminaBar : MonoBehaviour
     public RectTransform staminaBar;
     private float staminaBarMaxSize;
     public TextMeshProUGUI staminaText;
-    private float staminaMax;
-    public float currentStamina;
+    public float staminaMax = 100;
+    public float currentStamina = 100;
     private float stepDecrease = 0.3f;
     private float stepIncrease = 0.1f;
     public Movement movementScript;
     
     private float timeStoppedSprint;
-    private float minimalRestTime;
+    public float minimalRestTime = 2;
 
     private bool wasRunning;
 
@@ -25,9 +25,6 @@ public class StaminaBar : MonoBehaviour
     void Start()
     {
         Debug.Log("Start Stamina script");
-        staminaMax = 100;
-        currentStamina = 100;
-        minimalRestTime = 2;
         wasRunning = false;
         
         // get automaticaly size of the bar
@@ -195,6 +192,6 @@ public class StaminaBar : MonoBehaviour
 
         //modifie l'avancement de la barre de vie ainsi que le texte correspondant
         staminaBar.transform.localPosition = new Vector3(currentStamina * staminaBarMaxSize / staminaMax - staminaBarMaxSize, 0, 0);
-        staminaText.text = "Stamina : " + (int)currentStamina + " / " + (int)staminaMax;
+        staminaText.text = "Stamina : " + (int) ((float) currentStamina / (float) staminaMax * 100) + " %";
     }
 }

@@ -16,6 +16,11 @@ public class Options : MonoBehaviourPunCallbacks
     public AudioSource[] volumeMusique;
     public Slider slider;
     const string volumeMusiquePrefKey = "VolumeMusique";
+    
+    const string photonDebugModePrefKey = "PhotonDebugMode";
+    public bool photonDebugMode;
+    public Toggle toggleDebugMode;
+    public GameObject photonStatus;
 
     public GameObject allPlayers;
 
@@ -30,6 +35,17 @@ public class Options : MonoBehaviourPunCallbacks
             string defaultVolumeMusique = PlayerPrefs.GetString(volumeMusiquePrefKey); 
             slider.value = (float)Convert.ToDouble(defaultVolumeMusique); ;
         }
+        
+        if (PlayerPrefs.HasKey(photonDebugModePrefKey))
+        {
+            string defaultPhotonDebugMode = PlayerPrefs.GetString(photonDebugModePrefKey); 
+            photonDebugMode = (bool)Convert.ToBoolean(defaultPhotonDebugMode);
+            toggleDebugMode.isOn = photonDebugMode;
+            if (GameObject.Find("PhotonStatus") != null)
+            {
+                photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
+            }
+        }
     }
 
     void Update()
@@ -42,7 +58,11 @@ public class Options : MonoBehaviourPunCallbacks
         }
         
         leaveBtn.interactable = PhotonNetwork.InRoom;
-
+        
+        if(photonStatus == null)
+            if (GameObject.Find("PhotonStatus") != null)
+                photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
+        photonStatus.SetActive(photonDebugMode);
     }
 
     public void OnVolumeMusiqueSliderChange()
@@ -104,4 +124,10 @@ public class Options : MonoBehaviourPunCallbacks
     }
     
 
+
+    public void OnDebugModeChange()
+    {
+        photonDebugMode = toggleDebugMode.isOn;
+        PlayerPrefs.SetString(photonDebugModePrefKey, Convert.ToString(photonDebugMode));
+    }
 }

@@ -119,6 +119,6 @@ public class HealthBar : MonoBehaviourPun
 
         //modifie l'avancement de la barre de vie ainsi que le texte correspondant
         healthBar.transform.localPosition = new Vector3(currentHP * 200 / hpMax - 200, 0, 0);
-        hpText.text = "HP : " + currentHP + " / " + hpMax;
+        hpText.text = "HP : " + (int) ((float) currentHP / (float) hpMax * 100) + " %";
     }
 }
