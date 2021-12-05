@@ -13,9 +13,6 @@ public class EndGame : MonoBehaviour
     public static GameObject instanceEndGame;
 
     public Transform allPlayers;
-    public bool firstInitAllEnqueteurs = true;
-    public bool isFindingAllEnqueteurs = false;
-    public List<PlayerInfoEndGame> allEnqueteurs;
     
     public List<PlayerInfoEndGame> loosers;
     public List<PlayerInfoEndGame> winners;
@@ -44,8 +41,6 @@ public class EndGame : MonoBehaviour
 
     private void Awake()
     {
-        firstInitAllEnqueteurs = true;
-        isFindingAllEnqueteurs = false;
         SceneManager.activeSceneChanged += DestroyOnMenuScreen;
         if (this != null)
         {
@@ -54,7 +49,6 @@ public class EndGame : MonoBehaviour
                 instanceEndGame = gameObject;
                 DontDestroyOnLoad(gameObject);
 
-                allEnqueteurs = new List<PlayerInfoEndGame>();
                 loosers = new List<PlayerInfoEndGame>();
                 winners = new List<PlayerInfoEndGame>();
                 return;
@@ -69,62 +63,6 @@ public class EndGame : MonoBehaviour
     {
         if (this != null && endGame == false && PhotonNetwork.InRoom)
         {
-            /*if (allPlayers != null)
-            {
-                if (firstInitAllEnqueteurs == true && isFindingAllEnqueteurs == false)
-                {
-                    isFindingAllEnqueteurs = true;
-                    StartCoroutine(FindAllEnqueteurs());
-                }
-
-                if (firstInitAllEnqueteurs == false)
-                {
-                    if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // eviter de terminer directement la partie d'entrainement
-                    {
-                        foreach (Transform player in allPlayers)
-                        {
-                            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
-                            // add looser players if there are dead and no already in list
-                            if (playerStatManager.isDead &&
-                                loosers.Find((looser) => looser == playerStatManager) == null)
-                            {
-                                AddLooser(playerStatManager);
-                                if (playerStatManager.criminal ==
-                                    true) // si le criminel est mort alors tous les autres ont gagné
-                                {
-                                    foreach (Transform winner in allPlayers)
-                                    {
-                                        PlayerStatManager winnerPlayerStatManager =
-                                            winner.GetComponent<PlayerStatManager>();
-                                        if (winnerPlayerStatManager.isDead == false &&
-                                            winners.Find((winner) => winner == winnerPlayerStatManager) == null)
-                                        {
-                                            AddWinner(winnerPlayerStatManager);
-                                        }
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-
-
-                        // si on a autant de loosers que d'enqueteurs alors le criminel a gagné
-                        if (loosers.Count == allEnqueteurs.Count)
-                        {
-                            foreach (PlayerStatManager playerStatManager in allPlayers
-                                .GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
-                                .ToList())
-                            {
-                                if (winners.Find((winner) => winner == playerStatManager) == null)
-                                    AddWinner(playerStatManager);
-                            }
-                        }
-                    }
-                }
-            }
-            */
-
             foreach (Transform player in allPlayers)
             {
                 if (player.GetComponent<PlayerStatManager>().isDead)
@@ -192,27 +130,6 @@ public class EndGame : MonoBehaviour
         }
     }
     
-    public void AddEnqueteur(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
-    {
-        PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
-        if (allEnqueteurs.Count((enqueteur) => enqueteur.viewId == temp.viewId) == 0)
-        {
-            allEnqueteurs.Add(temp);
-        }
-    }
-    
-    Transform FindPlayerByID(int id)
-    {
-        foreach (Transform child in allPlayers)
-        {
-            if (child.GetComponent<PhotonView>().ViewID == id)
-            {
-                return child;
-            }
-        }
-        return null;
-    }
-    
     void DestroyOnMenuScreen(Scene oldScene, Scene newScene)
     {
         if (newScene.name == menuScreenBuildName) //could compare Scene.name instead
@@ -224,21 +141,6 @@ public class EndGame : MonoBehaviour
             }
         }
     }
-
-    /*IEnumerator FindAllEnqueteurs()
-    {
-        yield return new WaitForSeconds(5);
-        // find all enqueteurs
-        foreach (Transform player in allPlayers)
-        {
-            if (player.GetComponent<PlayerStatManager>().criminal == false)
-            {
-                allEnqueteurs.Add(player.GetComponent<PlayerStatManager>());
-            }
-        }
-        firstInitAllEnqueteurs = false;
-        isFindingAllEnqueteurs = false;
-    }*/
 
     IEnumerator LoadEndScene()
     {

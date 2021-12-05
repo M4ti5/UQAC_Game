@@ -302,11 +302,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
         
-        
-        if (GetComponent<PhotonView>().IsMine && this.criminal == false)
-        {
-            photonView.RPC(nameof(AddEnqueteur), RpcTarget.AllBuffered, transform.GetComponent<PhotonView>().ViewID, transform.GetComponent<PhotonView>().IsMine, this.playerName, this.criminal, this.isDead);
-        }
     }
 
     IEnumerator AddFilter()
@@ -388,24 +383,5 @@ public class PlayerStatManager : MonoBehaviourPun {
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
         player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
-    }
-    
-    
-    [PunRPC]
-    public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
-    {
-        GameObject.Find("EndGame").GetComponent<EndGame>().AddLooser(viewId, isMine, name, isCriminal, isDead);
-    }
-
-    [PunRPC]
-    public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
-    {
-        GameObject.Find("EndGame").GetComponent<EndGame>().AddWinner(viewId, isMine, name, isCriminal, isDead);
-    }
-    
-    [PunRPC]
-    public void AddEnqueteur(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
-    {
-        GameObject.Find("EndGame").GetComponent<EndGame>().AddEnqueteur(viewId, isMine, name, isCriminal, isDead);
     }
 }
