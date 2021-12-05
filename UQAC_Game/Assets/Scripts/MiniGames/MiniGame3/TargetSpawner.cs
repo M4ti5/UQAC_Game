@@ -16,12 +16,14 @@ public class TargetSpawner : MonoBehaviour
     
     public List<GameObject> allTargets;
 
-    private bool miniGameEnded = false;
+    public bool miniGameEnded = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
+        victoryText.SetActive(false);
+        miniGameEnded = false;
         maxWidth = gameObject.GetComponent<RectTransform>().rect.width;
         maxHeight = gameObject.GetComponent<RectTransform>().rect.height;
         initAllTargets();

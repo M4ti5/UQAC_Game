@@ -24,7 +24,7 @@ public class Cut : Object
         m_HitDetect = Physics.BoxCast(center, halfExtents, direction, out hit, orientation, distanceToCut);
         if (m_HitDetect)
         {
-            if (hit.transform.tag == "Player")
+            if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
             {
                 hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage);
                 ObjectUsed();

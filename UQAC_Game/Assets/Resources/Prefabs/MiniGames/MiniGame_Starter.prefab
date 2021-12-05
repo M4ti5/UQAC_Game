@@ -125,10 +125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b553b6393a9447a89e39de2f38258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miniGameManager: {fileID: 0}
-  distanceToStart: 0
+  distanceToStart: 5
   allPlayers: {fileID: 0}
-  exitButton: {fileID: 0}
+  miniGame: {fileID: 0}
+  criminal: 0
+  panelScore: {fileID: 0}
+  panelHP: {fileID: 0}
 --- !u!1 &1378067435130922594
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,10 +256,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7b553b6393a9447a89e39de2f38258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miniGameManager: {fileID: 0}
-  distanceToStart: 0
+  distanceToStart: 5
   allPlayers: {fileID: 0}
-  exitButton: {fileID: 0}
+  miniGame: {fileID: 0}
+  criminal: 0
+  panelScore: {fileID: 0}
+  panelHP: {fileID: 0}
 --- !u!1 &1378067435437319673
 GameObject:
   m_ObjectHideFlags: 0

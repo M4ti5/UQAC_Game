@@ -170,8 +170,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 		{
 			dropDownListOfRooms.options = optionList;
 			dropDownListOfRooms.value = 0;
-			dropDownListOfRooms.Hide();
-			dropDownListOfRooms.Show();
+			if (dropDownListOfRooms.IsExpanded)
+			{
+				dropDownListOfRooms.Hide();
+				dropDownListOfRooms.Show();
+			}
 		}
 	}
 

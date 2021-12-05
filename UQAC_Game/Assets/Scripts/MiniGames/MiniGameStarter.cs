@@ -10,9 +10,9 @@ public class MiniGameStarter : MonoBehaviour
 {
     //private string nameMiniGame;
 
-    protected bool isOpen = false;
-    protected bool gameEnded = false;
-    public float distanceToStart = 3 ;
+    public bool isOpen = false;
+    public bool gameEnded = false;
+    public float distanceToStart = 5 ;
     public GameObject allPlayers;
 
     private GameObject createdMiniGame;
@@ -30,6 +30,8 @@ public class MiniGameStarter : MonoBehaviour
 
     private GameObject miniGameActive;
 
+    protected float lastTimeUseMiniGame;
+    public float deltaTimeUseMiniGame = 120;// 2 min
 
 
     // Start is called before the first frame update
@@ -38,8 +40,8 @@ public class MiniGameStarter : MonoBehaviour
         globalScore = panelScore.GetComponentInChildren<GlobalScore>();
         personalScore = panelScore.GetComponentInChildren<PersonalScore>();
         healthBar = panelHP.GetComponentInChildren<HealthBar>();
-
-        
+        isOpen = false;
+        gameEnded = false;
     }
 
     // Update is called once per frame
@@ -93,6 +95,16 @@ public class MiniGameStarter : MonoBehaviour
                 playerStatManager.canMove = true;
             }
         }
+        // start cooldown de 2 min avant de pouvoir s'en reservir
+        else
+        {
+            // wait cooldown
+            if (Time.time - lastTimeUseMiniGame > deltaTimeUseMiniGame)
+            {
+                lastTimeUseMiniGame = Time.time;
+                gameEnded = false;
+            }
+        }
         if (miniGameActive != null)
         {
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
@@ -126,6 +138,7 @@ public class MiniGameStarter : MonoBehaviour
                 playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
+                lastTimeUseMiniGame = Time.time;// reset cooldown
             }
         }
     }
