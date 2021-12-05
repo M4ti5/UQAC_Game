@@ -29,7 +29,10 @@ public class Switcher : Object {
                     player.ActorNumber == randomPlayer.gameObject.GetPhotonView().ControllerActorNr).First();
                 photonView.RPC(nameof(Switch), networkBindRandomPlayer, player.position, player.rotation,
                     randomPlayer.gameObject.GetPhotonView().ViewID);
-                ;
+                
+                // display cooldown
+                PlayerStatManager playerStatManager = GetPlayerStatManager();
+                playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
 
 
                 //Local task

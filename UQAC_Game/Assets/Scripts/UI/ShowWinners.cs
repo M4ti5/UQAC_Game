@@ -5,12 +5,17 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ShowWinners : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI textMessage;
 
     private EndGame _endGame;
+    public Sprite enqueteursWin;
+    public Sprite criminelWin;
+    public Image bkgImage;
+    
     
     
     // Start is called before the first frame update
@@ -58,9 +63,16 @@ public class ShowWinners : MonoBehaviourPunCallbacks
         if (_endGame.winners.Count > 0)
         {
             if (_endGame.winners.Count == 1)
+            {
+                bkgImage.sprite = criminelWin;
                 textMessage.text += "\nLe gagnant est : ";
+            }
             else
+            {
+                bkgImage.sprite = enqueteursWin;
                 textMessage.text += "\nLes gagnants sont : ";
+            }
+
             foreach (PlayerStatManager winner in _endGame.winners)
             {
                 textMessage.text += "\n" + GetNameAndRoleOfPayer(winner);
