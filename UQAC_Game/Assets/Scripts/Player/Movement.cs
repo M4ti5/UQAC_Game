@@ -199,9 +199,9 @@ public class Movement : MonoBehaviourPun {
     /// Check altitude to stop an infinite fall
     /// </summary>
     void CheckDeathLimitY () {
-        if (transform.localPosition.y < deathLimitY) {
+        if (transform.position.y < deathLimitY) {
             //rb.isKinematic = true;// all force at 0
-            transform.position = Vector3.zero;
+            transform.position = new Vector3(0,2,0);
         }
     }
 
