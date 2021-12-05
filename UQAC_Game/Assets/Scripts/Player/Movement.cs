@@ -203,9 +203,8 @@ public class Movement : MonoBehaviourPun {
         {
             if (transform.position.y < deathLimitY)
             {
-                rb.isKinematic = true; // all force at 0
+                //rb.isKinematic = true; // all force at 0
                 transform.position = new Vector3(0, 2, 0);
-                rb.isKinematic = false;
             }
         }
     }
