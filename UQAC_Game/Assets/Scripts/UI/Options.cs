@@ -62,7 +62,8 @@ public class Options : MonoBehaviourPunCallbacks
         if(photonStatus == null)
             if (GameObject.Find("PhotonStatus") != null)
                 photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
-        photonStatus.SetActive(photonDebugMode);
+        if(photonStatus != null)
+            photonStatus.SetActive(photonDebugMode);
     }
 
     public void OnVolumeMusiqueSliderChange()
