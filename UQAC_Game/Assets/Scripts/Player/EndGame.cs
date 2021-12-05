@@ -64,7 +64,7 @@ public class EndGame : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (this != null && endGame == false && PhotonNetwork.InRoom)
+            if (this != null && endGame == false && PhotonNetwork.InRoom && allPlayers != null)
             {
                 if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // s'il a plus qu'un joueur dans la room
                 {
@@ -147,12 +147,13 @@ public class EndGame : MonoBehaviourPun
     [PunRPC]
     public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
+        isMine = FindPlayerByID(viewId).GetComponent<PhotonView>().IsMine;//override isMine
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
         if (loosers.Count((looser) => looser.viewId == temp.viewId) == 0)
         {
+            loosers.Add(temp);
             if (PhotonNetwork.IsMasterClient)
             {
-                loosers.Add(temp);
                 photonView.RPC(nameof(AddLooser), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
             }
         }
@@ -161,12 +162,13 @@ public class EndGame : MonoBehaviourPun
     [PunRPC]
     public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
+        isMine = FindPlayerByID(viewId).GetComponent<PhotonView>().IsMine;//override isMine
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
         if (winners.Count((winner) => winner.viewId == temp.viewId) == 0)
         {
+            winners.Add(temp);
             if (PhotonNetwork.IsMasterClient)
             {
-                winners.Add(temp);
                 photonView.RPC(nameof(AddWinner), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
             }
         }
@@ -192,6 +194,23 @@ public class EndGame : MonoBehaviourPun
                 }
             }
         }*/
+    }
+    
+    
+    Transform FindPlayerByID(int id)
+    {
+        if (allPlayers != null)
+        {
+            foreach (Transform child in allPlayers)
+            {
+                if (child.GetComponent<PhotonView>().ViewID == id)
+                {
+                    return child;
+                }
+            }
+        }
+
+        return null;
     }
 
     IEnumerator LoadEndScene()
