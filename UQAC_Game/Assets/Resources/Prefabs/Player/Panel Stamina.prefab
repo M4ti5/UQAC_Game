@@ -161,7 +161,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Stamina: 100 / 100'
+  m_text: 'Stamina: 100 %'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4c41837ef9f6150409cb574ac0289f3c, type: 2}
   m_sharedMaterial: {fileID: 6832530905159860712, guid: 4c41837ef9f6150409cb574ac0289f3c, type: 2}
