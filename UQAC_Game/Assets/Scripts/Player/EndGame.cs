@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class EndGame : MonoBehaviour
+public class EndGame : MonoBehaviourPun
 {
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject instanceEndGame;
@@ -19,6 +19,7 @@ public class EndGame : MonoBehaviour
 
     public bool endGame = false;
     public static string menuScreenBuildName = "Launcher"; //the menu screen's index in your Build Settings
+    public static string endScreenBuildName = "End"; //the end screen's index in your Build Settings
     
     [System.Serializable]
     public class PlayerInfoEndGame
@@ -61,98 +62,113 @@ public class EndGame : MonoBehaviour
 
     private void Update()
     {
-        if (this != null && endGame == false && PhotonNetwork.InRoom)
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // s'il a plus qu'un joueur dans la room
+            if (this != null && endGame == false && PhotonNetwork.InRoom)
             {
-                foreach (Transform player in allPlayers)
-                {
-                    if (player.GetComponent<PlayerStatManager>().isDead)
-                    {
-                        if (loosers.Count((looser) => looser.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
-                        {
-                            AddLooser(
-                                player.GetComponent<PhotonView>().ViewID,
-                                player.GetComponent<PhotonView>().IsMine,
-                                player.GetComponent<PlayerStatManager>().playerName,
-                                player.GetComponent<PlayerStatManager>().criminal,
-                                player.GetComponent<PlayerStatManager>().isDead
-                            );
-                            
-                            // if looser is criminel tout les autres ont gagné
-                            if (player.GetComponent<PlayerStatManager>().criminal == true)
-                            {
-                                foreach (Transform playerBis in allPlayers)
-                                {
-                                    if (playerBis.GetComponent<PlayerStatManager>().criminal == false)
-                                    {
-                                        if (winners.Count((winner) => winner.viewId == playerBis.GetComponent<PhotonView>().ViewID) == 0)
-                                        {
-                                            AddWinner(
-                                                playerBis.GetComponent<PhotonView>().ViewID,
-                                                playerBis.GetComponent<PhotonView>().IsMine,
-                                                playerBis.GetComponent<PlayerStatManager>().playerName,
-                                                playerBis.GetComponent<PlayerStatManager>().criminal,
-                                                playerBis.GetComponent<PlayerStatManager>().isDead
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // s'il ne reste plus qu'une personne alors, il a gagné
-                if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
+                if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // s'il a plus qu'un joueur dans la room
                 {
                     foreach (Transform player in allPlayers)
                     {
-                        if (player.GetComponent<PlayerStatManager>().isDead == false)
+                        if (player.GetComponent<PlayerStatManager>().isDead)
                         {
-                            if (winners.Count((winner) => winner.viewId == player.GetComponent<PhotonView>().ViewID) ==
+                            if (loosers.Count((looser) => looser.viewId == player.GetComponent<PhotonView>().ViewID) ==
                                 0)
                             {
-                                AddWinner(
+                                AddLooser(
                                     player.GetComponent<PhotonView>().ViewID,
                                     player.GetComponent<PhotonView>().IsMine,
                                     player.GetComponent<PlayerStatManager>().playerName,
                                     player.GetComponent<PlayerStatManager>().criminal,
                                     player.GetComponent<PlayerStatManager>().isDead
                                 );
+
+                                // if looser is criminel tout les autres ont gagné
+                                if (player.GetComponent<PlayerStatManager>().criminal == true)
+                                {
+                                    foreach (Transform playerBis in allPlayers)
+                                    {
+                                        if (playerBis.GetComponent<PlayerStatManager>().criminal == false)
+                                        {
+                                            if (winners.Count((winner) =>
+                                                winner.viewId == playerBis.GetComponent<PhotonView>().ViewID) == 0)
+                                            {
+                                                AddWinner(
+                                                    playerBis.GetComponent<PhotonView>().ViewID,
+                                                    playerBis.GetComponent<PhotonView>().IsMine,
+                                                    playerBis.GetComponent<PlayerStatManager>().playerName,
+                                                    playerBis.GetComponent<PlayerStatManager>().criminal,
+                                                    playerBis.GetComponent<PlayerStatManager>().isDead
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
 
-                if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
-                {
-                    endGame = true;
-                    if (PhotonNetwork.IsMasterClient)
+                    // s'il ne reste plus qu'une personne alors, il a gagné
+                    if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
                     {
-                        StartCoroutine(LoadEndScene());
+                        foreach (Transform player in allPlayers)
+                        {
+                            if (player.GetComponent<PlayerStatManager>().isDead == false)
+                            {
+                                if (winners.Count((winner) =>
+                                        winner.viewId == player.GetComponent<PhotonView>().ViewID) ==
+                                    0)
+                                {
+                                    AddWinner(
+                                        player.GetComponent<PhotonView>().ViewID,
+                                        player.GetComponent<PhotonView>().IsMine,
+                                        player.GetComponent<PlayerStatManager>().playerName,
+                                        player.GetComponent<PlayerStatManager>().criminal,
+                                        player.GetComponent<PlayerStatManager>().isDead
+                                    );
+                                }
+                            }
+                        }
+                    }
+
+                    if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
+                    {
+                        endGame = true;
+                        if (PhotonNetwork.IsMasterClient)
+                        {
+                            StartCoroutine(LoadEndScene());
+                        }
                     }
                 }
             }
         }
-        
     }
 
+    [PunRPC]
     public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
         if (loosers.Count((looser) => looser.viewId == temp.viewId) == 0)
         {
-            loosers.Add(temp);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                loosers.Add(temp);
+                photonView.RPC(nameof(AddLooser), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
+            }
         }
     }
 
+    [PunRPC]
     public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
         if (winners.Count((winner) => winner.viewId == temp.viewId) == 0)
         {
-            winners.Add(temp);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                winners.Add(temp);
+                photonView.RPC(nameof(AddWinner), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
+            }
         }
     }
     
@@ -166,6 +182,16 @@ public class EndGame : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        /*if (newScene.name == endScreenBuildName) //could compare Scene.name instead
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (PlayerInfoEndGame looser in loosers)
+                {
+                    photonView.RPC(nameof(AddLooser), RpcTarget.AllBuffered);
+                }
+            }
+        }*/
     }
 
     IEnumerator LoadEndScene()
