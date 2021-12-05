@@ -40,8 +40,8 @@ public class MiniGameStarter : MonoBehaviour
         globalScore = panelScore.GetComponentInChildren<GlobalScore>();
         personalScore = panelScore.GetComponentInChildren<PersonalScore>();
         healthBar = panelHP.GetComponentInChildren<HealthBar>();
-
-        
+        isOpen = false;
+        gameEnded = false;
     }
 
     // Update is called once per frame

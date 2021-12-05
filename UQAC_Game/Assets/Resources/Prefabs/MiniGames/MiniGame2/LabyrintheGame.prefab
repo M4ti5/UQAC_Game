@@ -744,6 +744,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7969630747958446577}
     m_Modifications:
+    - target: {fileID: 7381180926714951398, guid: 1202f3ec75588744aa1963c3e6b7d93b, type: 3}
+      propertyPath: victoryText
+      value: 
+      objectReference: {fileID: 6279028363158776053}
     - target: {fileID: 7381180926714951399, guid: 1202f3ec75588744aa1963c3e6b7d93b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1204,6 +1208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
+--- !u!1 &6279028363158776053 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 171399921359534067, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
+  m_PrefabInstance: {fileID: 6143886624532225798}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6990300379562036579 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3765556286500278885, guid: 42f6f7167e2c6474289b87fdf1a2fb50, type: 3}
