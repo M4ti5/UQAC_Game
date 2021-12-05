@@ -24,9 +24,9 @@ public class ShowWinners : MonoBehaviourPunCallbacks
         if (GameObject.Find("EndGame") != null)
         {
             _endGame = GameObject.Find("EndGame").GetComponent<EndGame>();
-            foreach (PlayerStatManager looser in _endGame.loosers)
+            foreach (EndGame.PlayerInfoEndGame looser in _endGame.loosers)
             {
-                if (looser.isMinePlayer)
+                if (looser.isMine)
                 {
                     textMessage.text = "Dommage "+ GetNameAndRoleOfPayer(looser) + "!\n" + 
                                        "<color=\"red\">You loose !</color>";
@@ -35,9 +35,9 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 }
             }
 
-            foreach (PlayerStatManager winner in _endGame.winners)
+            foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
-                if (winner.isMinePlayer)
+                if (winner.isMine)
                 {
                     textMessage.text = "Félicitation "+ GetNameAndRoleOfPayer(winner) + "!\n" + 
                                        "<color=\"green\">You win !</color>";
@@ -73,16 +73,16 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 textMessage.text += "\nLes gagnants sont : ";
             }
 
-            foreach (PlayerStatManager winner in _endGame.winners)
+            foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
                 textMessage.text += "\n" + GetNameAndRoleOfPayer(winner);
             }
         }
     }
 
-    private string GetNameAndRoleOfPayer(PlayerStatManager playerStatManager)
+    private string GetNameAndRoleOfPayer(EndGame.PlayerInfoEndGame playerStatManager)
     {
-        return "<b>" + playerStatManager.playerName + "</b> (" + (playerStatManager.criminal ? "Criminel" : "Enquêteur") + ")";
+        return "<b>" + playerStatManager.name + "</b> (" + (playerStatManager.isCriminal ? "Criminel" : "Enquêteur") + ")";
     }
     
     public void LeaveRoom()

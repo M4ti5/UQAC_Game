@@ -6,6 +6,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class EndGame : MonoBehaviour
 {
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
@@ -14,14 +15,33 @@ public class EndGame : MonoBehaviour
     public Transform allPlayers;
     public bool firstInitAllEnqueteurs = true;
     public bool isFindingAllEnqueteurs = false;
-    public List<PlayerStatManager> allEnqueteurs;
+    public List<PlayerInfoEndGame> allEnqueteurs;
     
-    public List<PlayerStatManager> loosers;
-    public List<PlayerStatManager> winners;
+    public List<PlayerInfoEndGame> loosers;
+    public List<PlayerInfoEndGame> winners;
 
     public bool endGame = false;
     public static string menuScreenBuildName = "Launcher"; //the menu screen's index in your Build Settings
     
+    [System.Serializable]
+    public class PlayerInfoEndGame
+    {
+        public PlayerInfoEndGame(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
+        {
+            this.viewId = viewId;
+            this.isMine = isMine;
+            this.name = name;
+            this.isCriminal = isCriminal;
+            this.isDead = isDead;
+        }
+
+        public int viewId;
+        public bool isMine;
+        public string name;
+        public bool isCriminal;
+        public bool isDead;
+    }
+
     private void Awake()
     {
         firstInitAllEnqueteurs = true;
@@ -33,6 +53,10 @@ public class EndGame : MonoBehaviour
             {
                 instanceEndGame = gameObject;
                 DontDestroyOnLoad(gameObject);
+
+                allEnqueteurs = new List<PlayerInfoEndGame>();
+                loosers = new List<PlayerInfoEndGame>();
+                winners = new List<PlayerInfoEndGame>();
                 return;
             }
 
@@ -45,7 +69,7 @@ public class EndGame : MonoBehaviour
     {
         if (this != null && endGame == false && PhotonNetwork.InRoom)
         {
-            if (allPlayers != null)
+            /*if (allPlayers != null)
             {
                 if (firstInitAllEnqueteurs == true && isFindingAllEnqueteurs == false)
                 {
@@ -99,7 +123,7 @@ public class EndGame : MonoBehaviour
                     }
                 }
             }
-            
+            */
             if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
                 endGame = true;
@@ -110,17 +134,45 @@ public class EndGame : MonoBehaviour
             }
         }
         
-        
     }
 
-    public void AddLooser(PlayerStatManager looser)
+    public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
-        loosers.Add(looser);
+        PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
+        if (loosers.Count((looser) => looser.viewId == temp.viewId) > 0)
+        {
+            loosers.Add(temp);
+        }
     }
 
-    public void AddWinner(PlayerStatManager winner)
+    public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
-        winners.Add(winner);
+        PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
+        if (winners.Count((winner) => winner.viewId == temp.viewId) > 0)
+        {
+            winners.Add(temp);
+        }
+    }
+    
+    public void AddEnqueteur(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
+    {
+        PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
+        if (allEnqueteurs.Count((enqueteur) => enqueteur.viewId == temp.viewId) > 0)
+        {
+            allEnqueteurs.Add(temp);
+        }
+    }
+    
+    Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
     }
     
     void DestroyOnMenuScreen(Scene oldScene, Scene newScene)
@@ -135,7 +187,7 @@ public class EndGame : MonoBehaviour
         }
     }
 
-    IEnumerator FindAllEnqueteurs()
+    /*IEnumerator FindAllEnqueteurs()
     {
         yield return new WaitForSeconds(5);
         // find all enqueteurs
@@ -148,7 +200,7 @@ public class EndGame : MonoBehaviour
         }
         firstInitAllEnqueteurs = false;
         isFindingAllEnqueteurs = false;
-    }
+    }*/
 
     IEnumerator LoadEndScene()
     {
@@ -156,5 +208,7 @@ public class EndGame : MonoBehaviour
         print("End");
         PhotonNetwork.LoadLevel("End");
     }
+
+
     
 }

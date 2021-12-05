@@ -91,6 +91,11 @@ public class PlayerStatManager : MonoBehaviourPun {
         // active un repaire visible sur la map seulement si c'est notre joueur
         repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
 
+        if (GetComponent<PhotonView>().IsMine && this.criminal == false)
+        {
+            photonView.RPC(nameof(AddEnqueteur), RpcTarget.AllBuffered, transform.GetComponent<PhotonView>().ViewID, transform.GetComponent<PhotonView>().IsMine, this.name, this.criminal, this.isDead);
+        }
+
         findAllObjects = true;
 
     }
@@ -374,5 +379,24 @@ public class PlayerStatManager : MonoBehaviourPun {
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
         player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
+    }
+    
+    
+    [PunRPC]
+    public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
+    {
+        GameObject.Find("EndGame").GetComponent<EndGame>().AddEnqueteur(viewId, isMine, name, isCriminal, isDead);
+    }
+
+    [PunRPC]
+    public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
+    {
+        GameObject.Find("EndGame").GetComponent<EndGame>().AddEnqueteur(viewId, isMine, name, isCriminal, isDead);
+    }
+    
+    [PunRPC]
+    public void AddEnqueteur(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
+    {
+        GameObject.Find("EndGame").GetComponent<EndGame>().AddEnqueteur(viewId, isMine, name, isCriminal, isDead);
     }
 }
