@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!65 &2790825501000897882
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5139407146439208746}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.4, y: 0.05, z: 0.4}
-  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!65 &1489466834809318100
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26,6 +13,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.05, z: 0.05}
   m_Center: {x: -0.35, y: 0.02, z: 0}
+--- !u!65 &2790825501000897882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5139407146439208746}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4, y: 0.05, z: 0.4}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!1 &8723122838722901035
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 7825773695239819471}
   - component: {fileID: 139626890186250632}
   - component: {fileID: 121652307043298544}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Pan
   m_TagString: Pan
   m_Icon: {fileID: 0}
@@ -202,6 +202,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7230797242098968919, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -4318803624187110685, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -213,6 +217,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
       propertyPath: m_Name
       value: Pan
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1595064584167594891, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766212503428324877, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8032750206264916975, guid: ae8ba3b58b037c34cbedfd17b330af0f, type: 3}
       propertyPath: m_Materials.Array.data[0]

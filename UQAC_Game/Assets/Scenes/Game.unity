@@ -2291,6 +2291,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 827729344}
     m_Modifications:
+    - target: {fileID: 5409206992579853120, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
+      propertyPath: sceneViewId
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 7940144843762985005, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2342,10 +2346,6 @@ PrefabInstance:
     - target: {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
       propertyPath: m_Name
       value: Pan
-      objectReference: {fileID: 0}
-    - target: {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
-      propertyPath: m_Layer
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}

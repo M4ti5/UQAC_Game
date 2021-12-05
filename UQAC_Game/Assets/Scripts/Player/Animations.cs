@@ -42,6 +42,7 @@ public class Animations : MonoBehaviour
             break;
 
             case "Knife":
+            case "Pan":
 
             IEnumerator Knife () {
                 playerAnim.applyRootMotion = true;
