@@ -221,12 +221,12 @@ public class Movement : MonoBehaviourPun {
 
     IEnumerator Respawn()
     {
-        canMove = false;
+        gameObject.GetComponent<PlayerStatManager>().canMove = false;
         rb.isKinematic = true; // all force at 0
-        transform.position = new Vector3(0, 2, 0);
-        yield return new WaitForSeconds(1);
+        transform.position = new Vector3(0, 2.5f, 0);
+        yield return new WaitForSeconds(2);
         
-        canMove = true;
+        gameObject.GetComponent<PlayerStatManager>().canMove = true;
         rb.isKinematic = false; // all force at 0
         transform.GetComponent<Collider>().enabled = true;
     }
