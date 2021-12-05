@@ -139,7 +139,7 @@ public class EndGame : MonoBehaviour
     public void AddLooser(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
-        if (loosers.Count((looser) => looser.viewId == temp.viewId) > 0)
+        if (loosers.Count((looser) => looser.viewId == temp.viewId) == 0)
         {
             loosers.Add(temp);
         }
@@ -148,7 +148,7 @@ public class EndGame : MonoBehaviour
     public void AddWinner(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
-        if (winners.Count((winner) => winner.viewId == temp.viewId) > 0)
+        if (winners.Count((winner) => winner.viewId == temp.viewId) == 0)
         {
             winners.Add(temp);
         }
@@ -157,7 +157,7 @@ public class EndGame : MonoBehaviour
     public void AddEnqueteur(int viewId, bool isMine, string name, bool isCriminal, bool isDead)
     {
         PlayerInfoEndGame temp = new PlayerInfoEndGame(viewId, isMine, name, isCriminal, isDead);
-        if (allEnqueteurs.Count((enqueteur) => enqueteur.viewId == temp.viewId) > 0)
+        if (allEnqueteurs.Count((enqueteur) => enqueteur.viewId == temp.viewId) == 0)
         {
             allEnqueteurs.Add(temp);
         }
