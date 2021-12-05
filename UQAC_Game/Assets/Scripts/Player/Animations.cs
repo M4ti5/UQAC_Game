@@ -32,7 +32,8 @@ public class Animations : MonoBehaviour
     public void AttackAnim (string objectUse) {
         switch (objectUse) {
             case "Gun":
-            IEnumerator Shoot () {
+            case "Color Switch" :    
+                IEnumerator Shoot () {
                 playerAnim.SetBool("inShoot" , true);
                 yield return new WaitForSeconds(1.10f);
                 playerAnim.SetBool("inShoot" , false);
