@@ -408,7 +408,6 @@ MonoBehaviour:
   inventory: {fileID: 6023304739165050249}
   criminal: 0
   selectedFilter: 0
-  distanceToHold: 5
   objectPrefabListToInstantiate:
   - {fileID: 8723122838722901035, guid: 6251a0c20a9795c45a4ebec04bc14378, type: 3}
   - {fileID: 6296966371579066815, guid: 2ac0ff9791917ff4c817eeeda7b99688, type: 3}

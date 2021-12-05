@@ -12,7 +12,7 @@ public class MiniGameStarter : MonoBehaviour
 
     protected bool isOpen = false;
     protected bool gameEnded = false;
-    public float distanceToStart = 3 ;
+    public float distanceToStart = 5 ;
     public GameObject allPlayers;
 
     private GameObject createdMiniGame;

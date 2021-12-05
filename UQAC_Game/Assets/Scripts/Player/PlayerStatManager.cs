@@ -35,7 +35,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     public bool criminal = false;
     public int selectedFilter = 0;
 
-    public float distanceToHold = 5;
+    //public float distanceToHold = 5;
     public List<GameObject> objectPrefabListToInstantiate;
     public bool findAllObjects = false;
 
@@ -146,7 +146,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         int allObjectCount = allObjects.transform.childCount;
         for (int i = 0 ; i < allObjectCount ; i++) {
             (bool _isReachable, float _dist) =
-                IsReachable(allObjects.transform.GetChild(i) , gameObject.transform , distanceToHold);
+                IsReachable(allObjects.transform.GetChild(i) , gameObject.transform , allObjects.transform.GetChild(i).GetComponent<Object>().distanceToHeld);
             if (_isReachable) {
                 _reachableObjects.Add((allObjects.transform.GetChild(i).gameObject, _dist));
             }
@@ -154,7 +154,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         int allMiniGameCount = allMiniGames.Count;
         for (int i = 0 ; i < allMiniGameCount ; i++) {
             (bool _isReachable, float _dist) =
-                IsReachable(allMiniGames[i].transform , gameObject.transform , distanceToHold);
+                IsReachable(allMiniGames[i].transform , gameObject.transform , allMiniGames[i].GetComponent<MiniGameStarter>().distanceToStart);
             if (_isReachable) {
                 _reachableObjects.Add((allMiniGames[i].gameObject, _dist));
             }
@@ -362,7 +362,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     }
 
     public void OnDestroy () {
-        DesequipmentTriggeredWhenPlayerLeaveGame();
+        //DesequipmentTriggeredWhenPlayerLeaveGame();
     }
 
     Transform FindPlayerByID(int id)
