@@ -10,14 +10,14 @@ public class StaminaBar : MonoBehaviour
     public RectTransform staminaBar;
     private float staminaBarMaxSize;
     public TextMeshProUGUI staminaText;
-    private float staminaMax;
-    public float currentStamina;
+    public float staminaMax = 100;
+    public float currentStamina = 100;
     private float stepDecrease = 0.3f;
     private float stepIncrease = 0.1f;
     public Movement movementScript;
     
     private float timeStoppedSprint;
-    private float minimalRestTime;
+    public float minimalRestTime = 2;
 
     private bool wasRunning;
 
@@ -25,9 +25,6 @@ public class StaminaBar : MonoBehaviour
     void Start()
     {
         Debug.Log("Start Stamina script");
-        staminaMax = 100;
-        currentStamina = 100;
-        minimalRestTime = 2;
         wasRunning = false;
         
         // get automaticaly size of the bar

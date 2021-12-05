@@ -92,8 +92,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 3531091245661343431}
   staminaText: {fileID: 8117712846093793901}
-  currentStamina: 0
+  staminaMax: 200
+  currentStamina: 200
   movementScript: {fileID: 0}
+  minimalRestTime: 2
 --- !u!1 &3508041619059206018
 GameObject:
   m_ObjectHideFlags: 0
