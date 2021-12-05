@@ -192,6 +192,6 @@ public class StaminaBar : MonoBehaviour
 
         //modifie l'avancement de la barre de vie ainsi que le texte correspondant
         staminaBar.transform.localPosition = new Vector3(currentStamina * staminaBarMaxSize / staminaMax - staminaBarMaxSize, 0, 0);
-        staminaText.text = "Stamina : " + (int)currentStamina + " / " + (int)staminaMax;
+        staminaText.text = "Stamina : " + (int) ((float) currentStamina / (float) staminaMax * 100) + " %";
     }
 }
