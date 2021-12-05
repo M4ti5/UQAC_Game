@@ -12,7 +12,7 @@ public class TargetSpawner : MonoBehaviour
     private float maxWidth;
     private float maxHeight;
 
-    private float sizeOfTargetSprite = 100;
+    private float sizeOfTargetSprite = 110;
     
     public List<GameObject> allTargets;
 
