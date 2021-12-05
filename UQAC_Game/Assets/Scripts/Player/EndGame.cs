@@ -63,33 +63,16 @@ public class EndGame : MonoBehaviour
     {
         if (this != null && endGame == false && PhotonNetwork.InRoom)
         {
-            foreach (Transform player in allPlayers)
-            {
-                if (player.GetComponent<PlayerStatManager>().isDead)
-                {
-                    if (loosers.Count((looser) => looser.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
-                    {
-                        AddLooser(
-                            player.GetComponent<PhotonView>().ViewID, 
-                            player.GetComponent<PhotonView>().IsMine,
-                            player.GetComponent<PlayerStatManager>().playerName,
-                            player.GetComponent<PlayerStatManager>().criminal,
-                            player.GetComponent<PlayerStatManager>().isDead
-                        );
-                    }
-                }
-            }
-            // s'il ne reste plus qu'une personne alors, il a gagné
-            if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount-1)
+            if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // s'il a plus qu'un joueur dans la room
             {
                 foreach (Transform player in allPlayers)
                 {
-                    if (player.GetComponent<PlayerStatManager>().isDead == false)
+                    if (player.GetComponent<PlayerStatManager>().isDead)
                     {
-                        if (winners.Count((winner) => winner.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
+                        if (loosers.Count((looser) => looser.viewId == player.GetComponent<PhotonView>().ViewID) == 0)
                         {
-                            AddWinner(
-                                player.GetComponent<PhotonView>().ViewID, 
+                            AddLooser(
+                                player.GetComponent<PhotonView>().ViewID,
                                 player.GetComponent<PhotonView>().IsMine,
                                 player.GetComponent<PlayerStatManager>().playerName,
                                 player.GetComponent<PlayerStatManager>().criminal,
@@ -98,14 +81,36 @@ public class EndGame : MonoBehaviour
                         }
                     }
                 }
-            }
 
-            if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
-            {
-                endGame = true;
-                if (PhotonNetwork.IsMasterClient)
+                // s'il ne reste plus qu'une personne alors, il a gagné
+                if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
                 {
-                    StartCoroutine(LoadEndScene());
+                    foreach (Transform player in allPlayers)
+                    {
+                        if (player.GetComponent<PlayerStatManager>().isDead == false)
+                        {
+                            if (winners.Count((winner) => winner.viewId == player.GetComponent<PhotonView>().ViewID) ==
+                                0)
+                            {
+                                AddWinner(
+                                    player.GetComponent<PhotonView>().ViewID,
+                                    player.GetComponent<PhotonView>().IsMine,
+                                    player.GetComponent<PlayerStatManager>().playerName,
+                                    player.GetComponent<PlayerStatManager>().criminal,
+                                    player.GetComponent<PlayerStatManager>().isDead
+                                );
+                            }
+                        }
+                    }
+                }
+
+                if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
+                {
+                    endGame = true;
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        StartCoroutine(LoadEndScene());
+                    }
                 }
             }
         }
