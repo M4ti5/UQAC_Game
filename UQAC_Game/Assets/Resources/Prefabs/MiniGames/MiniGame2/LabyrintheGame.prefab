@@ -662,9 +662,8 @@ PrefabInstance:
       propertyPath: texte
       value: "Dans ce mini-jeu, votre but est de franchir la sortie du labyrinthe
         situ\xE9e en bas \xE0 droite!\r\nVous \xEAtes repr\xE9sent\xE9s par le carr\xE9
-        vert et vous pouvez vous d\xE9placer avec les touches directionnelles de
-        votre clavier (\u2191 \u2193 \u2192 \u2190), ou bien on glissant-d\xE9posant
-        votre personnage avec votre souris."
+        vert. Pour vous d\xE9placer, utilisez les touches directionnelles de votre
+        clavier (\u2191 \u2193 \u2192 \u2190)."
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder

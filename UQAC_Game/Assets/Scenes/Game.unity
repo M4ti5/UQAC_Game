@@ -2297,7 +2297,7 @@ PrefabInstance:
         touche Espace. Il est aussi possible de prendre des objets avec la touche
         E et de les utiliser avec le bouton gauche de la souris ou bien de les laisser
         tomber avec la touche A. Pour int\xE9ragir avec des mini-jeux, appuyez sur
-        la touche N! GL HF"
+        la touche E! GL HF"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
