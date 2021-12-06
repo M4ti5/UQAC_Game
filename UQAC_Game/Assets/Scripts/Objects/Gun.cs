@@ -23,7 +23,7 @@ public class Gun : Object
                     photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
                     //ObjectUsed();
-                    StartCoroutine(WaitEndAnimation(hit.transform, "inShoot"));
+                    StartCoroutine(WaitEndAnimation(transform.parent.parent, "inShoot"));
                 }
             }
         }

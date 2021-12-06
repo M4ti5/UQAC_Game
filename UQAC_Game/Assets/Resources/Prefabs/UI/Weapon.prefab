@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5161612360210003236}
   - component: {fileID: 5161612360210003233}
   - component: {fileID: 5161612360210003234}
-  - component: {fileID: 5161612360210003235}
   m_Layer: 5
   m_Name: Weapon 1
   m_TagString: Untagged
@@ -77,26 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5161612360210003235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5161612360210003237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b106f0a89ea296b4482478a7b86c2cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allWeapons:
-  - {fileID: 21300000, guid: 897eaa7ab20421f4b98a97e680cdede5, type: 3}
-  - {fileID: 21300000, guid: 768cd20a2ab42ea4eaafa3ea53266059, type: 3}
-  - {fileID: 21300000, guid: f88f90367ab1f3345acfff964e0f68f5, type: 3}
-  - {fileID: 21300000, guid: 2a417034ea97c2d47830f4ac8fa6e36d, type: 3}
-  - {fileID: 21300000, guid: 56adfc6200b9437499f839275ac50b7a, type: 3}
-  currentCooldown: 10
-  cooldownMax: 10
 --- !u!1 &5161612360772797778
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5161612360772797777}
+  - component: {fileID: 2489515928101219845}
   m_Layer: 5
   m_Name: Weapon
   m_TagString: Untagged
@@ -133,6 +113,28 @@ RectTransform:
   m_AnchoredPosition: {x: -68, y: 142}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2489515928101219845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161612360772797778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b106f0a89ea296b4482478a7b86c2cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allWeapons:
+  - {fileID: 21300000, guid: 897eaa7ab20421f4b98a97e680cdede5, type: 3}
+  - {fileID: 21300000, guid: 768cd20a2ab42ea4eaafa3ea53266059, type: 3}
+  - {fileID: 21300000, guid: f88f90367ab1f3345acfff964e0f68f5, type: 3}
+  - {fileID: 21300000, guid: 2a417034ea97c2d47830f4ac8fa6e36d, type: 3}
+  - {fileID: 21300000, guid: 56adfc6200b9437499f839275ac50b7a, type: 3}
+  currentCooldown: 10
+  cooldownMax: 10
+  equipment: {fileID: 0}
+  display: {fileID: 5161612360210003236}
 --- !u!1 &5161612361271544313
 GameObject:
   m_ObjectHideFlags: 0

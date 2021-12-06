@@ -48,7 +48,7 @@ public class UseObject : MonoBehaviourPun
     {
         PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
         Debug.Log(playerStatManager);
-        playerStatManager.UpdateEquipedWeaponDisplay();
+        
         photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBuffered);
     }
     
@@ -68,6 +68,7 @@ public class UseObject : MonoBehaviourPun
         {
             equipedObject = EquipementDest.GetChild(0).gameObject;
         }
+        PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
 
         if (storedObject == null && equipedObject != null)
         {
@@ -76,7 +77,10 @@ public class UseObject : MonoBehaviourPun
             equipedObject.transform.localRotation = Quaternion.identity;
             EquipementDest.GetComponent<UseObject>().hasObject = false;
             equipedObject.GetComponent<Object>().isStored = true;
-            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
+            playerStatManager.storedEquipement = equipedObject;
+            if(transform.parent.GetComponent<PhotonView>().IsMine)
+                playerStatManager.UpdateCooldownDisplay(equipedObject.GetComponent<Object>().lastTimeUseObject, equipedObject.GetComponent<Object>().deltaTimeUseObject, equipedObject.name);
+
         }
         else if(storedObject != null && equipedObject == null)
         {
@@ -85,7 +89,10 @@ public class UseObject : MonoBehaviourPun
             storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
             EquipementDest.GetComponent<UseObject>().hasObject = true;
-            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = null;
+            playerStatManager.storedEquipement = null;
+            if(transform.parent.GetComponent<PhotonView>().IsMine)
+                playerStatManager.UpdateCooldownDisplay(storedObject.GetComponent<Object>().lastTimeUseObject, storedObject.GetComponent<Object>().deltaTimeUseObject, storedObject.name);
+
         }
         else if (storedObject != null && equipedObject != null)
         {
@@ -93,11 +100,14 @@ public class UseObject : MonoBehaviourPun
             equipedObject.transform.localPosition = Vector3.zero;
             equipedObject.transform.localRotation = Quaternion.identity;
             equipedObject.GetComponent<Object>().isStored = true;
-            transform.parent.GetComponent<PlayerStatManager>().storedEquipement = equipedObject;
+            playerStatManager.storedEquipement = equipedObject;
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
             storedObject.transform.localPosition = Vector3.zero;
             storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
+            if(transform.parent.GetComponent<PhotonView>().IsMine)
+                playerStatManager.UpdateCooldownDisplay(storedObject.GetComponent<Object>().lastTimeUseObject, storedObject.GetComponent<Object>().deltaTimeUseObject, storedObject.name);
+
         }
     }
     

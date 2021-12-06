@@ -32,7 +32,7 @@ public class Cut : Object
                     photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
                     //ObjectUsed();
-                    StartCoroutine(WaitEndAnimation(hit.transform, "inCut"));
+                    StartCoroutine(WaitEndAnimation(transform.parent.parent, "inCut"));
                 }
             }
         }

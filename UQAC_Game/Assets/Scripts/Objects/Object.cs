@@ -16,8 +16,8 @@ public class Object : MonoBehaviourPun
     public Transform EquipmentDest;
     public Transform player;
     
-    protected float lastTimeUseObject;
-    protected float deltaTimeUseObject = 10;
+    public float lastTimeUseObject;
+    public float deltaTimeUseObject = 10;
     
 
     // Start is called before the first frame update
@@ -118,7 +118,7 @@ public class Object : MonoBehaviourPun
     {
         photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBuffered, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
-        playerStatManager.UpdateEquipedWeaponDisplay();
+        playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
     }
 
     //Equipe the object to the Equipment destination
@@ -150,7 +150,7 @@ public class Object : MonoBehaviourPun
     {
         photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBuffered);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
-        playerStatManager.UpdateEquipedWeaponDisplay();
+        playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, "");
     }
     //Desequipe the object to the Equipment destination
     [PunRPC]
@@ -224,14 +224,16 @@ public class Object : MonoBehaviourPun
             {
                 lastTimeUseObject = Time.time;
                 
+                
                 //Animation Object
                 transform.parent.parent.gameObject.GetComponent<Animations>().AttackAnim(this.tag);
-                
-                photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
                 
                 // display cooldown
                 PlayerStatManager playerStatManager = GetPlayerStatManager();
                 playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
+                
+                photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered); // faire l'action pour tous les clients
+                
             }
         }
     }
@@ -295,6 +297,7 @@ public class Object : MonoBehaviourPun
     {
         transform.parent.parent.GetComponent<PlayerStatManager>().HideEquipedWeaponDisplay();
         yield return new WaitWhile(() => hitTransform.GetComponent<Animator>().GetBool(var) == true);
+        transform.parent.parent.GetComponent<PlayerStatManager>().HideEquipedWeaponDisplay();
         ObjectUsed();
     }
 }
