@@ -7,15 +7,19 @@ public class WeaponPanel : MonoBehaviour
 {
     public List<Sprite> allWeapons = new List<Sprite>();
     public Hashtable cooldownByWeapon = new Hashtable();
-    private string currentWeapon = "";
+    [SerializeField] private string currentWeapon = "";
     public float currentCooldown = 10f;
     public float cooldownMax = 10f;
+
+    public GameObject equipment;
+
+    public Transform display;
 
     // Start is called before the first frame update
     void Start()
     {
         currentCooldown = Time.time - cooldownMax;
-        gameObject.SetActive(false);
+        display.gameObject.SetActive(false);
         foreach(var elem in allWeapons)
         {
             cooldownByWeapon.Add(elem.name, currentCooldown);
@@ -26,15 +30,24 @@ public class WeaponPanel : MonoBehaviour
     void Update()
     {
         //currentCooldown += Time.deltaTime;
-        gameObject.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
-        gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+        display.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+        display.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+        if (equipment.transform.childCount == 0)
+        {
+            display.gameObject.SetActive(false);
+        }
+        else
+        {
+            display.gameObject.SetActive(true);
+        }
     }
 
     public void UpdateWeaponDisplay(GameObject equipments)
     {
+        equipment = equipments;
         if (equipments.transform.childCount == 0)
         {
-            gameObject.SetActive(false);
+            display.gameObject.SetActive(false);
         }
         else
         {
@@ -45,13 +58,25 @@ public class WeaponPanel : MonoBehaviour
                 if (elem.name == currentWeapon)
                 {
                     currentCooldown = (float)cooldownByWeapon[currentWeapon];
-                    transform.GetChild(0).GetComponent<Image>().sprite = elem;
-                    gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
-                    gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
-                    gameObject.SetActive(true);
+                    display.GetChild(0).GetComponent<Image>().sprite = elem;
+                    display.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+                    display.GetChild(0).gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+                    display.gameObject.SetActive(true);
                 }
             }
         }
+    }
+
+    public void HideDisplay()
+    {
+        print("HideDisplay");
+        if (equipment.transform.childCount == 0)
+        {
+            //currentWeapon = equipment.transform.GetChild(0).name;
+        }
+        cooldownByWeapon[currentWeapon] = Time.time - cooldownMax;
+
+        display.gameObject.SetActive(false);
     }
 
 }

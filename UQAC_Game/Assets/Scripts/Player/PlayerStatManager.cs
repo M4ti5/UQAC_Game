@@ -213,15 +213,11 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     public void UpdateCooldownDisplay (float currentCooldown , float cooldownMax , string objectName) {
         canvas = GameObject.Find("PlayerCanvas");
-        int canvasCount = canvas.transform.childCount;
-        for (int i = 0 ; i < canvasCount ; i++) {
-            if (canvas.transform.GetChild(i).name == "Weapon") {
-                WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
-                wp.cooldownByWeapon[objectName] = currentCooldown;
-                wp.cooldownMax = cooldownMax;
-                wp.currentCooldown = currentCooldown;
-            }
-        }
+        WeaponPanel wp = canvas.GetComponentInChildren<WeaponPanel>();
+        wp.cooldownByWeapon[objectName] = currentCooldown;
+        wp.cooldownMax = cooldownMax;
+        wp.currentCooldown = currentCooldown;
+        
         StartCoroutine(EquipedWeaponDisplay());
     }
 
@@ -230,15 +226,19 @@ public class PlayerStatManager : MonoBehaviourPun {
     }
 
     IEnumerator EquipedWeaponDisplay () {
-        yield return new WaitForSeconds(0.02f);
+        //yield return new WaitForSeconds(0.02f);
         canvas = GameObject.Find("PlayerCanvas");
-        int canvasCount = canvas.transform.childCount;
-        for (int i = 0 ; i < canvasCount ; i++) {
-            if (canvas.transform.GetChild(i).name == "Weapon") {
-                WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
-                wp.UpdateWeaponDisplay(equipements);
-            }
-        }
+        WeaponPanel wp = canvas.GetComponentInChildren<WeaponPanel>();
+        wp.UpdateWeaponDisplay(equipements);
+        yield return null;
+    }
+
+    public void HideEquipedWeaponDisplay()
+    {
+        print("HideEquipedWeaponDisplay");
+        canvas = GameObject.Find("PlayerCanvas");
+        WeaponPanel wp = canvas.GetComponentInChildren<WeaponPanel>();
+        wp.HideDisplay();
     }
     #endregion
 
@@ -261,7 +261,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         }
     }
 
-    [PunRPC]
     public void RecoverHP (int heal, int viewId)
     {
         Transform player = FindPlayerByID(viewId);

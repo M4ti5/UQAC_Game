@@ -6,7 +6,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class MiniGameStarter : MonoBehaviour
+public class MiniGameStarter : MonoBehaviourPun
 {
     //private string nameMiniGame;
 
@@ -130,9 +130,12 @@ public class MiniGameStarter : MonoBehaviour
                 }
                 //Le joueur r�cup�re des PV
                 playerStatManager.canMove = true;
-                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                playerStatManager.RecoverHP(15, photonView.ViewID);
+                PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                //playerStatManager.RecoverHP(15, playerStatManager.ViewID);
                 
+                photonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID, photonView.ViewID);
+
+
                 //int newId = PhotonNetwork.AllocateViewID(true);
                 //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
@@ -180,5 +183,27 @@ public class MiniGameStarter : MonoBehaviour
             }
         }
         return playerStatManager;
-    }   
+    }
+
+    [PunRPC]
+    private void RecoverHPMiniGameStarter(int heal, int viewId, int viewIdMiniGame)
+    {
+        if (photonView.ViewID == viewIdMiniGame)
+        {
+            Transform player = FindPlayerByID(viewId);
+            player.GetComponent<PlayerStatManager>().RecoverHP(heal, viewId);
+        }
+    }
+    
+    private Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers.transform)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
+    }
 }
