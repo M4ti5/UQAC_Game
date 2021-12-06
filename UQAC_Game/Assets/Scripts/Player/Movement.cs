@@ -59,6 +59,12 @@ public class Movement : MonoBehaviourPun {
         if (canMove) {
             Move();
         }
+        else
+        {
+            inRun = false;
+            inJump = false;
+            inMove = false;
+        }
         Animations();
         CheckDeathLimitY();
     }
@@ -68,20 +74,25 @@ public class Movement : MonoBehaviourPun {
 
         //// Moves Key
         // forward
-        if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/) {
+        if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/)
+        {
+            inMove = true;
             transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
         }
         // backwards
         if (Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/) {
+            inMove = true;
             transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
         }
         // left
         if (Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/) {
+            inMove = true;
             transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
         }
 
         // right
         if (Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/) {
+            inMove = true;
             transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
         }
 
@@ -142,11 +153,6 @@ public class Movement : MonoBehaviourPun {
     }
 
     void Animations () {
-        inMove = ( Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/ ||
-                   Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/ ||
-                   Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/ ||
-                   Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/
-                   );
 
         if (inMove && canMove) {
             playerAnim.SetBool("isWalking" , true);
