@@ -73,6 +73,7 @@ public class Movement : MonoBehaviourPun {
     void Move () {
 
         //// Moves Key
+        inMove = false;
         // forward
         if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/)
         {
