@@ -29,7 +29,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 if (looser.isMine)
                 {
                     textMessage.text = "Dommage "+ GetNameAndRoleOfPayer(looser) + "!\n" + 
-                                       "<color=\"red\">You loose !</color>";
+                                       "<color=\"red\">Tu as perdu !</color>";
                     DisplayWinners();
                     break;
                 }
@@ -40,7 +40,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 if (winner.isMine)
                 {
                     textMessage.text = "Félicitation "+ GetNameAndRoleOfPayer(winner) + "!\n" + 
-                                       "<color=\"green\">You win !</color>";
+                                       "<color=\"green\">Tu as gagné !</color>";
 
                     DisplayLoosers();
                     break;

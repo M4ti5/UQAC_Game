@@ -53,13 +53,17 @@ public class Object : MonoBehaviourPun
 
             for (int i = 0; i < allPlayersCount; i++)
             {
-                (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld);
-                if (_isReachable && _dist < minDistance)
+                if (allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().isDead == false)
                 {
-                    minDistance = _dist;
-                    grabberPlayerId = i;
-                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                        break;
+                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform,
+                        allPlayers.transform.GetChild(i), distanceToHeld);
+                    if (_isReachable && _dist < minDistance)
+                    {
+                        minDistance = _dist;
+                        grabberPlayerId = i;
+                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                            break;
+                    }
                 }
             }
             if (grabberPlayerId >= 0)
@@ -238,7 +242,7 @@ public class Object : MonoBehaviourPun
         ObjectUsed();
     }
 
-    protected void ObjectUsed()
+    public void ObjectUsed()
     {
         this.transform.parent.GetComponent<UseObject>().hasObject = false;
         this.DestroyObject(PhotonNetwork.LocalPlayer); // d�truire l'objet
@@ -272,5 +276,24 @@ public class Object : MonoBehaviourPun
             }
         }
         return playerStatManager;
+    }
+    
+    
+    public Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers.transform)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
+    }
+    
+    public IEnumerator WaitEndAnimation (Transform hitTransform, string var) 
+    {
+        yield return new WaitWhile(() => hitTransform.GetComponent<Animator>().GetBool(var) == true);
+        ObjectUsed();
     }
 }

@@ -59,13 +59,16 @@ public class MiniGameStarter : MonoBehaviour
                 //On r�cup�re l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
                 for (int i = 0; i < allPlayersCount; i++)
                 {
-                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
-                    if (_isReachable && _dist < minDistance)
+                    if (allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().isDead == false)
                     {
-                        minDistance = _dist;
-                        grabberPlayerId = i;
-                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                            break;
+                        (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
+                        if (_isReachable && _dist < minDistance)
+                        {
+                            minDistance = _dist;
+                            grabberPlayerId = i;
+                            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                                break;
+                        }
                     }
                 }
 
@@ -127,10 +130,10 @@ public class MiniGameStarter : MonoBehaviour
                 }
                 //Le joueur r�cup�re des PV
                 playerStatManager.canMove = true;
-                playerStatManager.RecoverHP(15);
+                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
+                playerStatManager.RecoverHP(15, photonView.ViewID);
                 
                 //int newId = PhotonNetwork.AllocateViewID(true);
-                PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
                 

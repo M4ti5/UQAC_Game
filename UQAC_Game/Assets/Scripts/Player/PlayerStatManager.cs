@@ -106,7 +106,7 @@ public class PlayerStatManager : MonoBehaviourPun {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
 
-        if (GetComponent<PhotonView>().IsMine) {
+        if (GetComponent<PhotonView>().IsMine && !isDead) {
             List<(GameObject, float)> _reachableObjects = reachableObjects();
             GameObject nearestObj = findNearestObj(_reachableObjects);
 
@@ -245,20 +245,35 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region hp
     //G�re la modification des pv du joueur
     //Pris en compte dans le fichier HealthBar
-    public void TakeDamage (int damage) {
-        currentHP -= damage;
-        gameObject.GetComponent<Animations>().HitAnim();
-        if (currentHP <= 0) {
-            currentHP = 0;
-            Debug.Log("Game Over");
+    public void TakeDamage (int damage, int viewId) {
+        
+        Transform player = FindPlayerByID(viewId);
+        if (player != null)
+        {
+            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
+            
+            playerStatManager.currentHP -= damage;
+            playerStatManager.gameObject.GetComponent<Animations>().HitAnim();
+            if (playerStatManager.currentHP <= 0) {
+                playerStatManager.currentHP = 0;
+                Debug.Log("Game Over");
+            }
         }
     }
 
-    public void RecoverHP (int heal) {
-        currentHP += heal;
-        if (currentHP >= hpMax) {
-            currentHP = hpMax;
-            //Debug.Log("Full Life");
+    [PunRPC]
+    public void RecoverHP (int heal, int viewId)
+    {
+        Transform player = FindPlayerByID(viewId);
+        if (player != null)
+        {
+            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
+            
+            playerStatManager.currentHP += heal;
+            if (playerStatManager.currentHP >= playerStatManager.hpMax) {
+                playerStatManager.currentHP = playerStatManager.hpMax;
+                //Debug.Log("Full Life");
+            }
         }
     }
     #endregion
@@ -286,7 +301,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region roleAndFilter
     IEnumerator SetRandomRole()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(3f);
         //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
         int nbrMaxCriminels = 1;
         // on affecte un nouveau criminel s'il n'en existe pas déjà le nombre défini
@@ -311,7 +326,7 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     IEnumerator AddFilter()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(4f);
         List<int> filtersAvailable = new List<int>();
         for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
         {
@@ -386,7 +401,10 @@ public class PlayerStatManager : MonoBehaviourPun {
     {
         
         Transform player = FindPlayerByID(idPlayer);
-        player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
-        player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
+        if (player != null)
+        {
+            player.GetComponentInChildren<RandPlayerColor>().setSkinColor(_r, _g, _b);
+            player.GetComponent<PlayerStatManager>().playerColor = new Vector3(_r, _g, _b);
+        }
     }
 }
