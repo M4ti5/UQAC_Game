@@ -17,10 +17,14 @@ public class Gun : Object
     
             if(hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
             {
-                //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
-                photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage, hit.transform.GetComponent<PhotonView>().ViewID);
-                //ObjectUsed();
-                StartCoroutine(WaitEndAnimation( hit.transform, "inShoot"));
+                if (player.GetComponent<PhotonView>().IsMine)
+                {
+                    //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
+                    photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
+                        hit.transform.GetComponent<PhotonView>().ViewID);
+                    //ObjectUsed();
+                    StartCoroutine(WaitEndAnimation(hit.transform, "inShoot"));
+                }
             }
         }
         

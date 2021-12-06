@@ -15,11 +15,16 @@ public class ColorSwitch : Object
         {
             if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
             {
-                Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
-                //transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                //ObjectUsed();
-                StartCoroutine(WaitEndAnimation( transform.parent.parent, "inShoot"));
+                if (player.GetComponent<PhotonView>().IsMine)
+                {
+                    Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
+                    //transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
+                    photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x,
+                        otherPlayerColor.y, otherPlayerColor.z,
+                        transform.parent.parent.GetComponent<PhotonView>().ViewID);
+                    //ObjectUsed();
+                    StartCoroutine(WaitEndAnimation(transform.parent.parent, "inShoot"));
+                }
             }
         }
     }
