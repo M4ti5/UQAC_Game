@@ -17,10 +17,17 @@ public class ColorSwitch : Object
             {
                 Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
                 //transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                photonView.RPC(nameof(PlayerStatManager.setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
+                photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
                 //ObjectUsed();
                 StartCoroutine(WaitEndAnimation( transform.parent.parent, "inShoot"));
             }
         }
+    }
+
+    [PunRPC]
+    private void setPlayerColor(float _r, float _g, float _b, int idPlayer)
+    {
+        Transform player = FindPlayerByID(idPlayer);
+        player.GetComponent<PlayerStatManager>().setPlayerColor(_r, _g, _b, idPlayer);
     }
 }

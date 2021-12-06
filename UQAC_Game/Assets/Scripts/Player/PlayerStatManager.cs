@@ -245,7 +245,6 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region hp
     //G�re la modification des pv du joueur
     //Pris en compte dans le fichier HealthBar
-    [PunRPC]
     public void TakeDamage (int damage, int viewId) {
         
         Transform player = FindPlayerByID(viewId);
@@ -398,7 +397,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         return null;
     }
 
-    [PunRPC]
     public void setPlayerColor(float _r, float _g, float _b, int idPlayer)
     {
         

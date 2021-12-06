@@ -275,8 +275,20 @@ public class Object : MonoBehaviourPun
     }
     
     
-
-    public IEnumerator WaitEndAnimation (Transform hitTransform, string var) {
+    public Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers.transform)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
+    }
+    
+    public IEnumerator WaitEndAnimation (Transform hitTransform, string var) 
+    {
         yield return new WaitWhile(() => hitTransform.GetComponent<Animator>().GetBool(var) == true);
         ObjectUsed();
     }
