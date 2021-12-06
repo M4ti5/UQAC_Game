@@ -238,7 +238,7 @@ public class Object : MonoBehaviourPun
         ObjectUsed();
     }
 
-    protected void ObjectUsed()
+    public void ObjectUsed()
     {
         this.transform.parent.GetComponent<UseObject>().hasObject = false;
         this.DestroyObject(PhotonNetwork.LocalPlayer); // d�truire l'objet
@@ -272,5 +272,12 @@ public class Object : MonoBehaviourPun
             }
         }
         return playerStatManager;
+    }
+    
+    
+
+    public IEnumerator WaitEndAnimation (Transform hitTransform, string var) {
+        yield return new WaitWhile(() => hitTransform.GetComponent<Animator>().GetBool(var) == true);
+        ObjectUsed();
     }
 }

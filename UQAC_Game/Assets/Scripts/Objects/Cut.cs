@@ -24,11 +24,12 @@ public class Cut : Object
         m_HitDetect = Physics.BoxCast(center, halfExtents, direction, out hit, orientation, distanceToCut);
         if (m_HitDetect)
         {
-            if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
+            if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas dï¿½jï¿½ mort
             {
                 //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
                 photonView.RPC(nameof(PlayerStatManager.TakeDamage), RpcTarget.AllBuffered, damage, hit.transform.GetComponent<PhotonView>().ViewID);
-                ObjectUsed();
+                //ObjectUsed();
+                StartCoroutine(WaitEndAnimation( hit.transform, "inCut"));
             }
         }
 

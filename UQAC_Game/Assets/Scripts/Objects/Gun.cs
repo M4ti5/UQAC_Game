@@ -19,7 +19,8 @@ public class Gun : Object
             {
                 //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
                 photonView.RPC(nameof(PlayerStatManager.TakeDamage), RpcTarget.AllBuffered, damage, hit.transform.GetComponent<PhotonView>().ViewID);
-                ObjectUsed();
+                //ObjectUsed();
+                StartCoroutine(WaitEndAnimation( hit.transform, "inShoot"));
             }
         }
         
