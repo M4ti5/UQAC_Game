@@ -54,4 +54,9 @@ public class WeaponPanel : MonoBehaviour
         }
     }
 
+    public void HideDisplay()
+    {
+        gameObject.SetActive(false);
+    }
+
 }

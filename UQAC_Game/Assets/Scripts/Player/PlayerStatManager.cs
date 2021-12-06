@@ -240,6 +240,18 @@ public class PlayerStatManager : MonoBehaviourPun {
             }
         }
     }
+
+    public void HideEquipedWeaponDisplay()
+    {
+        canvas = GameObject.Find("PlayerCanvas");
+        int canvasCount = canvas.transform.childCount;
+        for (int i = 0 ; i < canvasCount ; i++) {
+            if (canvas.transform.GetChild(i).name == "Weapon") {
+                WeaponPanel wp = canvas.transform.GetChild(i).GetChild(0).GetComponent<WeaponPanel>();
+                wp.HideDisplay();
+            }
+        }
+    }
     #endregion
 
     #region hp

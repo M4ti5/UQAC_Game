@@ -293,6 +293,7 @@ public class Object : MonoBehaviourPun
     
     public IEnumerator WaitEndAnimation (Transform hitTransform, string var) 
     {
+        transform.parent.parent.GetComponent<PlayerStatManager>().HideEquipedWeaponDisplay();
         yield return new WaitWhile(() => hitTransform.GetComponent<Animator>().GetBool(var) == true);
         ObjectUsed();
     }
