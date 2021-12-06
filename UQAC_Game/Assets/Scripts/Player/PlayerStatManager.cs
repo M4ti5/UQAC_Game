@@ -301,7 +301,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     #region roleAndFilter
     IEnumerator SetRandomRole()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(3f);
         //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
         int nbrMaxCriminels = 1;
         // on affecte un nouveau criminel s'il n'en existe pas déjà le nombre défini
@@ -326,7 +326,7 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     IEnumerator AddFilter()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(4f);
         List<int> filtersAvailable = new List<int>();
         for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
         {
