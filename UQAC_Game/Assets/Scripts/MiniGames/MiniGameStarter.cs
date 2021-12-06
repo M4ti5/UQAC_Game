@@ -6,7 +6,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class MiniGameStarter : MonoBehaviour
+public class MiniGameStarter : MonoBehaviourPun
 {
     //private string nameMiniGame;
 
@@ -132,12 +132,9 @@ public class MiniGameStarter : MonoBehaviour
                 playerStatManager.canMove = true;
                 PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 //playerStatManager.RecoverHP(15, playerStatManager.ViewID);
-                //if (playerPhotonView.IsMine)
-                //{
-                    print("playerPhotonView.IsMine " + playerPhotonView.ViewID);
-                    playerPhotonView.RPC(nameof(PlayerStatManager.RecoverHPStatic), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
-                //}
-                print("update " + playerPhotonView.ViewID);
+                
+                photonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID, photonView.ViewID);
+
 
                 //int newId = PhotonNetwork.AllocateViewID(true);
                 //TODO add if list is not empty
@@ -189,11 +186,13 @@ public class MiniGameStarter : MonoBehaviour
     }
 
     [PunRPC]
-    private void RecoverHPMiniGameStarter(int heal, int viewId)
+    private void RecoverHPMiniGameStarter(int heal, int viewId, int viewIdMiniGame)
     {
-        print("RecoverHPMiniGameStarter " + viewId);
-        Transform player = FindPlayerByID(viewId);
-        player.GetComponent<PlayerStatManager>().RecoverHP(heal, viewId);
+        if (photonView.ViewID == viewIdMiniGame)
+        {
+            Transform player = FindPlayerByID(viewId);
+            player.GetComponent<PlayerStatManager>().RecoverHP(heal, viewId);
+        }
     }
     
     private Transform FindPlayerByID(int id)

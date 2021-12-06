@@ -34,31 +34,27 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - ClickRpc
-  - DestroyRpc
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - DestroyObject
-  - DesequipmentTriggered
-  - EquipmentTriggered
-  - CustomBehaviour
-  - RandomSkinColor
-  - SetScore
-  - storeEquipement
-  - StoreEquipement
-  - DesequipmentTriggeredWhenPlayerLeaveGame
-  - RandomRole
-  - Filter
-  - LoadGame
-  - Switch
-  - spawnObject
-  - initSpawnObject
-  - AddEnqueteur
   - AddLooser
   - AddWinner
-  - RecoverHP
+  - ClickRpc
+  - CustomBehaviour
+  - DesequipmentTriggered
+  - DesequipmentTriggeredWhenPlayerLeaveGame
+  - DestroyObject
+  - DestroyRpc
+  - DestroySpaceship
+  - EquipmentTriggered
+  - Filter
+  - Fire
+  - RandomRole
+  - RandomSkinColor
+  - RecoverHPMiniGameStarter
+  - RecoverHPStatic
+  - RespawnSpaceship
   - setPlayerColor
+  - SetScore
+  - StoreEquipement
+  - Switch
   - TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 1

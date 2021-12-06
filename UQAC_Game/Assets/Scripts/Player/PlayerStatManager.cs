@@ -263,7 +263,6 @@ public class PlayerStatManager : MonoBehaviourPun {
 
     public void RecoverHP (int heal, int viewId)
     {
-        print("RecoverHP " + viewId);
         Transform player = FindPlayerByID(viewId);
         if (player != null)
         {
@@ -274,18 +273,6 @@ public class PlayerStatManager : MonoBehaviourPun {
                 playerStatManager.currentHP = playerStatManager.hpMax;
                 //Debug.Log("Full Life");
             }
-        }
-    }
-
-    [PunRPC]
-    public static void RecoverHPStatic(int heal, int viewId)
-    {
-        print("RecoverHPStatic " + viewId);
-        Transform player = FindPlayerByIDStatic(viewId);
-        if (player != null)
-        {
-            PlayerStatManager playerStatManager = player.GetComponent<PlayerStatManager>();
-            playerStatManager.RecoverHP(heal, viewId);
         }
     }
     #endregion
@@ -400,18 +387,6 @@ public class PlayerStatManager : MonoBehaviourPun {
     Transform FindPlayerByID(int id)
     {
         foreach (Transform child in transform.parent)
-        {
-            if (child.GetComponent<PhotonView>().ViewID == id)
-            {
-                return child;
-            }
-        }
-        return null;
-    }
-    
-    static Transform FindPlayerByIDStatic(int id)
-    {
-        foreach (Transform child in GameObject.Find("Players").transform)
         {
             if (child.GetComponent<PhotonView>().ViewID == id)
             {
