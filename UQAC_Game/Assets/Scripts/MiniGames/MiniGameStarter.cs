@@ -132,11 +132,11 @@ public class MiniGameStarter : MonoBehaviour
                 playerStatManager.canMove = true;
                 PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 //playerStatManager.RecoverHP(15, playerStatManager.ViewID);
-                if (playerPhotonView.IsMine)
-                {
+                //if (playerPhotonView.IsMine)
+                //{
                     print("playerPhotonView.IsMine " + playerPhotonView.ViewID);
                     playerPhotonView.RPC(nameof(PlayerStatManager.RecoverHPStatic), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
-                }
+                //}
                 print("update " + playerPhotonView.ViewID);
 
                 //int newId = PhotonNetwork.AllocateViewID(true);
