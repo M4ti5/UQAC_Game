@@ -53,13 +53,17 @@ public class Object : MonoBehaviourPun
 
             for (int i = 0; i < allPlayersCount; i++)
             {
-                (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToHeld);
-                if (_isReachable && _dist < minDistance)
+                if (allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().isDead == false)
                 {
-                    minDistance = _dist;
-                    grabberPlayerId = i;
-                    if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                        break;
+                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform,
+                        allPlayers.transform.GetChild(i), distanceToHeld);
+                    if (_isReachable && _dist < minDistance)
+                    {
+                        minDistance = _dist;
+                        grabberPlayerId = i;
+                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                            break;
+                    }
                 }
             }
             if (grabberPlayerId >= 0)

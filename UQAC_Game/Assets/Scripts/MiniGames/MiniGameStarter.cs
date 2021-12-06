@@ -59,13 +59,16 @@ public class MiniGameStarter : MonoBehaviour
                 //On r�cup�re l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
                 for (int i = 0; i < allPlayersCount; i++)
                 {
-                    (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
-                    if (_isReachable && _dist < minDistance)
+                    if (allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().isDead == false)
                     {
-                        minDistance = _dist;
-                        grabberPlayerId = i;
-                        if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
-                            break;
+                        (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
+                        if (_isReachable && _dist < minDistance)
+                        {
+                            minDistance = _dist;
+                            grabberPlayerId = i;
+                            if (allPlayers.transform.GetChild(i).GetComponent<PhotonView>().IsMine)
+                                break;
+                        }
                     }
                 }
 

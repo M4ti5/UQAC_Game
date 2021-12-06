@@ -106,7 +106,7 @@ public class PlayerStatManager : MonoBehaviourPun {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
 
-        if (GetComponent<PhotonView>().IsMine) {
+        if (GetComponent<PhotonView>().IsMine && !isDead) {
             List<(GameObject, float)> _reachableObjects = reachableObjects();
             GameObject nearestObj = findNearestObj(_reachableObjects);
 
