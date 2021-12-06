@@ -124,6 +124,8 @@ MonoBehaviour:
   HitObj: {fileID: 0}
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}
+  lastTimeUseObject: 0
+  deltaTimeUseObject: 10
 --- !u!1001 &8797721894194117064
 PrefabInstance:
   m_ObjectHideFlags: 0
