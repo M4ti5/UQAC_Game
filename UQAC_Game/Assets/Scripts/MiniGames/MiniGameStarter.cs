@@ -131,11 +131,13 @@ public class MiniGameStarter : MonoBehaviour
                 //Le joueur r�cup�re des PV
                 playerStatManager.canMove = true;
                 PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                //playerStatManager.RecoverHP(15, photonView.ViewID);
-                //if (playerPhotonView.IsMine)
-                //{
-                    playerPhotonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
-                //}
+                //playerStatManager.RecoverHP(15, playerStatManager.ViewID);
+                if (playerPhotonView.IsMine)
+                {
+                    print("playerPhotonView.IsMine " + playerPhotonView.ViewID);
+                    playerPhotonView.RPC(nameof(PlayerStatManager.RecoverHPStatic), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
+                }
+                print("update " + playerPhotonView.ViewID);
 
                 //int newId = PhotonNetwork.AllocateViewID(true);
                 //TODO add if list is not empty
@@ -189,6 +191,7 @@ public class MiniGameStarter : MonoBehaviour
     [PunRPC]
     private void RecoverHPMiniGameStarter(int heal, int viewId)
     {
+        print("RecoverHPMiniGameStarter " + viewId);
         Transform player = FindPlayerByID(viewId);
         player.GetComponent<PlayerStatManager>().RecoverHP(heal, viewId);
     }
