@@ -134,7 +134,7 @@ public class MiniGameStarter : MonoBehaviour
                 //playerStatManager.RecoverHP(15, photonView.ViewID);
                 //if (playerPhotonView.IsMine)
                 //{
-                    playerPhotonView.RPC(nameof(MiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
+                    playerPhotonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID);
                 //}
 
                 //int newId = PhotonNetwork.AllocateViewID(true);
