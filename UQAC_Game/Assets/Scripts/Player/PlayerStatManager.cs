@@ -261,7 +261,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         }
     }
 
-    [PunRPC]
     public void RecoverHP (int heal, int viewId)
     {
         Transform player = FindPlayerByID(viewId);

@@ -131,8 +131,12 @@ public class MiniGameStarter : MonoBehaviour
                 //Le joueur r�cup�re des PV
                 playerStatManager.canMove = true;
                 PhotonView photonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                playerStatManager.RecoverHP(15, photonView.ViewID);
-                
+                //playerStatManager.RecoverHP(15, photonView.ViewID);
+                if (photonView.IsMine)
+                {
+                    photonView.RPC(nameof(RecoverHP), RpcTarget.AllBuffered, 15, photonView.ViewID);
+                }
+
                 //int newId = PhotonNetwork.AllocateViewID(true);
                 //TODO add if list is not empty
                 int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
@@ -180,5 +184,24 @@ public class MiniGameStarter : MonoBehaviour
             }
         }
         return playerStatManager;
-    }   
+    }
+
+    [PunRPC]
+    public void RecoverHP(int heal, int viewId)
+    {
+        Transform player = FindPlayerByID(viewId);
+        player.GetComponent<PlayerStatManager>().RecoverHP(heal, viewId);
+    }
+    
+    public Transform FindPlayerByID(int id)
+    {
+        foreach (Transform child in allPlayers.transform)
+        {
+            if (child.GetComponent<PhotonView>().ViewID == id)
+            {
+                return child;
+            }
+        }
+        return null;
+    }
 }
