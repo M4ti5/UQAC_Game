@@ -124,6 +124,8 @@ MonoBehaviour:
   HitObj: {fileID: 0}
   EquipmentDest: {fileID: 0}
   player: {fileID: 0}
+  lastTimeUseObject: 0
+  deltaTimeUseObject: 10
   distanceToCut: 2
   rangeCut: 2
   damage: 30
