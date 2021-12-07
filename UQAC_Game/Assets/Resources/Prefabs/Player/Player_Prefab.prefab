@@ -398,6 +398,7 @@ MonoBehaviour:
   canvas: {fileID: 0}
   personalScore: {fileID: 0}
   globalScore: {fileID: 0}
+  infoRole: {fileID: 0}
   allObjects: {fileID: 0}
   allMiniGames:
   - {fileID: 0}

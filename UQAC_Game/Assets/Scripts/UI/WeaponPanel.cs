@@ -32,13 +32,16 @@ public class WeaponPanel : MonoBehaviour
         //currentCooldown += Time.deltaTime;
         display.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
         display.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
-        if (equipment.transform.childCount == 0)
+        if (equipment != null)
         {
-            display.gameObject.SetActive(false);
-        }
-        else
-        {
-            display.gameObject.SetActive(true);
+            if (equipment.transform.childCount == 0)
+            {
+                display.gameObject.SetActive(false);
+            }
+            else
+            {
+                display.gameObject.SetActive(true);
+            }
         }
     }
 

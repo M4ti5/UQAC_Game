@@ -20,6 +20,8 @@ public class PlayerStatManager : MonoBehaviourPun {
     public PersonalScore personalScore;
     public GlobalScore globalScore;
 
+    public GameObject infoRole;
+    
     public GameObject allObjects;
     public List<GameObject> allMiniGames;
 
@@ -76,6 +78,11 @@ public class PlayerStatManager : MonoBehaviourPun {
                 personalScore = canvas.transform.GetChild(i).GetComponent<PersonalScore>();
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
+
+            if (canvas.transform.GetChild(i).name == "InfoRole")
+            {
+                infoRole = canvas.transform.GetChild(i).gameObject;
+            }
         }
         // trouver un objet desactivé
         yield return new WaitUntil(() => (inventoryDisplay = canvas.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "InventoryDisplay").gameObject) != null);
@@ -91,6 +98,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         
         // active un repaire visible sur la map seulement si c'est notre joueur
         repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
+
 
 
         findAllObjects = true;
@@ -316,11 +324,16 @@ public class PlayerStatManager : MonoBehaviourPun {
     [PunRPC]
     public void RandomRole(bool role, int idPlayer)
     {
+        
         //Debug.Log("test de RandomRole pour voir si c'est global");
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
         
+        if (GetComponent<PhotonView>().IsMine)
+        {
+            player.GetComponent<PlayerStatManager>().infoRole.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (role ? "Criminel" : "Enquêteur");
+        }
     }
 
     IEnumerator AddFilter()
