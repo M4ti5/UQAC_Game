@@ -330,9 +330,9 @@ public class PlayerStatManager : MonoBehaviourPun {
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
         
-        if (GetComponent<PhotonView>().IsMine)
+        if (player.GetComponent<PhotonView>().IsMine)
         {
-            infoRole.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (criminal ? "Criminel" : "Enquêteur");
+            player.GetComponent<PlayerStatManager>().infoRole.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (criminal ? "Criminel" : "Enquêteur");
         }
     }
 
