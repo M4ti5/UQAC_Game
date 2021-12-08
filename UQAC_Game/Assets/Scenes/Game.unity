@@ -2480,7 +2480,9 @@ PrefabInstance:
         et le tuer !\nD\xE9placement : <b>ZQSD</b>\nRotation : <b>Clic droit</b>
         de la souris\nSprinter : <b>Left Shift</b>\nSauter : <b>Espace</b>\nS'\xE9quiper
         d'un objet : <b>E</b>\nUtiliser un objet :  <b>Clic gauche</b> de la souris\nSe
-        d\xE9s\xE9quiper d'un object : <b>A</b>\nOuvrir un mini-jeux : <b>E</b>"
+        d\xE9s\xE9quiper d'un object : <b>A</b>\nMettre un objet dans son inventaire
+        : <b>Molette</b> de la souris\nOuvrir un mini-jeux : <b>E</b>\nOptions :
+        <b>Echap</b>"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
@@ -3424,6 +3426,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2987377624500160123, guid: 91380b8ebbb3b2d4fb24c2990f3b6c59, type: 3}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2987377624500160123, guid: 91380b8ebbb3b2d4fb24c2990f3b6c59, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2987377624500160123, guid: 91380b8ebbb3b2d4fb24c2990f3b6c59, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2987377624500160123, guid: 91380b8ebbb3b2d4fb24c2990f3b6c59, type: 3}
