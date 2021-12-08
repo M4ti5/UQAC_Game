@@ -2294,16 +2294,73 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.000103898004
       objectReference: {fileID: 0}
+    - target: {fileID: 1731794306634857588, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731794306634857588, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905021895000209654, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924190856678786810, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924190856678786810, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924190856678786810, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1924190856678786810, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973517938814512774, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311044108557717558, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311044108557717558, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894293, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: texte
-      value: "Votre but est de faire un maximum de mini-jeux!  Pour cela, vous pouvez
-        vous d\xE9placer en utilisant les touches ZQSD de votre clavier. Pour d\xE9placer
-        la cam\xE9ra, cliquez sur le bouton droit de la souris et bougez celle-ci.
-        Il est possible de sprinter avec la touche Left Shift et de sauter avec la
-        touche Espace. Il est aussi possible de prendre des objets avec la touche
-        E et de les utiliser avec le bouton gauche de la souris ou bien de les laisser
-        tomber avec la touche A. Pour int\xE9ragir avec des mini-jeux, appuyez sur
-        la touche E! GL HF"
+      value: "Le but est de faire un maximum de mini-jeux pour d\xE9couvrir le criminel
+        et le tuer !\nD\xE9placement : <b>ZQSD</b>\nRotation : <b>Clic droit</b>
+        de la souris\nSprinter : <b>Left Shift</b>\nSauter : <b>Espace</b>\nS'\xE9quiper
+        d'un objet : <b>E</b>\nUtiliser un objet :  <b>Clic gauche</b> de la souris\nSe
+        d\xE9s\xE9quiper d'un object : <b>A</b>\nOuvrir un mini-jeux : <b>E</b>"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
@@ -2380,6 +2437,30 @@ PrefabInstance:
     - target: {fileID: 4818869469218783562, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181330777601056676, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181330777601056676, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181330777601056676, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002697236522855949, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8002697236522855949, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8019922752253024173, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
+      propertyPath: m_Size
+      value: 0.5163448
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
