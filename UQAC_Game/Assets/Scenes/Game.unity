@@ -3308,6 +3308,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8608916066471393479, guid: d79f206132c16e4418ace8795e36b385, type: 3}
+      propertyPath: allPlayers
+      value: 
+      objectReference: {fileID: 1828196082}
     - target: {fileID: 9056537494128272683, guid: d79f206132c16e4418ace8795e36b385, type: 3}
       propertyPath: m_RootOrder
       value: 2
