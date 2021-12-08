@@ -52,9 +52,7 @@ public class Options : MonoBehaviourPunCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            visible = !visible;
-            panel.SetActive(visible);
-            
+            ToggleMenu();
         }
         
         leaveBtn.interactable = PhotonNetwork.InRoom;
@@ -64,6 +62,12 @@ public class Options : MonoBehaviourPunCallbacks
                 photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
         if(photonStatus != null)
             photonStatus.SetActive(photonDebugMode);
+    }
+
+    public void ToggleMenu()
+    {
+        visible = !visible;
+        panel.SetActive(visible);
     }
 
     public void OnVolumeMusiqueSliderChange()
