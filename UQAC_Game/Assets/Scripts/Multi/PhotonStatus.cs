@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class PhotonStatus : MonoBehaviourPun
 {
-    public bool activated = true;
+    public bool activated = false;
     public GameObject photonStatus;
     public TextMeshProUGUI playerName, roomName, nbrPlayers, ping, roomsList;
 
