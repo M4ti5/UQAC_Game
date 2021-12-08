@@ -37,6 +37,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 
 	public List<RoomInfo> roomNameList = new List<RoomInfo>();
+	
+	
+	public GameObject credits;
 
 	/*void Awake()
     {
@@ -50,6 +53,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 	void Start()
 	{
 		Debug.Log("Start launcher script");
+		// hide credits panel
+		HideCredits();
 
 		// hide the button while not connected to photon servers
 		this.roomJoinUI.SetActive(false);
@@ -538,4 +543,23 @@ public class Launcher : MonoBehaviourPunCallbacks
 	}
 
 	#endregion
+	
+	#region Credits
+
+	public void ShowCredits()
+	{
+		if (credits != null)
+		{
+			credits.SetActive(true);
+		}
+	}
+	public void HideCredits()
+	{
+		if (credits != null)
+		{
+			credits.SetActive(false);
+		}
+	}
+	#endregion
+	
 }
