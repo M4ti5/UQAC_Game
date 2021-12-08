@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class PhotonStatus : MonoBehaviourPun
 {
-    public bool activated = true;
+    public bool activated = false;
     public GameObject photonStatus;
     public TextMeshProUGUI playerName, roomName, nbrPlayers, ping, roomsList;
 
@@ -56,14 +56,14 @@ public class PhotonStatus : MonoBehaviourPun
         playerName.text = NA;
         roomName.text = NA;
         nbrPlayers.text = NA;
-        ping.text = NA + " ms";
+        ping.text = NA + " ms\n(region: " + NA + ")";
     }
 
     private void DisplayStatus()
     {
         playerName.text = PhotonNetwork.NickName.ToString();
         roomName.text = (PhotonNetwork.InRoom ? 
-            PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsVisible ? "visible" : "hidden") + "]" : 
+            PhotonNetwork.CurrentRoom.Name.ToString() + " [" + (PhotonNetwork.CurrentRoom.IsOpen ? "open" : "close") + "]" : 
             NA);
         nbrPlayers.text =
             (PhotonNetwork.Server == ServerConnection.MasterServer ?
@@ -78,7 +78,7 @@ public class PhotonStatus : MonoBehaviourPun
             (PhotonNetwork.InRoom ? 
                 PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " in this room" :
                 "");
-        ping.text = PhotonNetwork.GetPing().ToString() + " ms";
+        ping.text = PhotonNetwork.GetPing().ToString() + " ms\n(region: " + PhotonNetwork.CloudRegion + ")";
 
         DisplayRoomsList();
     }
@@ -91,7 +91,7 @@ public class PhotonStatus : MonoBehaviourPun
             {
                 roomsInfos = FindObjectOfType<Launcher>().GetRoomList();
                 // reset list of all rooms
-                roomsList.text = "Created Rooms:";
+                roomsList.text = "Created Rooms: ";
                 foreach (RoomInfo roomInfo in roomsInfos)
                 {
                     // txt
@@ -118,7 +118,7 @@ public class PhotonStatus : MonoBehaviourPun
         if (PhotonNetwork.InRoom)
         {
             // reset list of all rooms
-            roomsList.text = "Players:";
+            roomsList.text = "Players: ";
             foreach (Player player in PhotonNetwork.PlayerList)
             {
                 // txt

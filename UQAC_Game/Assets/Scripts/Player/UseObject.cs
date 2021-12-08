@@ -35,20 +35,24 @@ public class UseObject : MonoBehaviourPun
         //Store equipement
         if (Input.mouseScrollDelta.y != 0 && PhotonNetwork.LocalPlayer == transform.parent.GetComponent<PhotonView>().Owner)
         {
-            //Debug.Log("mouse wheel");
-            //Get gameobjetcs
-            OnStoreEquipement();
-            //this.transform.GetChild(0).GetComponent<Object>().OnStoreEquipement(this.transform.GetChild(0).GetComponent<Object>().player);
-
+            // Check if the mouse was clicked over a UI element
+            if (EventSystem.current.IsPointerOverGameObject() == false)
+            {
+                if (transform.parent.Find("Inventory").childCount > 0 ||
+                    transform.parent.Find("Equipements").childCount > 0)
+                {
+                    //Debug.Log("mouse wheel");
+                    //Get gameobjetcs
+                    OnStoreEquipement();
+                    //this.transform.GetChild(0).GetComponent<Object>().OnStoreEquipement(this.transform.GetChild(0).GetComponent<Object>().player);
+                }
+            }
         }
     
     }
 
     public void OnStoreEquipement()
     {
-        PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
-        Debug.Log(playerStatManager);
-        
         photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBuffered);
     }
     

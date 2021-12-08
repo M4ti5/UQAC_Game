@@ -660,10 +660,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4390310180865894293, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: texte
-      value: "Dans ce mini-jeu, votre but est de franchir la sortie du labyrinthe
-        situ\xE9e en bas \xE0 droite!\r\nVous \xEAtes repr\xE9sent\xE9s par le carr\xE9
-        vert. Pour vous d\xE9placer, utilisez les touches directionnelles de votre
-        clavier (\u2191 \u2193 \u2192 \u2190)."
+      value: "Dans ce mini-jeu, votre but est de rejoindre la sortie du labyrinthe
+        <b>(en bas \xE0 droite)</b> !\r\n\nD\xE9placement : <b>\u2191 \u2193 \u2192
+        \u2190</b>\n\nSoyez le plus rapide possible pour faire gagner votre \xE9quipe
+        !"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
@@ -935,6 +935,10 @@ PrefabInstance:
     - target: {fileID: 7521909958987044599, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
       propertyPath: m_fontSize
       value: 22.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7521909958987044599, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
