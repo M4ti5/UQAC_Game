@@ -992,6 +992,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeaveMiniGame
       objectReference: {fileID: 0}
+    - target: {fileID: 7521909958987044599, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 059aae747984fa440b5f9f2fae33cab4, type: 3}
 --- !u!224 &158304882254851759 stripped
@@ -1066,10 +1070,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4390310180865894293, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: texte
-      value: "Dans ce mini-jeu, votre but est de reconstituer le puzzle!\r\nPour
-        y arriver, vous devez prendre les pi\xE8ces situ\xE9es dans la \"R\xE9serve
-        de pi\xE8ces\" \xE0 droite et les glisser-d\xE9poser sur la zone qui leur
-        est d\xE9di\xE9e dans la partie de gauche \xE0 l'aide de la souris."
+      value: "Dans ce mini-jeu, il faut reconstruire le puzzle !\r\n\n<b>Glisser/d\xE9poser</b>,
+        avec la souris, les pi\xE8ces de \"R\xE9serve de pi\xE8ces\" (\xE0 droite)
+        vers le bon emplacement dans la partie de gauche.\n\nSoyez le plus rapide
+        possible pour faire gagner votre \xE9quipe !"
       objectReference: {fileID: 0}
     - target: {fileID: 4390310180865894378, guid: fd9fd190adb9cdf40b564d13f9efde88, type: 3}
       propertyPath: m_RootOrder
