@@ -158,7 +158,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 	private void RefreshRoomListUI()
 	{
 		List<TMP_Dropdown.OptionData> optionList = new List<TMP_Dropdown.OptionData>();
-		optionList.Add(new TMP_Dropdown.OptionData("-- Choose an existing room --"));
+		optionList.Add(new TMP_Dropdown.OptionData("-- Parties disponibles --"));
 		// reset list of all rooms
 		foreach (RoomInfo roomInfo in roomNameList)
 		{
