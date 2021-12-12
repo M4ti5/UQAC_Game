@@ -251,20 +251,13 @@
   </Class>
   <Class Name="HideShowPanel" Collapsed="true">
     <Position X="2.25" Y="9.75" Width="1.5" />
-    <NestedTypes>
-      <Enum Name="HideShowPanel.Emplacement" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Assets\Scripts\Multi\HideShowPanel.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAACAACAACABAAAIAAIAAAIAAACAAAAgAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Multi\HideShowPanel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ObjectPositionBind" Collapsed="true">
-    <Position X="28" Y="10" Width="2" />
+    <Position X="27.75" Y="7.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgASAAAAA=</HashCode>
       <FileName>Assets\Scripts\Objects\ObjectPositionBind.cs</FileName>
