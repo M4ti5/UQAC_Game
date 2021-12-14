@@ -351,12 +351,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57780e1b17c3a054c93f2d1918ed0a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeed: 9
-  rotationSpeed: 60
+  defaultMoveSpeed: 0.25
+  sprintSpeed: 0.4
+  rotationSpeed: 600
   rigidbody: {fileID: 7866800435318516808}
   jumpForce: 300
   isGrounded: 0
-  dashSpeed: 15
+  dashSpeed: 0.8
   canDash: 1
   inMove: 0
   inJump: 0

@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviourPun {
-    public static float defaultMoveSpeed = 5.0f;
-    private float moveSpeed = defaultMoveSpeed;
+    public float defaultMoveSpeed = 5.0f;
+    private float moveSpeed;
     public float sprintSpeed = 9.0f;
     public float rotationSpeed = 45.0f;
     public Rigidbody rigidbody;
@@ -45,6 +45,7 @@ public class Movement : MonoBehaviourPun {
     void Start () {
         rb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
+        moveSpeed = defaultMoveSpeed;
     }
 
     // Update is called once per frame  
@@ -104,7 +105,6 @@ public class Movement : MonoBehaviourPun {
         //// Rotate Mouse
         if (Input.GetAxis("Mouse X") != 0 && Input.GetMouseButton(1)) { // mouse's left click
             transform.Rotate(Vector3.up , rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
-
         }
 
         //// Jump
@@ -156,10 +156,13 @@ public class Movement : MonoBehaviourPun {
                 canDash = true;
             }
         }
-
+        
         // appli movement
-        movementDirection = transform.TransformDirection(movementDirection);
-        rigidbody.velocity = (movementDirection * Time.deltaTime * moveSpeed)/ Time.deltaTime;
+        movementDirection = transform.TransformDirection(movementDirection); // apply move with body rotation
+        movementDirection *= Time.deltaTime * 1000.0f * moveSpeed; // apply speed in m/s
+        movementDirection.y = rigidbody.velocity.y; // get jump velocity
+        rigidbody.velocity = movementDirection; // apply velocity
+
     }
 
     void Animations () {
