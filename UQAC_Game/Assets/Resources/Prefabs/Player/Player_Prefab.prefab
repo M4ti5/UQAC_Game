@@ -353,6 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 9
   rotationSpeed: 60
+  rigidbody: {fileID: 7866800435318516808}
   jumpForce: 300
   isGrounded: 0
   dashSpeed: 15

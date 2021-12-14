@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3106920855306706762}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 4, z: 0}
-  m_LocalScale: {x: 0.3, y: 1, z: 0.3}
+  m_LocalScale: {x: 0.35, y: 1, z: 0.3}
   m_Children: []
   m_Father: {fileID: 7029478629434264281}
   m_RootOrder: 2
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7029478628549425252}
   - component: {fileID: 7029478628549425255}
   - component: {fileID: 7029478628549425254}
-  - component: {fileID: 6561977251596716825}
+  - component: {fileID: 7847467461160803370}
   m_Layer: 0
   m_Name: PlainWall
   m_TagString: Wall
@@ -138,8 +138,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7029478628549425256}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.45, y: 2, z: 0}
-  m_LocalScale: {x: 0.1, y: 4, z: 3}
+  m_LocalPosition: {x: 1.65, y: 2, z: 0}
+  m_LocalScale: {x: 0.5, y: 4, z: 3}
   m_Children: []
   m_Father: {fileID: 7029478628574390316}
   m_RootOrder: 1
@@ -206,7 +206,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &6561977251596716825
+--- !u!54 &7847467461160803370
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 7029478628683709851}
   - component: {fileID: 7029478628683709850}
   - component: {fileID: 7029478628683709853}
-  - component: {fileID: 583647486081139252}
+  - component: {fileID: 4502310921558907550}
   m_Layer: 0
   m_Name: PlainWall
   m_TagString: Wall
@@ -282,8 +282,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7029478628683709855}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.45, y: 2, z: 0}
-  m_LocalScale: {x: 0.1, y: 4, z: 3}
+  m_LocalPosition: {x: -1.65, y: 2, z: 0}
+  m_LocalScale: {x: 0.5, y: 4, z: 3}
   m_Children: []
   m_Father: {fileID: 7029478628574390316}
   m_RootOrder: 0
@@ -350,7 +350,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &583647486081139252
+--- !u!54 &4502310921558907550
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -395,7 +395,7 @@ Transform:
   m_GameObject: {fileID: 7029478628935056062}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 1, z: 0.3}
+  m_LocalScale: {x: 0.35, y: 1, z: 0.3}
   m_Children: []
   m_Father: {fileID: 7029478629434264281}
   m_RootOrder: 0

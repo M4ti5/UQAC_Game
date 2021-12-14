@@ -12,6 +12,7 @@ public class Movement : MonoBehaviourPun {
     private float moveSpeed = defaultMoveSpeed;
     public float sprintSpeed = 9.0f;
     public float rotationSpeed = 45.0f;
+    public Rigidbody rigidbody;
 
     public float jumpForce = 180.0f;
     public bool isGrounded = false;
@@ -64,6 +65,7 @@ public class Movement : MonoBehaviourPun {
             inRun = false;
             inJump = false;
             inMove = false;
+            rigidbody.velocity = Vector3.zero;
         }
         Animations();
         CheckDeathLimitY();
@@ -74,32 +76,35 @@ public class Movement : MonoBehaviourPun {
 
         //// Moves Key
         inMove = false;
+        Vector3 movementDirection = Vector3.zero;
+        
         // forward
         if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/)
         {
             inMove = true;
-            transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.forward;
         }
         // backwards
         if (Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.back;
         }
         // left
         if (Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.left;
         }
 
         // right
         if (Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.right;
         }
 
         //// Rotate Mouse
         if (Input.GetAxis("Mouse X") != 0 && Input.GetMouseButton(1)) { // mouse's left click
             transform.Rotate(Vector3.up , rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
+
         }
 
         //// Jump
@@ -134,12 +139,14 @@ public class Movement : MonoBehaviourPun {
             inDash = true;
             canDash = false;
         }
-        if (inDash && !inWallCollide) {
-            transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
+        if (inDash && !inWallCollide)
+        {
+            moveSpeed = dashSpeed;
             dashTime -= Time.deltaTime;
             if (dashTime < 0) {
                 inDash = false;
                 dashTime = defaultDashTime;
+                moveSpeed = defaultMoveSpeed;
             }
         } else {
             if (dashCoolDown > 0) {
@@ -150,7 +157,9 @@ public class Movement : MonoBehaviourPun {
             }
         }
 
-        // TODO:  ctrl ou c pour s'accoupir
+        // appli movement
+        movementDirection = transform.TransformDirection(movementDirection);
+        rigidbody.velocity = (movementDirection * Time.deltaTime * moveSpeed)/ Time.deltaTime;
     }
 
     void Animations () {
