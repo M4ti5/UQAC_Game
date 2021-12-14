@@ -1,28 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+
+
+/**
+ * Color Switch is a type of Equipement that allows the player to change their color to the color of another player in front of them
+ */
 
 public class ColorSwitch : Object
 {
     private RaycastHit swap;
-    public int maxDistance = 20;
+    //maw distance to reach in front of the player
+    public int maxDistance;
 
     [PunRPC]
     protected override void CustomBehaviour()
     {
+        //cast a ray in front of the player from the hit position to the max distance
         if (Physics.Raycast(HitObj.position,HitObj.forward, out swap, maxDistance))
         {
-            if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
+            if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas dï¿½jï¿½ mort
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
                     Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
-                    //transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
+                    //change color of player of photonViewID = viewID
                     photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x,
                         otherPlayerColor.y, otherPlayerColor.z,
                         transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                    //ObjectUsed();
+                    //load animation for the player and destroy object from the world
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inShoot"));
                 }
             }
