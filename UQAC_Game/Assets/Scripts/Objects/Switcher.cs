@@ -56,14 +56,6 @@ public class Switcher : Object {
         transform.parent.parent.rotation = otherRot;
     }
     
-    Transform FindPlayerByID (int id) {
-        foreach (Transform child in allPlayers.transform) {
-            if (child.GetComponent<PhotonView>().ViewID == id) {
-                return child;
-            }
-        }
-        return null;
-    }
     [PunRPC]
     private void Switch (Vector3 otherPos , Quaternion otherRot , int otherId) {
         Transform temp = FindPlayerByID(otherId);
