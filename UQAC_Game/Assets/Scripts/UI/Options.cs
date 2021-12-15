@@ -57,11 +57,20 @@ public class Options : MonoBehaviourPunCallbacks
         
         leaveBtn.interactable = PhotonNetwork.InRoom;
         
+        // find photonstatus panel if not found prevously to avoid problems of order start scripts
         if(photonStatus == null)
             if (GameObject.Find("PhotonStatus") != null)
                 photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
-        if(photonStatus != null)
-            photonStatus.SetActive(photonDebugMode);
+        if (photonStatus != null)
+        {
+            if (photonStatus.activeSelf != photonDebugMode)
+            {
+                // hide/show photon panel
+                photonStatus.SetActive(photonDebugMode);
+                // disable check information if is hide
+                photonStatus.transform.parent.parent.GetComponent<PhotonStatus>().activated = photonDebugMode;
+            }
+        }
     }
 
     public void ToggleMenu()

@@ -15,14 +15,10 @@ using Photon.Pun;
 
 /// <summary>
 /// Player manager.
-/// Handles fire Input and Beams.
 /// </summary>
-public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
+public class PlayerManager : MonoBehaviourPun
 {
     #region Public Fields
-
-    //[Tooltip("The current Health of our player")]
-    //public float Health = 1f;
 
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject LocalPlayerInstance;
@@ -31,17 +27,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     #endregion
 
-    #region Private Fields
-
-    /*
-    [Tooltip("The Beams GameObject to control")]
-    [SerializeField]
-    private GameObject beams;*/
-
-    //True, when the user is firing
-    bool IsFiring;
-
-    #endregion
 
     #region MonoBehaviour CallBacks
 
@@ -87,11 +72,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     /// </summary>
     public void Start()
     {
+        // disable camera if note mine to avoid multicamera cast
         if (playerCamera != null)
         {
             if (photonView.IsMine == false)
             {
-                playerCamera.SetActive(false); // disable camera if note mine to avoid multicamera cast
+                playerCamera.SetActive(false);
             }
         }
         else
@@ -99,54 +85,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             Debug.LogError("<Color=Red><b>Missing</b></Color> player camera Reference .", this);
         }
 
-    }
-
-
-    /// <summary>
-    /// MonoBehaviour method called on GameObject by Unity on every frame.
-    /// Process Inputs if local player.
-    /// Show and hide the beams
-    /// Watch for end of game, when local player health is 0.
-    /// </summary>
-    public void Update()
-    {
-        // we only process Inputs and check health if we are the local player
-        if (photonView.IsMine)
-        {
-            // TODO: do some thing
-
-            /*if (this.Health <= 0f)
-            {
-                GameManager.Instance.LeaveRoom();
-            }*/
-        }
-
-        /*// we dont' do anything if we are not the local player.
-        if (!photonView.IsMine)
-        {
-            return;
-        }*/
-
-    }
-
-    #endregion
-
-    #region IPunObservable implementation
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        /*if (stream.IsWriting)
-        {
-            // We own this player: send the others our data
-            stream.SendNext(this.IsFiring);
-            //stream.SendNext(this.Health);
-        }
-        else
-        {
-            // Network player, receive data
-            this.IsFiring = (bool)stream.ReceiveNext();
-            //this.Health = (float)stream.ReceiveNext();
-        }*/
     }
 
     #endregion

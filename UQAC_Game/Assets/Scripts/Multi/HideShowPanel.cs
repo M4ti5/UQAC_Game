@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Dynamique class to enable close/open panel as photonstatus on left side in debug mode enable in options)
+/// </summary>
 public class HideShowPanel : MonoBehaviour
 {
 
@@ -11,45 +14,42 @@ public class HideShowPanel : MonoBehaviour
         Top,
         Bottom
     };
+    
     [SerializeField] private Emplacement emplacement;
     [SerializeField] private RectTransform parent;
     private Vector3 pos;
-    [SerializeField] private RectTransform Arrow;
+    [SerializeField] private RectTransform arrow;
 
     public bool reduced;
-    //private float btnHeight = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        /*if(emplacement == Emplacement.Right || emplacement == Emplacement.Left)
-            btnHeight = transform.GetComponent<RectTransform>().rect.width;
-        else
-            btnHeight = transform.GetComponent<RectTransform>().rect.height;
-        */
         if(parent == null)
             parent = transform.parent.GetComponent<RectTransform>();
         pos = parent.anchoredPosition3D;
 
-        transformParentPosition();
-        rotateArrow();
+        TransformParentPosition();
+        RotateArrow();
     }
-    public void toggleHideShow()
+    public void ToggleHideShow()
     {
         reduced = !reduced;
-        transformParentPosition();
-        rotateArrow();
+        TransformParentPosition();
+        RotateArrow();
     }
 
-    private void transformParentPosition()
+    private void TransformParentPosition()
     {
+        // reduce panel = move position out of screen
         parent.anchoredPosition3D = new Vector3(
             pos.x + (parent.sizeDelta.x) * (reduced ? emplacement == Emplacement.Right ? 1 : emplacement == Emplacement.Left ? -1 : 0 : 0),
             pos.y + (parent.sizeDelta.y) * (reduced ? emplacement == Emplacement.Top ? 1 : emplacement == Emplacement.Bottom ? -1 : 0 : 0),
             pos.z);
     }
 
-    private void rotateArrow()
+    // rotate arrow in the good angle depending on config and reduced or not
+    private void RotateArrow()
     {
         float arrowAngle = 0f;
         switch (emplacement)
@@ -69,6 +69,6 @@ public class HideShowPanel : MonoBehaviour
                 arrowAngle = reduced ? 180 : 0;
                 break;
         }
-        Arrow.rotation = Quaternion.Euler(Arrow.rotation.eulerAngles.x, Arrow.rotation.eulerAngles.y, arrowAngle);
+        arrow.rotation = Quaternion.Euler(arrow.rotation.eulerAngles.x, arrow.rotation.eulerAngles.y, arrowAngle);
     }
 }

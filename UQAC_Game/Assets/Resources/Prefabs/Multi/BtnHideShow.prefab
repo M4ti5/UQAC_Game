@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7080003893384813448}
         m_TargetAssemblyTypeName: HideShowPanel, Assembly-CSharp
-        m_MethodName: toggleHideShow
+        m_MethodName: ToggleHideShow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -280,5 +280,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emplacement: 0
   parent: {fileID: 0}
-  Arrow: {fileID: 2574291006401325768}
+  arrow: {fileID: 2574291006401325768}
   reduced: 1

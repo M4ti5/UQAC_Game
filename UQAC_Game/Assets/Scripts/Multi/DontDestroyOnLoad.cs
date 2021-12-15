@@ -6,7 +6,7 @@ public class DontDestroyOnLoad : MonoBehaviour
 {
     public new bool enabled = true;
 
-    [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+    [Tooltip("The local instance. Use this to know if the local gameobject is already represented in the Scene")]
     public static GameObject instance;
 
     private void Awake()
