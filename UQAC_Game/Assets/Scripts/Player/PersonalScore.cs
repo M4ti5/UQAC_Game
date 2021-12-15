@@ -24,6 +24,7 @@ public class PersonalScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /* DEBUG MODE -- Progress bar
         if (!criminel)
         {
             if (Input.GetKeyDown(KeyCode.J))
@@ -37,6 +38,7 @@ public class PersonalScore : MonoBehaviour
                 score = GetScore();
             }
         }
+        */
     }
 
     public float GetScore()

@@ -11,30 +11,25 @@ public class PostProcessManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Start PostProcessManager script");
+        // Get all postProcessVolume
         foreach (Transform postProcess in transform)
         {
             if (postProcess.GetComponent<PostProcessVolume>())
             {
                 allPostProcessVolumes.Add(postProcess.GetComponent<PostProcessVolume>());
-                allPostProcessVolumesEnabled.Add(false);// create list to active or note a mini game
+                allPostProcessVolumesEnabled.Add(false);// create list of mini games
             }
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("Start PostProcessManager script");
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Enabling the filter
         int i=0;
         foreach (bool enabled in allPostProcessVolumesEnabled)
         {
-            allPostProcessVolumes[i].enabled = enabled;
+            allPostProcessVolumes[i].enabled = enabled; 
             i++;
         }
     }

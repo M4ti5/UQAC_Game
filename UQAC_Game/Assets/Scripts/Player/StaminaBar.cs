@@ -27,18 +27,18 @@ public class StaminaBar : MonoBehaviour
         Debug.Log("Start Stamina script");
         wasRunning = false;
         
-        // get automaticaly size of the bar
+        // Get automaticaly size of the bar
         staminaBarMaxSize = staminaBar.rect.width;
 
         FindMovementScript();
         
-        // first display
+        // First display
         ModifyDisplay();
     }
 
     void FindMovementScript()
     {
-        // find mine player in all children of players parent
+        // Find mine player in all children of players parent
         foreach (Transform player in GameObject.Find("Players").transform)
         {
             if (player.GetComponent<PhotonView>().IsMine)
@@ -58,7 +58,7 @@ public class StaminaBar : MonoBehaviour
         
         CanIHaveEnoughStaminaToRun();
 
-        //test des inputs fonctions
+        //Test of inputs' fonctions
         if (Input.GetKeyDown(KeyCode.G))
         {
             IncreaseMaxStamina(10f);
@@ -86,7 +86,7 @@ public class StaminaBar : MonoBehaviour
             movementScript.canRun = currentStamina > 0;
             if (currentStamina <= 0)
             {
-                movementScript.inRun = false;// disable run if not enough stamina
+                movementScript.inRun = false;// Disable run if not enough stamina
             }
         }
     }
@@ -176,7 +176,7 @@ public class StaminaBar : MonoBehaviour
     // --- display ---
     private void ModifyDisplay()
     {
-        //Modifie la couleur de la barre de vie
+        //Modify color of stamina bar
         if (currentStamina >= staminaMax / 2.0f)
         {
             staminaBar.GetComponent<Image>().color = Color.green;
@@ -190,7 +190,7 @@ public class StaminaBar : MonoBehaviour
             staminaBar.GetComponent<Image>().color = Color.red;
         }
 
-        //modifie l'avancement de la barre de vie ainsi que le texte correspondant
+        //Modify progress and text of stamina bar
         staminaBar.transform.localPosition = new Vector3(currentStamina * staminaBarMaxSize / staminaMax - staminaBarMaxSize, 0, 0);
         staminaText.text = "Stamina : " + (int) ((float) currentStamina / (float) staminaMax * 100) + " %";
     }
