@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -10,8 +12,11 @@ using UnityEngine;
 public class Movement : MonoBehaviourPun {
     public float defaultMoveSpeed = 5.0f;
     private float moveSpeed;
+    private float previousMoveSpeed;
     public float sprintSpeed = 9.0f;
     public float rotationSpeed = 45.0f;
+    private Vector3 movementDirection;
+    private Vector3 previousMovementDirection;
 
     public float jumpForce = 180.0f;
     public bool isGrounded = false;
@@ -39,6 +44,8 @@ public class Movement : MonoBehaviourPun {
     // Y limit to not fall under
     public float deathLimitY = -100.0f;
 
+    public TextMeshPro velocityTxt;
+    
     void Start ()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
@@ -46,14 +53,14 @@ public class Movement : MonoBehaviourPun {
         moveSpeed = defaultMoveSpeed;
     }
 
-    void FixedUpdate () {
-
-        canMove = gameObject.GetComponent<PlayerStatManager>().canMove;
-
+    void Update () {
+        
         // Prevent control is connected to Photon and represent the localPlayer
         if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) {
             return;
         }
+        
+        canMove = gameObject.GetComponent<PlayerStatManager>().canMove;
 
         if (canMove) {
             Move();
@@ -63,18 +70,30 @@ public class Movement : MonoBehaviourPun {
             inRun = false;
             inJump = false;
             inMove = false;
-            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
         }
         Animations();
         CheckDeathLimitY();
+        
+    }
+
+    // use fixed update to update rigidbody (avoid different nbr of FPS between PC)
+    // it coold be called multiple time per frame, so be careful with multiplication !
+    private void FixedUpdate()
+    {
+        // use temporary vector to avoid override previous value more than 1 time in this fixed update
+        Vector3 tempMovementDirection = previousMovementDirection * Time.deltaTime * 1000.0f * previousMoveSpeed; // apply speed in m/s
+        tempMovementDirection.y = rb.velocity.y; // get jump velocity
+        rb.velocity = tempMovementDirection; // apply velocity (after move update)
+        velocityTxt.text = rb.velocity.ToString();
     }
 
 
-    void Move () {
+    private void Move () {
 
         inMove = false;
         moveSpeed = defaultMoveSpeed;
-        Vector3 movementDirection = Vector3.zero;
+        movementDirection = Vector3.zero;
         
         // Moves Keys
         // forward
@@ -105,15 +124,17 @@ public class Movement : MonoBehaviourPun {
             transform.Rotate(Vector3.up , rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
         }
 
-        //// Jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+        // Jump (after velocity to add force without create super jump)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !inJump) {
             if (rb != null) {
-                rb.AddForce(Vector3.up * 2.0f * jumpForce , ForceMode.Impulse);
-                isGrounded = false;
                 inJump = true;
+                isGrounded = false;
+                rb.AddForce(Vector3.up * 2.0f * jumpForce , ForceMode.Impulse);
+                //StartCoroutine(ApplyForce(rb, Vector3.up * 2.0f * jumpForce, ForceMode.Impulse));
+                                                                                              
             }
         }
-
+        
         //// Sprint 
         //start
         if (canRun) {
@@ -154,13 +175,10 @@ public class Movement : MonoBehaviourPun {
                 canDash = true;
             }
         }
-        
+        previousMoveSpeed = moveSpeed;
         // appli movement (use rigidbody velocity because we had bugs (walks throughout walls) with translation at high speed (in run)
         movementDirection = transform.TransformDirection(movementDirection); // apply move with body rotation
-        movementDirection *= Time.deltaTime * 1000.0f * moveSpeed; // apply speed in m/s
-        movementDirection.y = rb.velocity.y; // get jump velocity
-        rb.velocity = movementDirection; // apply velocity
-        
+        previousMovementDirection = movementDirection;
     }
 
     void Animations () {
@@ -250,6 +268,15 @@ public class Movement : MonoBehaviourPun {
         transform.GetComponent<Collider>().enabled = true;
     }
 
+    IEnumerator ApplyForce(Rigidbody rb, Vector3 force, ForceMode forceMode) {
+        yield return new WaitForFixedUpdate();
+        inJump = true;
+        isGrounded = false;
+        rb.AddForce(force, forceMode);
+        yield return new WaitForSeconds(1f);//WaitUntil(() => rb.velocity.y < 0);
+        inJump = false;
 
+        yield break;
+    }
 
 }
