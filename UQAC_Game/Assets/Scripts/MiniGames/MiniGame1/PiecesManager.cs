@@ -77,8 +77,9 @@ public class PiecesManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         CheckEndOfGame();
+        
+        // check if we finish puzzle
         if (!successObj.activeSelf && puzzleEnd)
         {
             StartCoroutine(EndPuzzle());
@@ -96,9 +97,6 @@ public class PiecesManager : MonoBehaviour
         // https://gamedev.stackexchange.com/questions/157310/how-to-access-sprite-sheet-via-row-and-column
         float xOffset = (float)img.width / nbrColumns;
         float yOffset = (float)img.height / nbrLines;
-
-       // nbrLines = (int)(img.height / yOffset);
-       // nbrColumns = (int)(img.width / xOffset);
 
         for (float y = 0; y <= img.height; y += yOffset)
         {
@@ -131,10 +129,9 @@ public class PiecesManager : MonoBehaviour
                 // Duplicate prefab
                 GameObject tmpObj = Instantiate(piecePrefab);
                 // Attribute the good sprite
-                tmpObj.GetComponent<Image>().sprite = allSprites[i];//sprites[i,2];//https://gamedev.stackexchange.com/questions/157310/how-to-access-sprite-sheet-via-row-and-column
+                tmpObj.GetComponent<Image>().sprite = allSprites[i];
                 // Set parent
                 tmpObj.transform.SetParent(transform, false);
-                // tmpObj.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
                 // Reset local scale
                 tmpObj.transform.localScale = new Vector3(1, 1, 1);
                 // Reset local rotation

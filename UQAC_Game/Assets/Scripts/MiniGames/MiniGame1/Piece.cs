@@ -38,7 +38,8 @@ public class Piece : MonoBehaviour
 
         // save right position
         correctPosition = transform.localPosition;
-
+        
+        // move piece in reserve zone
         RandomStartPosition();
     }
 
@@ -51,15 +52,13 @@ public class Piece : MonoBehaviour
     }
 
     /// <summary>
-    /// Set a random positionin the pop up zone<br/>
+    /// Set a random position in the pop up zone<br/>
     /// (By getting canvas scale factor and position & size of popup zone)
     /// </summary>
     void RandomStartPosition()
     {
         // Get temporaly recttransform of the pop up zone 
         RectTransform tempZoneRectTransform = tempZone.GetComponent<RectTransform>();
-        // Get canvas scale factor (without it all is break !)
-        float canvasScaleFactor = canvas.scaleFactor;// https://answers.unity.com/questions/806948/how-to-get-width-of-recttransform-in-screen-coordi.html
         // Set random position
         transform.localPosition = new Vector3(
             Random.Range(
@@ -78,11 +77,10 @@ public class Piece : MonoBehaviour
     }
 
     /// <summary>
-    /// Check distance distance between mouse position and right position
+    /// Check distance between mouse position and right position
     /// </summary>
     void CheckCorrectionPosition()
     {
-        float canvasScaleFactor = canvas.scaleFactor;
         if (Vector2.Distance(transform.localPosition, correctPosition) < precision)
         {
             inRightPosition = true;

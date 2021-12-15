@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 			return;
 		}
-
+		
+		// if we forgot to set prefab
 		if (playerPrefab == null) // #Tip Never assume public properties of Components are filled up properly, always check and inform the developer of it.
 		{
 
@@ -63,15 +64,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 		}
 		else
 		{
-
-
 			if (PlayerManager.LocalPlayerInstance == null)
 			{
 				Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
 
-				// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+				// we're in a room. spawn a character for the local player at a random position in center room. it gets synced by using PhotonNetwork.Instantiate
 				Vector3 spawnPosition = new Vector3(Random.Range(-4.0f, 4.0f), 0.1f, Random.Range(-4.0f, 4.0f));
-				GameObject newPlayer = PhotonNetwork.Instantiate("Prefabs/Player/" + this.playerPrefab.name, spawnPosition, Quaternion.LookRotation(Vector3.Scale( spawnPosition, new Vector3(-1,1,-1) )), 0);
+				Quaternion spawnRotation = Quaternion.LookRotation(Vector3.Scale(spawnPosition, new Vector3(-1, 1, -1)));
+				GameObject newPlayer = PhotonNetwork.Instantiate("Prefabs/Player/" + this.playerPrefab.name, spawnPosition, spawnRotation, 0);
 			}
 			else
 			{
@@ -99,8 +99,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 		if ( PhotonNetwork.IsMasterClient )
 		{
 			Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
-
-			//LoadArena();
 		}
 	}
 
@@ -115,8 +113,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 		if ( PhotonNetwork.IsMasterClient )
 		{
 			Debug.LogFormat( "OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient ); // called before OnPlayerLeftRoom
-
-			//LoadArena(); 
 		}
 	}
 
@@ -124,8 +120,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	#region Public Methods
 
+	/// <summary>
+	/// Called when your Photon Player is leaving room.
+	/// </summary>
 	public void LeaveRoom()
 	{
+		// close room if we was the last player
 		if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
 		{
 			PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -134,25 +134,5 @@ public class GameManager : MonoBehaviourPunCallbacks
 	}
 
 	#endregion
-
-	/*
-	#region Private Methods
-
-	// reload game (never used because we have 1 level)
-	void LoadArena()
-	{
-		if ( ! PhotonNetwork.IsMasterClient )
-		{
-			Debug.LogError( "PhotonNetwork : Trying to Load a level but we are not the master Client" );
-		}
-
-		//Debug.LogFormat( "PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount );
-
-		//PhotonNetwork.LoadLevel("PunBasics-Room for "+PhotonNetwork.CurrentRoom.PlayerCount);
-		Debug.LogFormat("PhotonNetwork : Loading Game - PlayerCount: {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-		PhotonNetwork.LoadLevel("Game");
-	}
-
-	#endregion
-	*/
+	
 }
