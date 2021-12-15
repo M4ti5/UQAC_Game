@@ -79,10 +79,13 @@ public class Movement : MonoBehaviourPun {
     // it coold be called multiple time per frame, so be careful with multiplication !
     private void FixedUpdate()
     {
-        // use temporary vector to avoid override previous value more than 1 time in this fixed update
-        Vector3 tempMovementDirection = previousMovementDirection * Time.deltaTime * 1000.0f * previousMoveSpeed; // apply speed in m/s
-        tempMovementDirection.y = rb.velocity.y; // get jump velocity
-        rb.velocity = tempMovementDirection; // apply velocity (after move update)
+        if (canMove)
+        {
+            // use temporary vector to avoid override previous value more than 1 time in this fixed update
+            Vector3 tempMovementDirection = previousMovementDirection * Time.deltaTime * 1000.0f * previousMoveSpeed; // apply speed in m/s
+            tempMovementDirection.y = rb.velocity.y; // get jump velocity
+            rb.velocity = tempMovementDirection; // apply velocity (after move update)
+        }
     }
 
 
