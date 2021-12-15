@@ -365,7 +365,6 @@ MonoBehaviour:
   playerAnim: {fileID: 7811113052118183235}
   rb: {fileID: 7866800435318516808}
   deathLimitY: -20
-  velocityTxt: {fileID: 0}
 --- !u!114 &2297088295379410321
 MonoBehaviour:
   m_ObjectHideFlags: 0
