@@ -43,8 +43,6 @@ public class Movement : MonoBehaviourPun {
 
     // Y limit to not fall under
     public float deathLimitY = -100.0f;
-
-    public TextMeshPro velocityTxt;
     
     void Start ()
     {
@@ -85,7 +83,6 @@ public class Movement : MonoBehaviourPun {
         Vector3 tempMovementDirection = previousMovementDirection * Time.deltaTime * 1000.0f * previousMoveSpeed; // apply speed in m/s
         tempMovementDirection.y = rb.velocity.y; // get jump velocity
         rb.velocity = tempMovementDirection; // apply velocity (after move update)
-        velocityTxt.text = rb.velocity.ToString();
     }
 
 
