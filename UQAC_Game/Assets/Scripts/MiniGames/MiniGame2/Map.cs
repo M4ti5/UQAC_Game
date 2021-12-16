@@ -34,8 +34,10 @@ public class Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //get the scale of the canva
         canvaScale = panel.transform.parent.localScale;
 
+        //define the size of the labyrinthe
         row = 10;
         column = 15;
         RectTransform rt = GetComponent<RectTransform>();
@@ -43,17 +45,17 @@ public class Map : MonoBehaviour
         heightMap = rt.rect.height;
         widthMap = rt.rect.width;
 
-        //taille de la marge
+        //define the size of the margin
         marginWidthMap = widthMap * 10f / 100f;
         marginHeightMap = heightMap * 10f / 100f;
 
         
 
-        //longueur d'un mur horizontal
+        //length of a horizontal wall
         widthWall = (widthMap - 2f * marginWidthMap) / column;
-        //longueur d'un mur vertical
+        //length of a vertical wall
         heightWall = (heightMap - 2f * marginHeightMap) / row;
-        //épaisseur d'un mur
+        //thickness of a wall
         hW = heightMap / 100f;
 
         
@@ -61,23 +63,23 @@ public class Map : MonoBehaviour
         entrance.gameObject.SetActive(true);
         arrive.gameObject.SetActive(true);
         
-        //Dimensionnement de la taille des murs, du joueur et de l'arrivée en fonction de la taille de l'écran de jeu
+        //Size of the walls, the player and the finish and the entrance wall depending on the size of the playing screen
         horizontalWall.rectTransform.sizeDelta = new Vector2(hW, widthWall+hW);
         verticalWall.rectTransform.sizeDelta = new Vector2(heightWall+hW, hW);
 
         horizontalExternalWall.rectTransform.sizeDelta = new Vector2(hW, widthWall * column + hW);
         verticalExternalWall.rectTransform.sizeDelta = new Vector2(heightWall * (row - 1) + hW, hW);
 
-        //Le joueur représenté par un cube vert
+        //Player represented by a green cube
         player.rectTransform.sizeDelta = new Vector2(Mathf.Min(widthWall, heightWall) * 0.4f, Mathf.Min(widthWall, heightWall) * 0.4f);
 
-        //Une fois que le joueur atteint ce collider, il a fini le mini-jeu
+        //End the game when the player reach it
         arrive.rectTransform.sizeDelta = new Vector2(hW, heightWall);
 
-        //Empêche le joueur de sortir par l'entrée
+        //Prevent the player from going through the entrance 
         entrance.rectTransform.sizeDelta = new Vector2(hW, widthWall + hW);
 
-        //Redimensionnement des colliders en fonction de la taille des objets
+        //Size of the collider depending on the size of the object
         BoxCollider[] collider = horizontalWall.gameObject.GetComponents<BoxCollider>();
         collider[0].size = new Vector2(hW, widthWall + hW);
         collider = verticalWall.gameObject.GetComponents<BoxCollider>();
@@ -103,7 +105,7 @@ public class Map : MonoBehaviour
         Debug.Log("createMapGrid");
         grid = new Box[column, row];
         int n = 1;
-        //création de la grille de cases du labyrinthe (tous les murs sont actifs)
+        //Creation of the grid of the labyrinth (every wall is active)
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -119,7 +121,7 @@ public class Map : MonoBehaviour
             }
         }
 
-        //On enlève les murs un par un jusqu'à ce qu'il y ait un chemin possible entre la case de départ et celle d'arrivée
+        //We desactivate the walls one by one until the value of the starting and the finish boxes are the same
         int numberMin = 0;
         int numberMax = 0;
         var actions = new List<string>() { "left", "right", "up", "down" };
@@ -173,8 +175,7 @@ public class Map : MonoBehaviour
             }
         }
 
-        //On parcours toutes les cases de la grille et on fait en sorte qu'il n'y en ait aucune d'isolée
-        //Toutes les cases sont ainsi atteignables par le joueur
+        //Verify if all the cases can be reach by the player --> no isolated box
         numberMax = grid[column - 1, row - 1].number;
         for (int x = 0; x < column; x++)
         {
@@ -222,7 +223,7 @@ public class Map : MonoBehaviour
         }
     }
 
-    //On vérifie le nombre de murs actifs de la case
+    //Veriry the number of active wall for the box in parameter
     private int TestNumberOfWalls(Box box)
     {
         int numberOfWalls = 0;
@@ -234,10 +235,10 @@ public class Map : MonoBehaviour
     }
 
 
-    //Affichage de la carte
+    //Display the map
     void DisplayMap()
     {
-        //On commence par affiché les murs extérieurs, l'arrivée, l'entrée (invisible) et le joueur
+        //First we display the external walls, the player, the entrance and the finish wall
         var createdExternalWall1 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2f - marginHeightMap, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
         createdExternalWall1.transform.SetParent(panel.transform, false);
         var createdExternalWall2 = Instantiate(horizontalExternalWall, new Vector3(widthWall * 0.5f * column + +marginWidthMap, hW / 2f - marginHeightMap - row * heightWall, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
@@ -254,7 +255,7 @@ public class Map : MonoBehaviour
         entrance.rectTransform.anchoredPosition = new Vector2(marginWidthMap , hW / 2f - 0.5f * heightWall - marginHeightMap);
 
 
-        //Affichage des murs intérieurs
+        //Then we display the other walls
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
