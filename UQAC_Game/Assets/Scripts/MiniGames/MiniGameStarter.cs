@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 
 public class MiniGameStarter : MonoBehaviourPun
 {
-    //private string nameMiniGame;
-
     public bool isOpen = false;
     public bool gameEnded = false;
     public float distanceToStart = 5 ;
@@ -18,7 +16,7 @@ public class MiniGameStarter : MonoBehaviourPun
     private GameObject createdMiniGame;
     public GameObject miniGame;
 
-    //Bool�en indiquant si le joueur qui ouvre le mini-jeu est un criminel ou un enqu�teur
+    //Boolean that say if the player is a criminal or not
     public bool criminal = false;
 
     public GameObject panelScore;
@@ -51,14 +49,15 @@ public class MiniGameStarter : MonoBehaviourPun
         {
             if (Input.GetKeyDown(KeyCode.E) && !isOpen)
             {
-                //appel� si le joueur d�bute veut ouvrir un mini jeu
+                //called when the player want to enter a miniGame.
                 int allPlayersCount = allPlayers.transform.childCount;
                 int grabberPlayerId = -1;
                 float minDistance = float.PositiveInfinity;
 
-                //On r�cup�re l'ID du joueur et on regarde si il est assez proche d'un mini-jeu
+                //We get the id of the closest miniGame and the distance between the player and this miniGame
                 for (int i = 0; i < allPlayersCount; i++)
                 {
+                    //test only if the player is still alive
                     if (allPlayers.transform.GetChild(i).GetComponent<PlayerStatManager>().isDead == false)
                     {
                         (bool _isReachable, float _dist) = IsReachable(gameObject.transform, allPlayers.transform.GetChild(i), distanceToStart);
@@ -72,7 +71,7 @@ public class MiniGameStarter : MonoBehaviourPun
                     }
                 }
 
-                //Si le joueur est assez proche, on cr�e une instance de mini jeu que le joueur devra r�soudre
+                //If the player is close enough, we create a new instance of the mini game and we display it
                 if (grabberPlayerId >= 0 && allPlayers.transform.GetChild(grabberPlayerId).GetComponent<PhotonView>().IsMine)
                 {
                     isOpen = true;
@@ -85,20 +84,23 @@ public class MiniGameStarter : MonoBehaviourPun
 
                     PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                     playerStatManager = GetPlayerStatManager();
+                    //the player can't move when a mini game is open
                     playerStatManager.canMove= false;
+                    //We change the type of the player to be sure that the score will evolve in the good direction at the end of the minigame
                     criminal = playerStatManager.criminal;
                 }
             }
             else if (miniGameActive == null && isOpen)
             {
-                //appel� si le joueur appui sur LeaveMiniGame
+                //called when the mini game click on the leaveMiniGame button (miniGameActive is destroyed in LeaveMiniGame.cs)
                 isOpen = false;
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
                 playerStatManager.canMove = true;
             }
         }
-        // start cooldown de 2 min avant de pouvoir s'en reservir
+        //When the player end the mini game, start a 2 min cooldown
+        //At the end of the cooldown, the miniGameStarter is reactivated
         else
         {
             // wait cooldown
@@ -112,13 +114,12 @@ public class MiniGameStarter : MonoBehaviourPun
         {
             if (!miniGameActive.transform.GetChild(0).gameObject.activeSelf)
             {
-                //Appel� si le joueur a termin� un mini jeu
-                //R�cup�ration du script contenant les stats du joueur
+                //Called when the player finish the miniGame
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
                 playerStatManager = GetPlayerStatManager();
 
-                //Diminution du score global si le joueur est un criminel
-                //Augmentation du score personnel et global si le joueur est un enqu�teur
+                //The globalScore decrease if the player is a criminal
+                //The globalScore and the personalScore increase if the player is an investigator
                 if (criminal)
                 {
                     playerStatManager.DecreaseGlobalScore();
@@ -128,20 +129,20 @@ public class MiniGameStarter : MonoBehaviourPun
                     playerStatManager.IncreaseGlobalScore();
                     playerStatManager.IncreasePersonalScore();
                 }
-                //Le joueur r�cup�re des PV
+                //The player recover 15 HP
                 playerStatManager.canMove = true;
                 PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
-                //playerStatManager.RecoverHP(15, playerStatManager.ViewID);
                 
                 photonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID, photonView.ViewID);
 
 
                 //int newId = PhotonNetwork.AllocateViewID(true);
-                //TODO add if list is not empty
-                int idToSpawn = Random.Range(0,playerStatManager.objectPrefabListToInstantiate.Count);
+                if (playerStatManager.objectPrefabListToInstantiate.Count != 0)
+                {
+                    int idToSpawn = Random.Range(0, playerStatManager.objectPrefabListToInstantiate.Count);
+                    playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, idToSpawn);
+                }
                 
-                //photonView.RPC(nameof(PlayerStatManager.spawnObject), RpcTarget.AllBuffered,Vector3.zero, Quaternion.identity, newId, idToSpawn);
-                playerStatManager.spawnObject(Vector3.zero, Quaternion.identity, idToSpawn);
                 Destroy(miniGameActive);
                 gameEnded = true;
                 lastTimeUseMiniGame = Time.time;// reset cooldown
@@ -150,7 +151,7 @@ public class MiniGameStarter : MonoBehaviourPun
     }
 
 
-    //On regarde si le joueur est assez proche du miniGameStarter
+    //Verify if the player is close enough of the miniGameStarter
     (bool, float) IsReachable(Transform objectA, Transform playerA, float range)
     {
         
@@ -170,7 +171,6 @@ public class MiniGameStarter : MonoBehaviourPun
 
     }
     
-
     private PlayerStatManager GetPlayerStatManager()
     {
         PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
