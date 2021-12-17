@@ -1,17 +1,22 @@
+using System;
 using System.Collections;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
 /// Manage movements of a player and stop an infinite fall<br/>
 /// Rigidbody necessary
 /// </summary>
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class Movement : MonoBehaviourPun {
-    public static float defaultMoveSpeed = 5.0f;
-    private float moveSpeed = defaultMoveSpeed;
+    public float defaultMoveSpeed = 5.0f;
+    private float moveSpeed;
+    private float previousMoveSpeed;
     public float sprintSpeed = 9.0f;
     public float rotationSpeed = 45.0f;
+    private Vector3 movementDirection;
+    private Vector3 previousMovementDirection;
 
     public float jumpForce = 180.0f;
     public bool isGrounded = false;
@@ -33,28 +38,27 @@ public class Movement : MonoBehaviourPun {
 
     public bool canMove;
 
-    private Animator playerAnim;
-    private Rigidbody rb;
+    public Animator playerAnim;
+    public Rigidbody rb;
 
-    /// <summary>
-    /// Y limit to not fall under
-    /// </summary>
+    // Y limit to not fall under
     public float deathLimitY = -100.0f;
-
-    void Start () {
-        rb = GetComponent<Rigidbody>();
-        playerAnim = GetComponent<Animator>();
+    
+    void Start ()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (playerAnim == null) playerAnim = GetComponent<Animator>();
+        moveSpeed = defaultMoveSpeed;
     }
 
-    // Update is called once per frame  
     void Update () {
-
-        canMove = gameObject.GetComponent<PlayerStatManager>().canMove;
-
+        
         // Prevent control is connected to Photon and represent the localPlayer
         if (photonView.IsMine == false && PhotonNetwork.IsConnected == true) {
             return;
         }
+        
+        canMove = gameObject.GetComponent<PlayerStatManager>().canMove;
 
         if (canMove) {
             Move();
@@ -64,53 +68,73 @@ public class Movement : MonoBehaviourPun {
             inRun = false;
             inJump = false;
             inMove = false;
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
         }
         Animations();
         CheckDeathLimitY();
+        
+    }
+
+    // use fixed update to update rigidbody (avoid different nbr of FPS between PC)
+    // it coold be called multiple time per frame, so be careful with multiplication !
+    private void FixedUpdate()
+    {
+        if (canMove)
+        {
+            // use temporary vector to avoid override previous value more than 1 time in this fixed update
+            Vector3 tempMovementDirection = previousMovementDirection * Time.deltaTime * 1000.0f * previousMoveSpeed; // apply speed in m/s
+            tempMovementDirection.y = rb.velocity.y; // get jump velocity
+            rb.velocity = tempMovementDirection; // apply velocity (after move update)
+        }
     }
 
 
-    void Move () {
+    private void Move () {
 
-        //// Moves Key
         inMove = false;
+        moveSpeed = defaultMoveSpeed;
+        movementDirection = Vector3.zero;
+        
+        // Moves Keys
         // forward
         if (Input.GetKey(KeyCode.Z) /*|| Input.GetKey(KeyCode.UpArrow)*/)
         {
             inMove = true;
-            transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.forward;
         }
         // backwards
         if (Input.GetKey(KeyCode.S) /*|| Input.GetKey(KeyCode.DownArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.back * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.back;
         }
         // left
         if (Input.GetKey(KeyCode.Q) /*|| Input.GetKey(KeyCode.LeftArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.left;
         }
 
         // right
         if (Input.GetKey(KeyCode.D) /*|| Input.GetKey(KeyCode.RightArrow)*/) {
             inMove = true;
-            transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+            movementDirection += Vector3.right;
         }
 
-        //// Rotate Mouse
+        //// Rotate with Mouse
         if (Input.GetAxis("Mouse X") != 0 && Input.GetMouseButton(1)) { // mouse's left click
             transform.Rotate(Vector3.up , rotationSpeed * moveSpeed * Time.deltaTime * Input.GetAxis("Mouse X"));
         }
 
-        //// Jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+        // Jump (after velocity to add force without create super jump)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !inJump) {
             if (rb != null) {
-                rb.AddForce(Vector3.up * 2.0f * jumpForce , ForceMode.Impulse);
-                isGrounded = false;
                 inJump = true;
+                isGrounded = false;
+                rb.AddForce(Vector3.up * 2.0f * jumpForce , ForceMode.Impulse);
+                //StartCoroutine(ApplyForce(rb, Vector3.up * 2.0f * jumpForce, ForceMode.Impulse));
+                                                                                              
             }
         }
-
+        
         //// Sprint 
         //start
         if (canRun) {
@@ -134,27 +158,31 @@ public class Movement : MonoBehaviourPun {
             inDash = true;
             canDash = false;
         }
-        if (inDash && !inWallCollide) {
-            transform.Translate(Vector3.forward * Time.deltaTime * dashSpeed);
+        if (inDash && !inWallCollide) // if not in collision with a wall
+        {
+            moveSpeed = dashSpeed;
             dashTime -= Time.deltaTime;
-            if (dashTime < 0) {
+            if (dashTime < 0) { // if dash ended
                 inDash = false;
                 dashTime = defaultDashTime;
+                moveSpeed = defaultMoveSpeed;
             }
         } else {
-            if (dashCoolDown > 0) {
+            if (dashCoolDown > 0) { // if in dash, decrease time
                 dashCoolDown -= Time.deltaTime;
-            } else if (!canDash) {
+            } else if (!canDash) { // if can't dash: reset
                 dashCoolDown = defaultDashCoolDown;
                 canDash = true;
             }
         }
-
-        // TODO:  ctrl ou c pour s'accoupir
+        previousMoveSpeed = moveSpeed;
+        // appli movement (use rigidbody velocity because we had bugs (walks throughout walls) with translation at high speed (in run)
+        movementDirection = transform.TransformDirection(movementDirection); // apply move with body rotation
+        previousMovementDirection = movementDirection;
     }
 
     void Animations () {
-
+        // in move
         if (inMove && canMove) {
             playerAnim.SetBool("isWalking" , true);
 
@@ -170,13 +198,13 @@ public class Movement : MonoBehaviourPun {
                 playerAnim.SetBool("inDash" , false);
             }
 
-        } else {
+        } else { // in stay mode
             playerAnim.SetBool("isWalking" , false);
             playerAnim.SetBool("isRunning" , false);
             playerAnim.SetBool("inDash" , false);
         }
 
-        if (inJump) { // Jump
+        if (inJump) { // in Jump
             playerAnim.SetBool("inJump" , true);
         } else {
             playerAnim.SetBool("inJump" , false);
@@ -184,22 +212,20 @@ public class Movement : MonoBehaviourPun {
     }
 
     void OnCollisionStay (Collision collision) {
-
+        // if in collision with a wall
         if (collision.gameObject.CompareTag("Wall")) {
-            playerAnim.SetBool("inCollide" , true);
-            playerAnim.SetBool("isWalking" , false);
             inWallCollide = true;
         } else {
-            playerAnim.SetBool("inCollide" , false);
             inWallCollide = false;
         }
-
+        // disable double jump or simple jump if not 2 foots on ground
         if (collision.gameObject.CompareTag("Ground")) {
             isGrounded = true;
             inJump = false;
         }
     }
     void OnCollisionExit () {
+        inWallCollide = false;
         isGrounded = false;
     }
 
@@ -207,14 +233,17 @@ public class Movement : MonoBehaviourPun {
     /// Check altitude to stop an infinite fall
     /// </summary>
     void CheckDeathLimitY () {
+        
         if (transform.GetComponent<PhotonView>().IsMine)
         {
+            // respawn if player fall too low
             if (transform.position.y < deathLimitY)
             {
                 StartCoroutine(Respawn());
             }
         }
         
+        // disable collider to enable quick respawn and avoid bugs with photon latency and avoid player stay under ground (because we had some collisions bugs with walls - fixed)
         if (transform.position.y < -4)
         {
             transform.GetComponent<Collider>().enabled = false;
@@ -226,6 +255,7 @@ public class Movement : MonoBehaviourPun {
 
     }
 
+    // coroutine for respawn when fall out of the map
     IEnumerator Respawn()
     {
         gameObject.GetComponent<PlayerStatManager>().canMove = false;
@@ -238,6 +268,15 @@ public class Movement : MonoBehaviourPun {
         transform.GetComponent<Collider>().enabled = true;
     }
 
+    IEnumerator ApplyForce(Rigidbody rb, Vector3 force, ForceMode forceMode) {
+        yield return new WaitForFixedUpdate();
+        inJump = true;
+        isGrounded = false;
+        rb.AddForce(force, forceMode);
+        yield return new WaitForSeconds(1f);//WaitUntil(() => rb.velocity.y < 0);
+        inJump = false;
 
+        yield break;
+    }
 
 }

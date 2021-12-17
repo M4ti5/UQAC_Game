@@ -8,10 +8,12 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
-// changed from https://www.raywenderlich.com/1142814-introduction-to-multiplayer-games-with-unity-and-photon
+// modified from https://www.raywenderlich.com/1142814-introduction-to-multiplayer-games-with-unity-and-photon
 
 /// <summary>
 /// Launch manager. Connect, join a random room or create one if none or all full.
+/// (by default, we set room size to 4 players)
+/// with reconnection system (just on home scene)
 /// </summary>
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -41,14 +43,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 	
 	public GameObject credits;
 
-	/*void Awake()
-    {
-        // #Critical
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.AutomaticallySyncScene = true;
-
-	}*/
-
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -63,8 +57,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		this.gameVersion = Application.version;
 		this.isLobbyReady = false;
 
-		//PlayerPrefs.DeleteAll(); // To avoid any anomalies
-
+		// load values from preference file
 		this.LoadDefaultPlayerName();
 		this.LoadDefaultRoomName();
 
@@ -119,10 +112,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 	{
 		base.OnRoomListUpdate(roomList);
 
-		//LogFeedback("OnRoomListUpdate...");
 		foreach (RoomInfo roomInfo in roomList)
 		{
-			// Remove room from cached room list if it got closed, became invisible or was marked as removed
+			// Remove room from cached room list if it was marked as removed
 			if (/*!roomInfo.IsOpen || !roomInfo.IsVisible ||*/ roomInfo.RemovedFromList)
 			{
 				if (this.roomNameList.Contains(roomInfo))
@@ -134,6 +126,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			}
 			else
 			{
+				// if room didn't exist
 				if (!this.roomNameList.Contains(roomInfo))
 				{
 					this.roomNameList.Add(roomInfo);
@@ -148,13 +141,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 		this.RefreshRoomListUI();
 	}
-
+	
 	public List<RoomInfo> GetRoomList()
 	{
 		return roomNameList;
 	}
 
-	// Fonction qui met à jour la liste des listes existantes
+	// Fonction qui met à jour la liste des listes existantes et affichage des listes pos
 	private void RefreshRoomListUI()
 	{
 		List<TMP_Dropdown.OptionData> optionList = new List<TMP_Dropdown.OptionData>();
@@ -170,11 +163,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 				optionList.Add(new TMP_Dropdown.OptionData(roomInfo.Name));
 			}
 		}
-
+		// reset list in dropdown
 		if (dropDownListOfRooms != null)
 		{
 			dropDownListOfRooms.options = optionList;
 			dropDownListOfRooms.value = 0;
+			// reopen list to hard refresh list display
 			if (dropDownListOfRooms.IsExpanded)
 			{
 				dropDownListOfRooms.Hide();
@@ -183,6 +177,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 	}
 
+	// generation of random string of a specified size
+	// allowed charateres : ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 	private string CreateRandomString(int stringLength = 5)
 	{
 		const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -192,7 +188,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		return randomString;
 	}
 
-
+	// load player name from preference file to reload previous name
 	public void LoadDefaultPlayerName()
 	{
 		if (inputFieldPlayerName != null)
@@ -215,36 +211,34 @@ public class Launcher : MonoBehaviourPunCallbacks
 	/// <param name="value">The name of the Player</param>
 	public void SetPlayerName(string value)
 	{
-		// #Important
+		// save if player name is set
 		if (string.IsNullOrEmpty(value))
 		{
 			Debug.LogError("Player Name is null or empty");
-			return;
 		}
-		PhotonNetwork.NickName = value;
+		else
+		{
+			PhotonNetwork.NickName = value;
 
-		PlayerPrefs.SetString(playerNamePrefKey, value);
+			PlayerPrefs.SetString(playerNamePrefKey, value);
+		}
 	}
 
 	/// <summary>
-	/// Sets the name of the room, and save it in the PlayerPrefs for future sessions.
+	/// Sets the name of the room
 	/// </summary>
-	/// <param name="value">The name of the Player</param>
 	public void LoadDefaultRoomName()
 	{
 		if (inputFieldRoomName != null)
 		{
-			//if (PlayerPrefs.HasKey(roomNamePrefKey))
-			//{
-			//	string defaultName = PlayerPrefs.GetString(roomNamePrefKey);
-				inputFieldRoomName.text = defaultName;
-			//}
+			inputFieldRoomName.text = defaultName;
 		}
 		else
 		{
 			Debug.LogError("<Color=red><b>Missing</b></Color> inputField RoomName Reference.", this);
 		}
 	}
+	// save room name after click on dropdown, or create new room name
 	public void SetRoomName(string value)
 	{
 		if (string.IsNullOrEmpty(value))
@@ -254,7 +248,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 			return;
 		}
 		this.roomName = value;
-		//PlayerPrefs.SetString(roomNamePrefKey, value);
 	}
 
 	/// <summary>
@@ -266,7 +259,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		if (value != 0)
 		{
 			SetRoomName(dropDownListOfRooms.options[value].text);
-
+			// display room name in disable input field
 			inputFieldRoomName.text = this.roomName;
 		}
 	}
@@ -277,12 +270,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 	public void CreateRandomRoomName()
     {
 		SetRoomName(this.CreateRandomString());
+		// display room name in disable input field
 		inputFieldRoomName.text = this.roomName;
 	}
 
 	/// <summary>
 	/// Start the connection process. 
-	/// - If already connected, we attempt joining a random room
+	/// - If already connected, we attempt joining a room
 	/// - if not yet connected, Connect this application instance to Photon Cloud Network
 	/// </summary>
 	public void Connect()
@@ -306,25 +300,23 @@ public class Launcher : MonoBehaviourPunCallbacks
 			if (string.IsNullOrEmpty(this.roomName) == false)
 			{
 				bool roomExistAndIsClose = false;
-				if (GetRoomList().Count((room) => room.Name == this.roomName) > 0) //si la room existe
-					if (GetRoomList().Where((room) => room.Name == this.roomName).ToList()[0].IsOpen ==
-					    false) // et si elle est fermée alors on ne peut pas la rejoindre
+				// check if room existe
+				if (GetRoomList().Count((room) => room.Name == this.roomName) > 0)
+				{
+					// and if it is closed, we can't join it
+					if (GetRoomList().Where((room) => room.Name == this.roomName).ToList()[0].IsOpen == false)
 					{
-						
 						roomExistAndIsClose = true;
 						LogFeedback("<color=orange>The room is closed...</color>");
 						this.connectionStatus.text = "<color=green>Ready !</color>";
 					}
+				}
 
 				if(roomExistAndIsClose == false)
 					PhotonNetwork.JoinRoom(this.roomName);
 			}
 			else
 			{
-				// choose random room
-				//PhotonNetwork.JoinRandomRoom(); // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
-				
-				
 				LogFeedback("<color=red>Please choose Room...</color>");
 				this.connectionStatus.text = "<color=green>Ready !</color>";
 			}
@@ -361,6 +353,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 	
 	/// <summary>
 	/// Create entertainment room with a name, a max numerOfPlayers = 1, hide and open
+	/// and directly connect to it
 	/// </summary>
 	public void ConnectToEntertainmentRoom()
 	{
@@ -372,15 +365,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		Connect();
 	}
 
-	public bool IsRoomExist(string name)
-	{
-		foreach (RoomInfo roomInfo in roomNameList)
-		{
-			if (roomInfo.Name == name)
-				return true;
-		}
-		return false;
-	}
+	// check if room is full
 	public bool IsRoomFull(string name)
 	{
 		foreach (RoomInfo roomInfo in roomNameList)
@@ -391,9 +376,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 		return false;
 	}
 
-	// thread to reconnect to photon servers
+	// coroutine to waiting reconnection to photon cloud servers
 	private IEnumerator TryReconnectToPhoton()
 	{
+		// first wait full disconnection
 		while (PhotonNetwork.NetworkingClient.LoadBalancingPeer.PeerState != ExitGames.Client.Photon.PeerStateValue.Disconnected)
 		{
 			Debug.Log("Waiting for client to be fully disconnected..", this);
@@ -401,6 +387,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 			yield return new WaitForSeconds(0.2f);
 		}
 		
+		// wait internet come back
 		if (Application.internetReachability == NetworkReachability.NotReachable)
 		{
 			LogFeedback("<color=#990000>Not Connected to internet</color>");
@@ -450,9 +437,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 		}
 	}
 
-	/// <summary>
-	/// Used to have all rooms list
-	/// </summary>
 	public override void OnJoinedLobby()
 	{
 		this.isLobbyReady = true;
@@ -473,12 +457,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 		LogFeedback("<color=red>OnJoinRandomFailed</color>: Next -> Create a new Room");
 		Debug.Log("PUN/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
-		// #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
+		// #Critical: we failed to join a random room, maybe none exists or they are all full.
+		// No worries, we create a new room.
 		PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.maxPlayersPerRoom });
 	}
-
+	
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
+		// if we want to join room but it is full
 		if (IsRoomFull(this.roomName))
 		{
 			LogFeedback("<color=orange>OnJoinRoomFailed</color>: Room Full -> Create New One");
@@ -505,7 +491,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 
 	/// <summary>
-	/// Called after disconnecting from the Photon server.
+	/// Called after disconnecting from the Photon cloud server.
 	/// </summary>
 	public override void OnDisconnected(DisconnectCause cause)
 	{
@@ -545,7 +531,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 	#endregion
 	
 	#region Credits
-
+	// hide or show credit panel
+	
 	public void ShowCredits()
 	{
 		if (credits != null)

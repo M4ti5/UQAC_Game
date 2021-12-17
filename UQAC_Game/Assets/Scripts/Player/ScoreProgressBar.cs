@@ -64,7 +64,7 @@ public class ScoreProgressBar : MonoBehaviour
     {
         if (enable)
         {
-            //modifie l'avancement de la barre de vie
+            //Modify the progression of progress bar
             globalScore.transform.localPosition = new Vector3(this.score * maxSize / scoreMax - maxSize*1.5f, 0, 0);
         }
     }

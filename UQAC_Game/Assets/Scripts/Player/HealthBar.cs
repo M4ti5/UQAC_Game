@@ -32,29 +32,6 @@ public class HealthBar : MonoBehaviourPun
                 ModifyDisplay();
             }
         }
-
-            //test des fonctions
-        /*if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            RecoverHP(10);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            IncreaseHpMax(10);
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            DecreaseHpMax(10);
-        }*/
-
-        if (currentHP <= 0)
-        {
-            //Debug.Log("Game Over");
-        }
     }
 
     public void TakeDamage(int damage)
@@ -103,7 +80,7 @@ public class HealthBar : MonoBehaviourPun
 
     private void ModifyDisplay()
     {
-        //Modifie la couleur de la barre de vie
+        //Modify the color of healthbar
         if (currentHP >= hpMax / 2)
         {
             healthBar.color = Color.green;
@@ -116,8 +93,7 @@ public class HealthBar : MonoBehaviourPun
         {
             healthBar.color = Color.red;
         }
-
-        //modifie l'avancement de la barre de vie ainsi que le texte correspondant
+        //Modify the progression of Health Bar and text
         healthBar.transform.localPosition = new Vector3(currentHP * 200 / hpMax - 200, 0, 0);
         hpText.text = "HP : " + (int) ((float) currentHP / (float) hpMax * 100) + " %";
     }

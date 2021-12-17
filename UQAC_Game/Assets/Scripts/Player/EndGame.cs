@@ -66,7 +66,7 @@ public class EndGame : MonoBehaviourPun
         {
             if (this != null && endGame == false && PhotonNetwork.InRoom && allPlayers != null)
             {
-                if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // s'il a plus qu'un joueur dans la room
+                if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // if we're more one player
                 {
                     foreach (Transform player in allPlayers)
                     {
@@ -83,7 +83,7 @@ public class EndGame : MonoBehaviourPun
                                     player.GetComponent<PlayerStatManager>().isDead
                                 );
 
-                                // if looser is criminel tout les autres ont gagné
+                                // if looser is criminel other else win
                                 if (player.GetComponent<PlayerStatManager>().criminal == true)
                                 {
                                     foreach (Transform playerBis in allPlayers)
@@ -108,7 +108,7 @@ public class EndGame : MonoBehaviourPun
                         }
                     }
 
-                    // s'il ne reste plus qu'une personne alors, il a gagné
+                    // if we've just one player, then he wins the game
                     if (loosers.Count + winners.Count >= PhotonNetwork.CurrentRoom.PlayerCount - 1)
                     {
                         foreach (Transform player in allPlayers)
@@ -215,7 +215,7 @@ public class EndGame : MonoBehaviourPun
 
     IEnumerator LoadEndScene()
     {
-        yield return new WaitForSeconds(5);// attente de la fin des animations
+        yield return new WaitForSeconds(5);// wait the end of death animations
         print("End");
         PhotonNetwork.LoadLevel("End");
     }

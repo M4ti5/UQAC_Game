@@ -37,7 +37,6 @@ public class PlayerStatManager : MonoBehaviourPun {
     public bool criminal = false;
     public int selectedFilter = 0;
 
-    //public float distanceToHold = 5;
     public List<GameObject> objectPrefabListToInstantiate;
     public bool findAllObjects = false;
 
@@ -59,17 +58,19 @@ public class PlayerStatManager : MonoBehaviourPun {
     }
 
     IEnumerator GetGameObjects () {
+        //get Objects & Mini-Games
         yield return new WaitUntil(() => GameObject.Find("Objects") != null);
         allObjects = GameObject.Find("Objects");
-        //allMiniGames = GameObject.Find("MiniGame_Starter");
         allMiniGames = GameObject.FindGameObjectsWithTag("MiniGame").ToList();
 
-        storedEquipement = null;
+        storedEquipement = null; // Set an empty inventory 
 
+        //Set Canavas interaction
         yield return new WaitUntil(() => GameObject.Find("TakeObject") != null);
         interractionDisplay = GameObject.Find("TakeObject");
         interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
 
+        //Set Canvas informations
         yield return new WaitUntil(() => GameObject.Find("PlayerCanvas") != null);
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
@@ -84,19 +85,19 @@ public class PlayerStatManager : MonoBehaviourPun {
                 infoRole = canvas.transform.GetChild(i).gameObject;
             }
         }
-        // trouver un objet desactivé
+
+        // Find Disable object
         yield return new WaitUntil(() => (inventoryDisplay = canvas.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "InventoryDisplay").gameObject) != null);
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         
-        // c'est que le master avec le script de son perso qui peut set les roles et filtres pour tout le monde
+        //Only the master session set Roles and Color
         if (PhotonNetwork.IsMasterClient && GetComponent<PhotonView>().IsMine)
         {
-            //Debug.Log("isMasterClient and isMine" + GetComponent<PhotonView>().ViewID);
             StartCoroutine(SetRandomRole());
             StartCoroutine(AddFilter());
         }
         
-        // active un repaire visible sur la map seulement si c'est notre joueur
+        //Enable a point in map to show the player's position
         repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
 
 
@@ -110,10 +111,13 @@ public class PlayerStatManager : MonoBehaviourPun {
         if (findAllObjects == false)
             return;
 
+        /* DEBUG MODE -- Remove filter
         if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false) {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
-
+        */
+        
+        //Update interaction canvas
         if (GetComponent<PhotonView>().IsMine && !isDead) {
             List<(GameObject, float)> _reachableObjects = reachableObjects();
             GameObject nearestObj = findNearestObj(_reachableObjects);
@@ -149,6 +153,8 @@ public class PlayerStatManager : MonoBehaviourPun {
     }
 
     #region object
+    // Functions to manage objects
+
     List<(GameObject, float)> reachableObjects () {
         List<(GameObject, float)> _reachableObjects = new List<(GameObject, float)>();
         int allObjectCount = allObjects.transform.childCount;
@@ -179,7 +185,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     (bool, float) IsReachable (Transform objectA , Transform playerA , float range)
     {
         float dist = Vector3.Distance(objectA.position - new Vector3(0 , objectA.position.y , 0) , (playerA.position - new Vector3(0, playerA.position.y, 0)));
-        if (dist < range)
+        if (dist < range) // in distance range
         {
             float angle = Vector3.Angle(playerA.forward,
                 (objectA.position - new Vector3(0, objectA.position.y, 0)) - (playerA.position - new Vector3(0, playerA.position.y, 0)));
@@ -198,7 +204,6 @@ public class PlayerStatManager : MonoBehaviourPun {
         float nearestObjDist = -1;
         GameObject nearestObj = null;
         foreach ((GameObject o, float dist) in _reachableObjects) {
-            //first obj
             if (nearestObjDist == -1 || dist < nearestObjDist) {
                 nearestObj = o;
                 nearestObjDist = dist;
@@ -251,8 +256,8 @@ public class PlayerStatManager : MonoBehaviourPun {
     #endregion
 
     #region hp
-    //G�re la modification des pv du joueur
-    //Pris en compte dans le fichier HealthBar
+    //Management of player's health
+
     public void TakeDamage (int damage, int viewId) {
         
         Transform player = FindPlayerByID(viewId);
@@ -279,14 +284,13 @@ public class PlayerStatManager : MonoBehaviourPun {
             playerStatManager.currentHP += heal;
             if (playerStatManager.currentHP >= playerStatManager.hpMax) {
                 playerStatManager.currentHP = playerStatManager.hpMax;
-                //Debug.Log("Full Life");
             }
         }
     }
     #endregion
 
     #region score
-    //Appelle les fonctions contenues dans GlobalScore et PersonalScore afin de g�rer la modification du score
+    //Functions to modify Scorces
     public void IncreasePersonalScore () {
         personalScore.IncreaseScore();
     }
@@ -306,12 +310,13 @@ public class PlayerStatManager : MonoBehaviourPun {
 
 
     #region roleAndFilter
+    // Functions to manage roles & filters 
+
     IEnumerator SetRandomRole()
     {
         yield return new WaitForSeconds(3f);
-        //Debug.LogError("test de setRandomRole pour voir si c'est global" + transform.parent.childCount);
         int nbrMaxCriminels = 1;
-        // on affecte un nouveau criminel s'il n'en existe pas déjà le nombre défini
+        // we set a criminal if we don't have
         if (transform.parent.GetComponentsInChildren<PlayerStatManager>().Where((player) => player.criminal == true)
             .Count() < nbrMaxCriminels)
         {
@@ -324,13 +329,11 @@ public class PlayerStatManager : MonoBehaviourPun {
     [PunRPC]
     public void RandomRole(bool role, int idPlayer)
     {
-        
-        //Debug.Log("test de RandomRole pour voir si c'est global");
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponent<PlayerStatManager>().criminal = role;
         player.GetComponent<PlayerStatManager>().selectedFilter = -1;
 
-        if (player.GetComponent<PhotonView>().IsMine && player.GetComponent<PlayerStatManager>().criminal)
+        if (player.GetComponent<PhotonView>().IsMine && player.GetComponent<PlayerStatManager>().criminal) // set only one criminal
         {
             infoRole.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criminel";
         }
@@ -348,16 +351,13 @@ public class PlayerStatManager : MonoBehaviourPun {
         {
             if (transform.parent.GetChild(i).GetComponent<PlayerStatManager>().criminal == false)
             {
-                //Debug.Log("numéro du joueur: " + i);
                 int randomRange = UnityEngine.Random.Range(0, filtersAvailable.Count);
                 int randomFilter = filtersAvailable[randomRange];
-                //Debug.Log("id du joueur: " + transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID + " randomRange: "+ randomRange + " randomFilter: " + randomFilter);
                 photonView.RPC(nameof(Filter), RpcTarget.AllBufferedViaServer, randomFilter, transform.parent.GetChild(i).GetComponent<PhotonView>().ViewID);
 
                 filtersAvailable.Remove(randomFilter);
             }
         } 
-        //Debug.Log("AddFilter ended by player" + this.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]
@@ -370,7 +370,6 @@ public class PlayerStatManager : MonoBehaviourPun {
     }
     #endregion
 
-    //[PunRPC]
     public void spawnObject (Vector3 pos , Quaternion rot , int idToSpawn)//, Transform parent, PlayerStatManager playerStatManager
     {
         GameObject newObject = PhotonNetwork.Instantiate("Prefabs/Objects/" + objectPrefabListToInstantiate[idToSpawn].name , Vector3.zero , Quaternion.identity , 0);

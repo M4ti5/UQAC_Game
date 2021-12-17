@@ -52,7 +52,6 @@ public class GlobalScore : MonoBehaviourPun
 
     public void IncreaseScore()
     {
-        
         scoreProgressBar.IncreaseScore(stepIncrease);
         score = GetScore();
         // synchronise

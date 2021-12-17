@@ -22,6 +22,7 @@ public class PhotonStatus : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
+        // check if we enable status (changed with options menu)
         if (activated)
         {
             CantGetSatus();
@@ -40,6 +41,7 @@ public class PhotonStatus : MonoBehaviourPun
     {
         if (activated)
         {
+            // if we are connected to internet and photon cloud servers
             if (PhotonNetwork.IsConnected)
             {
                 DisplayStatus();
@@ -51,6 +53,7 @@ public class PhotonStatus : MonoBehaviourPun
         }
     }
 
+    // display non define if error
     private void CantGetSatus()
     {
         playerName.text = NA;
@@ -59,6 +62,7 @@ public class PhotonStatus : MonoBehaviourPun
         ping.text = NA + " ms\n(region: " + NA + ")";
     }
 
+    // display allow possible information depending on if we are in lobby (home scene) or in a room (because photon not allow all every where)
     private void DisplayStatus()
     {
         playerName.text = PhotonNetwork.NickName.ToString();
@@ -83,14 +87,16 @@ public class PhotonStatus : MonoBehaviourPun
         DisplayRoomsList();
     }
 
+    // display room list if we are in lobby or call display players in room
     private void DisplayRoomsList()
     {
+        // if we are in lobby / home scene
         if (PhotonNetwork.Server == ServerConnection.MasterServer)
         {
             if (FindObjectOfType<Launcher>())
             {
                 roomsInfos = FindObjectOfType<Launcher>().GetRoomList();
-                // reset list of all rooms
+                // reset display list of all rooms
                 roomsList.text = "Created Rooms: ";
                 foreach (RoomInfo roomInfo in roomsInfos)
                 {
@@ -108,11 +114,13 @@ public class PhotonStatus : MonoBehaviourPun
                 roomsList.text = NA;
             }
         }
-        else
+        else // if we are not in lobby => we are in a room so display players
         {
             DisplayPlayersList();
         }
     }
+    
+    // display list of players in our room
     private void DisplayPlayersList()
     {
         if (PhotonNetwork.InRoom)
@@ -127,7 +135,7 @@ public class PhotonStatus : MonoBehaviourPun
 
             }
         }
-        else
+        else // if we are not in room and not on lobby
         {
             roomsList.text = "";
         }

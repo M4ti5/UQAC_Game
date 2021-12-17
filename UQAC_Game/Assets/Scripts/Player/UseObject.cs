@@ -24,7 +24,7 @@ public class UseObject : MonoBehaviourPun
             // Check if the mouse was clicked over a UI element
             if (EventSystem.current.IsPointerOverGameObject() == false)
             {
-                //add equipement behavior script
+                //Add equipement behavior script
                 if (transform.childCount > 0)
                 {
                     this.transform.GetChild(0).GetComponent<Object>().Behaviour(); // utiliser l'objet
@@ -41,10 +41,7 @@ public class UseObject : MonoBehaviourPun
                 if (transform.parent.Find("Inventory").childCount > 0 ||
                     transform.parent.Find("Equipements").childCount > 0)
                 {
-                    //Debug.Log("mouse wheel");
-                    //Get gameobjetcs
                     OnStoreEquipement();
-                    //this.transform.GetChild(0).GetComponent<Object>().OnStoreEquipement(this.transform.GetChild(0).GetComponent<Object>().player);
                 }
             }
         }
@@ -74,7 +71,8 @@ public class UseObject : MonoBehaviourPun
         }
         PlayerStatManager playerStatManager = gameObject.GetComponentInParent<PlayerStatManager>();
 
-        if (storedObject == null && equipedObject != null)
+        //Management of handle object and inventory object
+        if (storedObject == null && equipedObject != null) // Inventory object
         {
             equipedObject.transform.parent = Inventory;
             equipedObject.transform.localPosition = Vector3.zero;
@@ -82,11 +80,12 @@ public class UseObject : MonoBehaviourPun
             EquipementDest.GetComponent<UseObject>().hasObject = false;
             equipedObject.GetComponent<Object>().isStored = true;
             playerStatManager.storedEquipement = equipedObject;
-            if(transform.parent.GetComponent<PhotonView>().IsMine)
+
+            if(transform.parent.GetComponent<PhotonView>().IsMine)// Cooldown display
                 playerStatManager.UpdateCooldownDisplay(equipedObject.GetComponent<Object>().lastTimeUseObject, equipedObject.GetComponent<Object>().deltaTimeUseObject, equipedObject.name);
 
         }
-        else if(storedObject != null && equipedObject == null)
+        else if(storedObject != null && equipedObject == null)// handle object 
         {
             storedObject.transform.parent = storedObject.GetComponent<Object>().EquipmentDest;
             storedObject.transform.localPosition = Vector3.zero;
@@ -94,11 +93,12 @@ public class UseObject : MonoBehaviourPun
             storedObject.GetComponent<Object>().isStored = false;
             EquipementDest.GetComponent<UseObject>().hasObject = true;
             playerStatManager.storedEquipement = null;
-            if(transform.parent.GetComponent<PhotonView>().IsMine)
+
+            if(transform.parent.GetComponent<PhotonView>().IsMine)// Cooldown display
                 playerStatManager.UpdateCooldownDisplay(storedObject.GetComponent<Object>().lastTimeUseObject, storedObject.GetComponent<Object>().deltaTimeUseObject, storedObject.name);
 
         }
-        else if (storedObject != null && equipedObject != null)
+        else if (storedObject != null && equipedObject != null)// Inventory & handle object
         {
             equipedObject.transform.parent = Inventory;
             equipedObject.transform.localPosition = Vector3.zero;
@@ -109,7 +109,8 @@ public class UseObject : MonoBehaviourPun
             storedObject.transform.localPosition = Vector3.zero;
             storedObject.transform.localRotation = Quaternion.identity;
             storedObject.GetComponent<Object>().isStored = false;
-            if(transform.parent.GetComponent<PhotonView>().IsMine)
+
+            if(transform.parent.GetComponent<PhotonView>().IsMine)// Cooldown display
                 playerStatManager.UpdateCooldownDisplay(storedObject.GetComponent<Object>().lastTimeUseObject, storedObject.GetComponent<Object>().deltaTimeUseObject, storedObject.name);
 
         }
