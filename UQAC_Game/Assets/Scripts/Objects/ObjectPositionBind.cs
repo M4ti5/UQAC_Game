@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Set dynamically position and rotation when object is used in animation
+ */
 public class ObjectPositionBind : MonoBehaviourPun {
 
     public GameObject bindRef;

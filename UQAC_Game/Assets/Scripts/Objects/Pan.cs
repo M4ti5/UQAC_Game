@@ -1,6 +1,9 @@
 using Photon.Pun;
 using UnityEngine;
-
+/**
+ * Script that implements the behavior of the Pan object
+ * the player takes deals damage to a player in a box in front of them.
+ */
 public class Pan : Object
 {
     //max distance that can be reached (z axis)
@@ -20,17 +23,17 @@ public class Pan : Object
         Vector3 direction = HitObj.forward;
         Quaternion orientation = HitObj.rotation;
         
+        //cast a box between hit point in front of the player to the max distance to cut and detect collision
         m_HitDetect = Physics.BoxCast(center, halfExtents, direction, out hit, orientation, distanceToHit);
         if (m_HitDetect)
         {
-            if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
+            if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas dï¿½jï¿½ mort
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
-                    //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
                     photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
-                    //ObjectUsed();
+                    //start animation and destroy object
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inCut"));
                 }
             }
@@ -40,6 +43,7 @@ public class Pan : Object
     
     
 
+    //deals damage to a player via the player viewID
     [PunRPC]
     private void TakeDamage(int damage, int viewId)
     {

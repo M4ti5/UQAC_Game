@@ -1,11 +1,10 @@
 using Photon.Pun;
 using UnityEngine;
 
-
 /**
- * Color Switch is a type of Equipement that allows the player to change their color to the color of another player in front of them
+ * Script that implements the behavior of the color switch object
+ * the player takes the color of the player in front of them.
  */
-
 public class ColorSwitch : Object
 {
     private RaycastHit swap;
@@ -15,19 +14,21 @@ public class ColorSwitch : Object
     [PunRPC]
     protected override void CustomBehaviour()
     {
-        //cast a ray in front of the player from the hit position to the max distance
+        //Cast a ray in front of the player and store the collisions
         if (Physics.Raycast(HitObj.position,HitObj.forward, out swap, maxDistance))
         {
+
             if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas d�j� mort
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
                     Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
-                    //change color of player of photonViewID = viewID
+
+                    //Network Task - synchro change color for all players
                     photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x,
                         otherPlayerColor.y, otherPlayerColor.z,
                         transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                    //load animation for the player and destroy object from the world
+
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inShoot"));
                 }
             }
