@@ -1,7 +1,10 @@
-
 using Photon.Pun;
 using UnityEngine;
 
+/**
+ * Script that implements the behavior of the Knife object
+ * the player takes deals damage to a player in a box in front of them.
+ */
 public class Cut : Object
 {
     //max distance that can be reached (z axis)
@@ -21,17 +24,18 @@ public class Cut : Object
         Vector3 direction = HitObj.forward;
         Quaternion orientation = HitObj.rotation;
         
+        //cast a box between hit point in front of the player to the max distance to cut and detect collision
         m_HitDetect = Physics.BoxCast(center, halfExtents, direction, out hit, orientation, distanceToCut);
         if (m_HitDetect)
         {
+            //of collides with a player then do something
             if (hit.transform.tag == "Player" && hit.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas d�j� mort
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
-                    //hit.transform.GetComponent<PlayerStatManager>().TakeDamage(damage, hit.transform.GetComponent<PhotonView>().ViewID);
                     photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
-                    //ObjectUsed();
+                    //Launch player animation and destroy object
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inCut"));
                 }
             }
@@ -39,6 +43,7 @@ public class Cut : Object
 
     }
 
+    //deals damage to a player via the player viewID
     [PunRPC]
     private void TakeDamage(int damage, int viewId)
     {

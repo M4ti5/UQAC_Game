@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
+/**
+ * Script that implements the behavior of the color switch object
+ * the player takes the color of the player in front of them.
+ */
 public class ColorSwitch : Object
 {
     private RaycastHit swap;
@@ -11,18 +13,18 @@ public class ColorSwitch : Object
     [PunRPC]
     protected override void CustomBehaviour()
     {
+        //Cast a ray in front of the player and store the collisions
         if (Physics.Raycast(HitObj.position,HitObj.forward, out swap, maxDistance))
         {
-            if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas déjà mort
+            
+            if(swap.transform.tag == "Player" && swap.transform.GetComponent<PlayerStatManager>().isDead == false)// si le joueur n'est pas dï¿½jï¿½ mort
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
                     Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
-                    //transform.parent.parent.GetComponent<PlayerStatManager>().setPlayerColor(otherPlayerColor.x, otherPlayerColor.y, otherPlayerColor.z, transform.parent.parent.GetComponent<PhotonView>().ViewID);
                     photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x,
                         otherPlayerColor.y, otherPlayerColor.z,
                         transform.parent.parent.GetComponent<PhotonView>().ViewID);
-                    //ObjectUsed();
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inShoot"));
                 }
             }
