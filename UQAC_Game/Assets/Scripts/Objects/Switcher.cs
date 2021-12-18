@@ -38,6 +38,8 @@ public class Switcher : Object {
                 //Network task - get target player
                 Photon.Realtime.Player networkBindRandomPlayer = PhotonNetwork.PlayerList.Where(player =>
                     player.ActorNumber == randomPlayer.gameObject.GetPhotonView().ControllerActorNr).First();
+                
+                //synchronization for all player : 2 players swap positions
                 photonView.RPC(nameof(Switch), networkBindRandomPlayer, player.position, player.rotation,
                     randomPlayer.gameObject.GetPhotonView().ViewID);
                 
