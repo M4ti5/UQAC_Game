@@ -34,27 +34,24 @@ public class CriminalLeak : MonoBehaviour {
         {
             new WaitForEndOfFrame();
             
-            //Positioning of Camera
+            //Positioning of Camera in front of player
             criminalLeakCam.transform.position = criminal.transform.position;
             criminalLeakCam.transform.rotation = criminal.transform.rotation;
-            criminalLeakCam.transform.Translate(new Vector3(0,1.75f,2));// ajuster la position de la cam ici
+            criminalLeakCam.transform.Translate(new Vector3(0,1.75f,2));// ajuster la position de la cam
             criminalLeakCam.transform.Rotate(new Vector3(0 , -180 , 0));
-
-            float height = Screen.height;
-            float width = Screen.width;
 
 
             // manually render scene into rt
             criminalLeakCam.targetTexture = criminalFace;
             criminalLeakCam.Render();
-
+            
+            // reset textures to avoid bugs
             criminalLeakCam.targetTexture = null;
             RenderTexture.active = null;
 
         }
         
         criminalLeakCam.gameObject.SetActive(false);
-        //Destroy(criminalLeakCam.gameObject);
     }
 
     private void ShowLeakPanel () {

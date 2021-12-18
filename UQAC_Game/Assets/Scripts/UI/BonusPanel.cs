@@ -33,6 +33,7 @@ public class BonusPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Active bonus if corresponding is pressed
         if (bonusNumber == 1)
         {
             ActivateBonus(Input.GetKeyDown(KeyCode.Alpha1));
@@ -51,13 +52,15 @@ public class BonusPanel : MonoBehaviour
 
     private void ActivateBonus(bool keyCode)
     {
+        // if key is pressed and cooldown is ending
         if (keyCode && gameObject.GetComponent<Image>().fillAmount == 1)
         {
             gameObject.GetComponent<Image>().fillAmount = 0;
             gameObject.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().gameObject.SetActive(false);
             currentCooldown = 0;
         }
-
+        
+        // rotate circle while cooldown to use bonus is not ending
         if (gameObject.GetComponent<Image>().fillAmount != 1)
         {
             currentCooldown += Time.deltaTime;

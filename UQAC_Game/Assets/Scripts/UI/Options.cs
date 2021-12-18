@@ -28,14 +28,19 @@ public class Options : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        // hide option to be sure
         panel.SetActive(visible);
+        // get all audio in scene
         volumeMusique = FindObjectsOfType<AudioSource>();
+        
+        // load saved volume of previous session
         if (PlayerPrefs.HasKey(volumeMusiquePrefKey))
         {
             string defaultVolumeMusique = PlayerPrefs.GetString(volumeMusiquePrefKey); 
             slider.value = (float)Convert.ToDouble(defaultVolumeMusique); ;
         }
         
+        // load saved value of previous session to show or hide debug photon panel
         if (PlayerPrefs.HasKey(photonDebugModePrefKey))
         {
             string defaultPhotonDebugMode = PlayerPrefs.GetString(photonDebugModePrefKey); 
@@ -50,11 +55,13 @@ public class Options : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        // escape key to toggle menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleMenu();
         }
         
+        // automaticly active or not leave button (disable in home scene/in lobby)
         leaveBtn.interactable = PhotonNetwork.InRoom;
         
         // find photonstatus panel if not found prevously to avoid problems of order start scripts
@@ -63,11 +70,12 @@ public class Options : MonoBehaviourPunCallbacks
                 photonStatus = GameObject.Find("PhotonStatus").transform.GetChild(0).GetChild(0).gameObject;
         if (photonStatus != null)
         {
+            // change if toggle is different
             if (photonStatus.activeSelf != photonDebugMode)
             {
                 // hide/show photon panel
                 photonStatus.SetActive(photonDebugMode);
-                // disable check information if is hide
+                // disable check information if is hidden
                 photonStatus.transform.parent.parent.GetComponent<PhotonStatus>().activated = photonDebugMode;
             }
         }
@@ -79,21 +87,21 @@ public class Options : MonoBehaviourPunCallbacks
         panel.SetActive(visible);
     }
 
+    // adjust same volume on all audio depending on slider value
     public void OnVolumeMusiqueSliderChange()
     {
         foreach (AudioSource v in volumeMusique)
         {
             v.volume = slider.value;
-            PlayerPrefs.SetString(volumeMusiquePrefKey, Convert.ToString(slider.value)); // � voir si on peut aussi mettre des float
+            // save value in pref file
+            PlayerPrefs.SetString(volumeMusiquePrefKey, Convert.ToString(slider.value));
         }
     }
 
-    /// <summary>
-    /// Close programme or stop playing mode if we use unity
-    /// </summary>
+    // Close programme or stop playing mode if we use unity
     public void QuitApplication()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR // to stop play mode when using unity
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
         Application.Quit();
@@ -102,12 +110,14 @@ public class Options : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         if (PhotonNetwork.InRoom)
-        {   
+        {
+            // close room if we are the last one
             if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
-
+            
+            // desequipe our perso
             if (allPlayers != null)
             {
                 PlayerStatManager playerStatManager = GetComponent<PlayerStatManager>();
@@ -124,7 +134,8 @@ public class Options : MonoBehaviourPunCallbacks
                 if (playerStatManager != null)
                     playerStatManager.DesequipmentTriggeredWhenPlayerLeaveGame();
             }
-
+            
+            // now we can realy leave room
             PhotonNetwork.LeaveRoom();
         }
     }
@@ -142,6 +153,7 @@ public class Options : MonoBehaviourPunCallbacks
     public void OnDebugModeChange()
     {
         photonDebugMode = toggleDebugMode.isOn;
+        // save value in pref file
         PlayerPrefs.SetString(photonDebugModePrefKey, Convert.ToString(photonDebugMode));
     }
 }
