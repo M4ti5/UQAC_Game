@@ -54,6 +54,10 @@ public class PlayerStatManager : MonoBehaviourPun {
         isMinePlayer = photonView.IsMine;
         playerName = photonView.Controller.NickName;
 
+        
+        //Enable a point in map to show the player's position
+        repairPositionForMiniMap.SetActive(isMinePlayer);
+        
         StartCoroutine(GetGameObjects());
     }
 
@@ -91,14 +95,11 @@ public class PlayerStatManager : MonoBehaviourPun {
         inventoryText = inventoryDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         
         //Only the master session set Roles and Color
-        if (PhotonNetwork.IsMasterClient && GetComponent<PhotonView>().IsMine)
+        if (PhotonNetwork.IsMasterClient && isMinePlayer)
         {
             StartCoroutine(SetRandomRole());
             StartCoroutine(AddFilter());
         }
-        
-        //Enable a point in map to show the player's position
-        repairPositionForMiniMap.SetActive(GetComponent<PhotonView>().IsMine);
 
 
 
