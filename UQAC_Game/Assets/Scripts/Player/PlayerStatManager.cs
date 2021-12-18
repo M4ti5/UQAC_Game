@@ -67,26 +67,28 @@ public class PlayerStatManager : MonoBehaviourPun {
         allObjects = GameObject.Find("Objects");
         allMiniGames = GameObject.FindGameObjectsWithTag("MiniGame").ToList();
 
-        storedEquipement = null; // Set an empty inventory 
-
-        //Set Canavas interaction
-        yield return new WaitUntil(() => GameObject.Find("TakeObject") != null);
-        interractionDisplay = GameObject.Find("TakeObject");
-        interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        storedEquipement = null; // Set an empty inventory
 
         //Set Canvas informations
         yield return new WaitUntil(() => GameObject.Find("PlayerCanvas") != null);
         canvas = GameObject.Find("PlayerCanvas");
         int canvasCount = canvas.transform.childCount;
         for (int i = 0 ; i < canvasCount ; i++) {
+            //Set Canvas score global + perso
             if (canvas.transform.GetChild(i).tag == "Score") {
                 personalScore = canvas.transform.GetChild(i).GetComponent<PersonalScore>();
                 globalScore = canvas.transform.GetChild(i).GetComponent<GlobalScore>();
             }
-
-            if (canvas.transform.GetChild(i).name == "InfoRole")
+            //Set Canvas info role
+            else if (canvas.transform.GetChild(i).name == "InfoRole")
             {
                 infoRole = canvas.transform.GetChild(i).gameObject;
+            }
+            //Set Canvas interaction
+            else if (canvas.transform.GetChild(i).name == "TakeObject")
+            {
+                interractionDisplay = canvas.transform.GetChild(i).gameObject;
+                interactionText = interractionDisplay.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
             }
         }
 
