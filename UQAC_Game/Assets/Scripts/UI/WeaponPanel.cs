@@ -29,9 +29,10 @@ public class WeaponPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //currentCooldown += Time.deltaTime;
+        // synchro rotation of background circle and waepon image
         display.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
         display.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
+        // show if we have a weapon in equipment gameobject (equipment is set via UpdateWeaponDisplay called in player stat manager)
         if (equipment != null)
         {
             if (equipment.transform.childCount == 0)
@@ -47,6 +48,7 @@ public class WeaponPanel : MonoBehaviour
 
     public void UpdateWeaponDisplay(GameObject equipments)
     {
+        // save equipment object of our player
         equipment = equipments;
         if (equipments.transform.childCount == 0)
         {
@@ -56,11 +58,12 @@ public class WeaponPanel : MonoBehaviour
         {
             currentWeapon = equipments.transform.GetChild(0).name;
             
+            // save cooldown of different objects (get previous cooldown by compare weapon name)
             foreach (Sprite elem in allWeapons)
             {
                 if (elem.name == currentWeapon)
                 {
-                    currentCooldown = (float)cooldownByWeapon[currentWeapon];
+                    currentCooldown = (float)cooldownByWeapon[currentWeapon];// get cooldown of the current equipped weapon
                     display.GetChild(0).GetComponent<Image>().sprite = elem;
                     display.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
                     display.GetChild(0).gameObject.GetComponent<Image>().fillAmount = (cooldownMax - (Time.time - currentCooldown)) / cooldownMax;
@@ -70,13 +73,9 @@ public class WeaponPanel : MonoBehaviour
         }
     }
 
+    // save weapon cooldown and hide display (when put it in inventary for exemple)
     public void HideDisplay()
     {
-        print("HideDisplay");
-        if (equipment.transform.childCount == 0)
-        {
-            //currentWeapon = equipment.transform.GetChild(0).name;
-        }
         cooldownByWeapon[currentWeapon] = Time.time - cooldownMax;
 
         display.gameObject.SetActive(false);

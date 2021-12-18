@@ -29,13 +29,14 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
             return;
         }
 
-        // get max number of waiting player
+        // get max number of waiting player and room name
         if (PhotonNetwork.InRoom)
         {
             nbrParticipant = PhotonNetwork.CurrentRoom.MaxPlayers;
             roomName.text = PhotonNetwork.CurrentRoom.Name;
         }
 
+        // check if we start entertainment room, in this case, we have 1 player so it isn't necessary to use columns
         if (nbrParticipant == 1)
         {
             Instantiate(prefabPlayerCard, firstColumn.parent.transform).name = "Player_0";
@@ -44,6 +45,7 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
         }
         else
         {
+            // init card by row and column
             for (int i = 0; i < nbrParticipant; i += 2)
             {
                 Instantiate(prefabPlayerCard, firstColumn.transform).name = "Player_" + i;
@@ -61,7 +63,9 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
 
     IEnumerator WaitStartAllCards()
     {
+        // wait card instantiate
         yield return new WaitUntil(() => GameObject.Find("Player_0").GetComponent<WaitingPlayerCard>().IsPlayerNameNull() == false);
+        
         SetNameOfAllConnectedPlayers();
     }
 
@@ -69,7 +73,8 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
-            if (PhotonNetwork.IsMasterClient /*&& PhotonNetwork.CurrentRoom.PlayerCount == nbrParticipant*/) // si on a atteint le nbr max de players
+            // enable start buttom if we are master 
+            if (PhotonNetwork.IsMasterClient /*&& PhotonNetwork.CurrentRoom.PlayerCount == nbrParticipant*/) // if room is full
             {
                 startButton.interactable = true;
             }
@@ -87,10 +92,12 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
 
     public void RetourHome()
     {
+        // if we are the last one, close room
         if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
+        // leave room to return to the lobby
         PhotonNetwork.LeaveRoom();
     }
     /// <summary>
@@ -101,15 +108,17 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("Launcher");
     }
     
-    // reload game
+    // start game
     void LoadGame()
     {
+        // just master can load new scene for everyone
         if ( ! PhotonNetwork.IsMasterClient )
         {
             Debug.LogWarning( "PhotonNetwork : Trying to Load a level but we are not the master Client" );
             return;
         }
-
+        
+        // load game scene for all players
         Debug.LogFormat("PhotonNetwork : Loading Game - PlayerCount: {0}", PhotonNetwork.CurrentRoom.PlayerCount);
         PhotonNetwork.LoadLevel("Game");
         
@@ -159,14 +168,16 @@ public class WaitingPlayers : MonoBehaviourPunCallbacks
         int i = 0;
         foreach (WaitingPlayerCard waitingPlayerCard in listOfCard)
         {
+            // set name in card for all connected players in the room
             if (i < PhotonNetwork.PlayerList.Length)
             {
+                // add info if we are the master
                 if (PhotonNetwork.PlayerList[i].IsMasterClient)
                     waitingPlayerCard.SetCardPlayerName(PhotonNetwork.PlayerList[i].NickName + "\n" + "<i>(Master)</i>");
                 else
                     waitingPlayerCard.SetCardPlayerName(PhotonNetwork.PlayerList[i].NickName);
             }
-            else
+            else // if number of players is less than room capacity, set other card to default value
             {
                 waitingPlayerCard.SetDefaultCardPlayerName();
             }

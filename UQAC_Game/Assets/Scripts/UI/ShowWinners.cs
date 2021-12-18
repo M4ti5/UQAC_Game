@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// script is called when we are in the ending scene
 public class ShowWinners : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI textMessage;
@@ -21,9 +22,11 @@ public class ShowWinners : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        // find saved players status (winners and loosers)
         if (GameObject.Find("EndGame") != null)
         {
             _endGame = GameObject.Find("EndGame").GetComponent<EndGame>();
+            // if we are in the looser list (+ show winners)
             foreach (EndGame.PlayerInfoEndGame looser in _endGame.loosers)
             {
                 if (looser.isMine)
@@ -34,7 +37,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                     break;
                 }
             }
-
+            // if we are in winner list (+ show loosers)
             foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
                 if (winner.isMine)
@@ -60,6 +63,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
     {
         if (_endGame.winners.Count > 0)
         {
+            // change text if we have one or multiple winners
             if (_endGame.winners.Count == 1)
             {
                 textMessage.text += "\nLe gagnant est : ";
@@ -69,17 +73,19 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 textMessage.text += "\nLes gagnants sont : ";
             }
             
-            // si le gagnant est criminel
+            // change background image
+            // if the winner is a criminal
             if (_endGame.winners[0].isCriminal)
             {
                 bkgImage.sprite = criminelWin;
             }
-            // si le/les gagnant(s) est/sont enqueteur(s)
+            // if winners are enqueteurs
             else
             {
                 bkgImage.sprite = enqueteursWin;
             }
-
+            
+            // display list of winners with there role
             foreach (EndGame.PlayerInfoEndGame winner in _endGame.winners)
             {
                 textMessage.text += "\n" + GetNameAndRoleOfPayer(winner);
@@ -91,6 +97,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
     {
         if (_endGame.loosers.Count > 0)
         {
+            // change text if we have one or multiple loosers
             if (_endGame.loosers.Count == 1)
             {
                 textMessage.text += "\nLe perdant est : ";
@@ -100,17 +107,19 @@ public class ShowWinners : MonoBehaviourPunCallbacks
                 textMessage.text += "\nLes perdants sont : ";
             }
             
-            // si le gagnant est criminel
+            // change background image
+            // if the winner is a criminal
             if (_endGame.winners[0].isCriminal)
             {
                 bkgImage.sprite = criminelWin;
             }
-            // si le/les gagnant(s) est/sont enqueteur(s)
+            // if winners are enqueteurs
             else
             {
                 bkgImage.sprite = enqueteursWin;
             }
 
+            // display list of loosers with there role
             foreach (EndGame.PlayerInfoEndGame looser in _endGame.loosers)
             {
                 textMessage.text += "\n" + GetNameAndRoleOfPayer(looser);
@@ -125,8 +134,10 @@ public class ShowWinners : MonoBehaviourPunCallbacks
     
     public void LeaveRoom()
     {
+        // leave room if we are in a room
         if (PhotonNetwork.InRoom)
         {   
+            // if we are the last one in room, close it
             if (PhotonNetwork.CurrentRoom.PlayerCount <= 1)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -135,7 +146,7 @@ public class ShowWinners : MonoBehaviourPunCallbacks
 
             PhotonNetwork.LeaveRoom();
         }
-        else
+        else // if we start end scene and we are not in a room, load home
         {
             SceneManager.LoadScene("Launcher");
         }

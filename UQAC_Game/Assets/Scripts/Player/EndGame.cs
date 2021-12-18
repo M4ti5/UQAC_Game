@@ -40,6 +40,7 @@ public class EndGame : MonoBehaviourPun
         public bool isDead;
     }
 
+    // don't destroy on change scene, expect if we are home scene
     private void Awake()
     {
         SceneManager.activeSceneChanged += DestroyOnMenuScreen;
@@ -66,7 +67,7 @@ public class EndGame : MonoBehaviourPun
         {
             if (this != null && endGame == false && PhotonNetwork.InRoom && allPlayers != null)
             {
-                if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // if we're more one player
+                if (PhotonNetwork.CurrentRoom.PlayerCount > 1) // if we're more than one player
                 {
                     foreach (Transform player in allPlayers)
                     {
@@ -174,9 +175,10 @@ public class EndGame : MonoBehaviourPun
         }
     }
     
+    // destroy object if we are in home scene
     void DestroyOnMenuScreen(Scene oldScene, Scene newScene)
     {
-        if (newScene.name == menuScreenBuildName) //could compare Scene.name instead
+        if (newScene.name == menuScreenBuildName)
         {
             print("destroy");
             if (this != null)
@@ -184,16 +186,6 @@ public class EndGame : MonoBehaviourPun
                 Destroy(gameObject);
             }
         }
-        /*if (newScene.name == endScreenBuildName) //could compare Scene.name instead
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                foreach (PlayerInfoEndGame looser in loosers)
-                {
-                    photonView.RPC(nameof(AddLooser), RpcTarget.AllBuffered);
-                }
-            }
-        }*/
     }
     
     
