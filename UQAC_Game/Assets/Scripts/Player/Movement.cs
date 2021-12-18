@@ -142,6 +142,10 @@ public class Movement : MonoBehaviourPun {
                 moveSpeed = sprintSpeed;
                 inRun = true;
             }
+            else
+            {
+                inRun = false;
+            }
         } else {
             moveSpeed = defaultMoveSpeed;
             inRun = false;
