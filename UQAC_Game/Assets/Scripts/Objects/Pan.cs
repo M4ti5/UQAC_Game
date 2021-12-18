@@ -31,6 +31,7 @@ public class Pan : Object
             {
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
+                    //synchro for all players - a player takes damage
                     photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
                     //start animation and destroy object

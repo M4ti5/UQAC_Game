@@ -126,7 +126,7 @@ public class Object : MonoBehaviourPun
     // main function to synchronize EquipmentTriggered
     public void OnEquipmentTriggered(Transform _player)
     {
-        //Equipment function using photon to synchronize
+        //synchronization for all player : a player takes an object
         photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBuffered, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
         playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
@@ -158,7 +158,7 @@ public class Object : MonoBehaviourPun
     // main function to synchronize DesequipmentTriggered
     public void OnDesequipmentTriggered()
     {
-        //Desequipment function using photon to synchronize
+        //synchronization for all player : a player throws an object to the ground
         photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBuffered);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
         playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, "");
@@ -184,6 +184,8 @@ public class Object : MonoBehaviourPun
     // main function to synchronize DesequipmentTriggered (using photon)
     public void OnDesequipmentTriggeredWhenPlayerLeaveGame()
     {
+        
+        //synchronization for all player : a player throws an object when leaving the game
         photonView.RPC(nameof(DesequipmentTriggeredWhenPlayerLeaveGame), RpcTarget.AllBuffered);
     }
     
@@ -275,6 +277,8 @@ public class Object : MonoBehaviourPun
             }
             else
             {
+                
+                //synchronization : Destroy an object (managed by the master client)
                 photonView.RPC(nameof(DestroyObject), RpcTarget.MasterClient, null);
             }
         }
