@@ -29,10 +29,11 @@ public class GlobalScore : MonoBehaviourPun
             score = GetScore();
         }
     }
-
+    
     // Update is called once per frame
     void Update()
     {
+#if UNITY_EDITOR // allow cheat code just when we start game with unity
         if (Input.GetKeyDown(KeyCode.L))
         {
             scoreProgressBar.IncreaseScore(stepIncrease);
@@ -47,6 +48,7 @@ public class GlobalScore : MonoBehaviourPun
             // synchronise
             OnChangeScore(score);
         }
+#endif
 
     }
 

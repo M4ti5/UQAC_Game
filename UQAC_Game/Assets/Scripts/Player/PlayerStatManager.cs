@@ -110,12 +110,13 @@ public class PlayerStatManager : MonoBehaviourPun {
     void Update () {
         if (findAllObjects == false)
             return;
-
-        /* DEBUG MODE -- Remove filter
+        
+#if UNITY_EDITOR // allow cheat code just when we start game with unity
+        // DEBUG MODE -- Remove filter
         if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false) {
             transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
-        */
+#endif
         
         //Update interaction canvas
         if (GetComponent<PhotonView>().IsMine && !isDead) {

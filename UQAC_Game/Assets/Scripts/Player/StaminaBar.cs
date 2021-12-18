@@ -57,7 +57,8 @@ public class StaminaBar : MonoBehaviour
         }
         
         CanIHaveEnoughStaminaToRun();
-
+        
+#if UNITY_EDITOR // allow cheat code just when we start game with unity
         //Test of inputs' fonctions
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -75,7 +76,7 @@ public class StaminaBar : MonoBehaviour
         {
             DowngradeRestTime(1f);
         }
-
+#endif
         CheckToRecoverStamina();
     }
 
