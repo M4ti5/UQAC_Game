@@ -246,8 +246,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<u>Cr\xE9dits</u>\n\nBOTREL Adrien\nCAFFIAUX Matis\nDELARUE Paul\n<i>DEZE
-    Antoine</i>\nMORAND Martin\nTABARAUD Antoine\n\nUQAC Automne 2021"
+  m_text: "<u>Cr\xE9dits</u>\n\nBOTREL Adrien\nCAFFIAUX Matis\nDELARUE Paul\nMORAND
+    Martin\nTABARAUD Antoine\n<color=#FFF9>DEZE Antoine</color>\n\nUQAC Automne 2021"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7703216a05cb714688bbeeb3cfaa11c, type: 2}
   m_sharedMaterial: {fileID: 6832530905159860712, guid: f7703216a05cb714688bbeeb3cfaa11c, type: 2}
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.2
+  m_fontSize: 35.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
