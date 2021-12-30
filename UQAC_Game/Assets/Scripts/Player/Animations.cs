@@ -57,11 +57,11 @@ public class Animations : MonoBehaviourPun
             case "Pan":
 
             IEnumerator Knife () {
-                playerAnim.applyRootMotion = true;
+                //playerAnim.applyRootMotion = true;
                 playerAnim.SetBool("inCut" , true);
                 yield return new WaitForSeconds(1.32f);// wait duration animation
                 playerAnim.SetBool("inCut" , false);
-                playerAnim.applyRootMotion = false;
+                //playerAnim.applyRootMotion = false;
             }
             StartCoroutine(Knife());
             break;
