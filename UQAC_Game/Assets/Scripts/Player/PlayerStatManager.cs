@@ -117,7 +117,7 @@ public class PlayerStatManager : MonoBehaviourPun {
 #if UNITY_EDITOR // allow cheat code just when we start game with unity
         // DEBUG MODE -- Remove filter
         if (Input.GetKeyDown(KeyCode.Alpha9) && criminal == false) {
-            transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
+            transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[selectedFilter] ^= true;
         }
 #endif
         
@@ -347,7 +347,7 @@ public class PlayerStatManager : MonoBehaviourPun {
     {
         yield return new WaitForSeconds(4f);
         List<int> filtersAvailable = new List<int>();
-        for (int i = 0; i < transform.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
+        for (int i = 0; i < transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumes.Count; i++)
         {
             filtersAvailable.Add(i);
         }
@@ -370,7 +370,7 @@ public class PlayerStatManager : MonoBehaviourPun {
         Debug.Log(randomFilter + " " + idPlayer + " Filter");
         Transform player = FindPlayerByID(idPlayer);
         player.GetComponent<PlayerStatManager>().selectedFilter = randomFilter;
-        player.GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[randomFilter] = true;
+        player.GetChild(0).GetChild(0).GetChild(0).GetComponent<PostProcessManager>().allPostProcessVolumesEnabled[randomFilter] = true;
     }
     #endregion
 
