@@ -21,7 +21,7 @@ public class RandPlayerColor : MonoBehaviourPun
             g = UnityEngine.Random.Range(0.000f, 1.000f);
             b = UnityEngine.Random.Range(0.000f, 1.000f);
 
-            photonView.RPC(nameof(RandomSkinColor), RpcTarget.AllBuffered, r, g, b);
+            photonView.RPC(nameof(RandomSkinColor), RpcTarget.AllBufferedViaServer, r, g, b);
         }
     }
 

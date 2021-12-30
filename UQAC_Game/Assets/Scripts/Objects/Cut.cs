@@ -34,7 +34,7 @@ public class Cut : Object
                 if (player.GetComponent<PhotonView>().IsMine)
                 {
                     //synchro for all players - a player takes damage
-                    photonView.RPC(nameof(TakeDamage), RpcTarget.AllBuffered, damage,
+                    photonView.RPC(nameof(TakeDamage), RpcTarget.AllBufferedViaServer, damage,
                         hit.transform.GetComponent<PhotonView>().ViewID);
                     //Launch player animation and destroy object
                     StartCoroutine(WaitEndAnimation(transform.parent.parent, "inCut"));

@@ -127,7 +127,7 @@ public class Object : MonoBehaviourPun
     public void OnEquipmentTriggered(Transform _player)
     {
         //synchronization for all player : a player takes an object
-        photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBuffered, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
+        photonView.RPC(nameof(EquipmentTriggered), RpcTarget.AllBufferedViaServer, _player.GetComponent<PhotonView>().ViewID, PhotonNetwork.LocalPlayer);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
         playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
     }
@@ -159,7 +159,7 @@ public class Object : MonoBehaviourPun
     public void OnDesequipmentTriggered()
     {
         //synchronization for all player : a player throws an object to the ground
-        photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(DesequipmentTriggered), RpcTarget.AllBufferedViaServer);
         PlayerStatManager playerStatManager = GetPlayerStatManager();
         playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, "");
     }
@@ -186,7 +186,7 @@ public class Object : MonoBehaviourPun
     {
         
         //synchronization for all player : a player throws an object when leaving the game
-        photonView.RPC(nameof(DesequipmentTriggeredWhenPlayerLeaveGame), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(DesequipmentTriggeredWhenPlayerLeaveGame), RpcTarget.AllBufferedViaServer);
     }
     
     //Desequipe the object to the Equipment destination when player leaves game
@@ -244,7 +244,7 @@ public class Object : MonoBehaviourPun
                 playerStatManager.UpdateCooldownDisplay(lastTimeUseObject, deltaTimeUseObject, gameObject.name);
                 
                 //Do the custom behavior for every player in the room
-                photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBuffered);
+                photonView.RPC(nameof(CustomBehaviour), RpcTarget.AllBufferedViaServer);
                 
             }
         }

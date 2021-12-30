@@ -133,7 +133,7 @@ public class MiniGameStarter : MonoBehaviourPun
                 playerStatManager.canMove = true;
                 PhotonView playerPhotonView = playerStatManager.thisPlayer.GetComponent<PhotonView>();
                 
-                photonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBuffered, 15, playerPhotonView.ViewID, photonView.ViewID);
+                photonView.RPC(nameof(RecoverHPMiniGameStarter), RpcTarget.AllBufferedViaServer, 15, playerPhotonView.ViewID, photonView.ViewID);
 
 
                 //int newId = PhotonNetwork.AllocateViewID(true);

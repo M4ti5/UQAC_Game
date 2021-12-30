@@ -50,7 +50,7 @@ public class UseObject : MonoBehaviourPun
 
     public void OnStoreEquipement()
     {
-        photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(StoreEquipement), RpcTarget.AllBufferedViaServer);
     }
     
     [PunRPC]

@@ -25,7 +25,7 @@ public class ColorSwitch : Object
                     Vector3 otherPlayerColor = swap.transform.GetComponent<PlayerStatManager>().playerColor;
 
                     //Network Task - synchro change color for all players
-                    photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBuffered, otherPlayerColor.x,
+                    photonView.RPC(nameof(setPlayerColor), RpcTarget.AllBufferedViaServer, otherPlayerColor.x,
                         otherPlayerColor.y, otherPlayerColor.z,
                         transform.parent.parent.GetComponent<PhotonView>().ViewID);
 

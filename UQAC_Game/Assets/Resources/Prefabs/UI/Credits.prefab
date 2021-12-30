@@ -247,7 +247,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "<u>Cr\xE9dits</u>\n\nBOTREL Adrien\nCAFFIAUX Matis\nDELARUE Paul\nMORAND
-    Martin\nTABARAUD Antoine\n<color=#FFF9>DEZE Antoine</color>\n\nUQAC Automne 2021"
+    Martin\nTABARAUD Antoine\n\nUQAC Automne 2021"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f7703216a05cb714688bbeeb3cfaa11c, type: 2}
   m_sharedMaterial: {fileID: 6832530905159860712, guid: f7703216a05cb714688bbeeb3cfaa11c, type: 2}

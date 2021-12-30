@@ -155,7 +155,7 @@ public class EndGame : MonoBehaviourPun
             loosers.Add(temp);
             if (PhotonNetwork.IsMasterClient)
             {
-                photonView.RPC(nameof(AddLooser), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
+                photonView.RPC(nameof(AddLooser), RpcTarget.AllBufferedViaServer, viewId, isMine, name, isCriminal, isDead);
             }
         }
     }
@@ -170,7 +170,7 @@ public class EndGame : MonoBehaviourPun
             winners.Add(temp);
             if (PhotonNetwork.IsMasterClient)
             {
-                photonView.RPC(nameof(AddWinner), RpcTarget.AllBuffered, viewId, isMine, name, isCriminal, isDead);
+                photonView.RPC(nameof(AddWinner), RpcTarget.AllBufferedViaServer, viewId, isMine, name, isCriminal, isDead);
             }
         }
     }
