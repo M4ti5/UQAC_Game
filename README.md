@@ -1,4 +1,4 @@
-#![Krom'Island](Docs\Images\Background bis.png)
+# ![Krom'Island](/Docs/Images/Background%20bis.png)
 
 # Krom'Island
 Ce projet est un jeu vidéo effectué lors d'un cours de Développement et Conception des Jeux Vidéo fait avec le moteur de jeu Unity ayant pour thématique "mystère".
@@ -22,21 +22,25 @@ Le criminel parviendra-t-il à tromper ses compagnons, sortir victorieux de cett
 
 ## Aperçu
 ### Menu
-![Background](Docs\Images\Krom'Island Menu.png)
+![Background](/Docs/Images/Krom'Island%20Menu.png)
 ### In Game
-![Background](Docs\Images\Krom'Island In Game.png)
+![Background](/Docs/Images/Krom'Island%20In%20Game.png)
 ### Mini Games
-![Background](Docs\Images\Krom'Island MiniGames.png)
+![Background](/Docs/Images/Krom'Island%20MiniGames.png)
 ### End
-![Background](Docs\Images\Krom'Island End.png)
+![Background](/Docs/Images/Krom'Island%20End.png)
 
 
 ## Created by:
-* @AntTBD
-* @AdrienBotrel
-* @M4ti5
-* @Marmorand31
-* @Osogire
+* [@AntTBD](https://github.com/AntTBD)
+* [@AdrienBotrel](https://github.com/AdrienBotrel)
+* [@M4ti5](https://github.com/M4ti5)
+* [@Marmorand31](https://github.com/Marmorand31)
+* [@Osogire](https://github.com/Osogire)
+
+<a href = "https://github.com/M4ti5/UQAC_Game/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo=M4ti5/UQAC_Game"/>
+</a>
 
 *3<sup>ème</sup> trimestre 2021, UQAC, CA*
 
