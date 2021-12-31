@@ -218,7 +218,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 		// save if player name is set
 		if (string.IsNullOrEmpty(value))
 		{
-			Debug.LogError("Player Name is null or empty");
+			Debug.LogWarning("Player Name is null or empty");
 		}
 		else
 		{
@@ -301,6 +301,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 
 			LogFeedback("Joining Room...");
 			// #Critical we need at this point to attempt joining a Room. If it fails, we'll get notified in OnJoinFailed() and we'll create one.
+			if (string.IsNullOrEmpty(inputFieldPlayerName.text) == true)
+			{
+				LogFeedback("<color=red>Please choose a Name...</color>");
+				this.connectionStatus.text = "<color=green>Ready !</color>";
+				return;
+			}
 			if (string.IsNullOrEmpty(this.roomName) == false)
 			{
 				bool roomExistAndIsClose = false;
@@ -361,6 +367,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 	/// </summary>
 	public void ConnectToEntertainmentRoom()
 	{
+		if (string.IsNullOrEmpty(inputFieldPlayerName.text) == true)
+		{
+			LogFeedback("<color=red>Please choose a Name...</color>");
+			return;
+		}
 		RoomOptions roomOptions = new RoomOptions();
 		roomOptions.MaxPlayers = 1;
 		roomOptions.IsVisible = false;
