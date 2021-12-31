@@ -43,12 +43,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 	
 	public GameObject credits;
 
+	public TextMeshProUGUI appVersion;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		Debug.Log("Start launcher script");
 		// hide credits panel
 		HideCredits();
+		//display app version
+		DisplayApplicationVersion();
 
 		// hide the button while not connected to photon servers
 		this.roomJoinUI.SetActive(false);
@@ -545,6 +549,17 @@ public class Launcher : MonoBehaviourPunCallbacks
 		if (credits != null)
 		{
 			credits.SetActive(false);
+		}
+	}
+	#endregion
+	
+	#region version
+
+	void DisplayApplicationVersion()
+	{
+		if (appVersion != null)
+		{
+			appVersion.text = "V" + Application.version;
 		}
 	}
 	#endregion
